@@ -1,0 +1,5 @@
+{
+    "require": {
+        "hassletauf/konnektive-crm": "^0.5.5"
+    }
+}
