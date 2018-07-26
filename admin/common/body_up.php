@@ -2,12 +2,12 @@
 
 require_once '../daemon/api/DBApi.php';
 
-session_start();
+//session_start();
 $userId = $_SESSION['user_id'];
 $subDomain = $_SESSION['sub_domain'];
 $userRole = $_SESSION['role'];
 $userEmail = $_SESSION['user_email'];
-session_write_close();
+//session_write_close();
 
 $dbApi = DBApi::getInstance();
 $alert_count = $dbApi->getRecentAlertCount($userId);

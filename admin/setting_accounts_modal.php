@@ -74,33 +74,32 @@
                 <div class="container-fluid">
                     <div class="alert alert-warning account_edit_alert" role="alert" style="display:none"></div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-4 modal_input_label">User ID</div>
-                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_user_name" disabled="disabled"></div>
-                    </div>
-                    <!--
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-3 modal_input_label">Password</div>
-                        <div class="col-xs-9"><input type="text" class="form-control input-sm edit_password"></div>
-                    </div>
-                    -->
-                    <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">User Name</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_display_name"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
+                        <div class="col-xs-4 modal_input_label">User ID</div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_user_name" disabled="disabled"></div>
+                    </div>
+<!--                    <div class="row" style="margin-bottom:5px;">-->
+<!--                        <div class="col-xs-4 modal_input_label">Password</div>-->
+<!--                        <div class="col-xs-8"><input type="password" class="form-control input-sm add_password"></div>-->
+<!--                    </div>-->
+<!--                    <div class="row" style="margin-bottom:5px;">-->
+<!--                        <div class="col-xs-4 modal_input_label">Re Password</div>-->
+<!--                        <div class="col-xs-8"><input type="password" class="form-control input-sm add_repassword"></div>-->
+<!--                    </div>-->
+                    <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">SMS Number</div>
-                        <div class="col-xs-4"><input type="text" class="form-control input-sm edit_sms_number"></div>
-                        <div class="col-xs-4"><input type="checkbox" class="input-sm edit_disable_sms" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable SMS Alert</input></div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_sms_number"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">Email Address</div>
-                        <div class="col-xs-4"><input type="text" class="form-control input-sm edit_email_address"></div>
-                        <div class="col-xs-4"><input type="checkbox" class="input-sm edit_disable_email" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable Email Alert</input></div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_email_address"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">Telegram Bot (Chat ID)</div>
-                        <div class="col-xs-4"><input type="text" class="form-control input-sm edit_telegram_bot"></div>
-                        <div class="col-xs-4"><input type="checkbox" class="input-sm edit_disable_bot" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable Bot Alert</input></div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_telegram_bot"></div>
                     </div>
                     <div class="row">
                         <div class="col-xs-4 modal_input_label">User Role</div>
@@ -114,6 +113,15 @@
                     </div>
                     <div class="row" style="margin-top:10px">
                         <div class="col-xs-8 col-xs-offset-4" style="height:30px;"><input type="checkbox" class="input-sm edit_disable_account" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable Account</input></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 col-xs-offset-4" style="height:30px;"><input type="checkbox" class="input-sm edit_disable_sms" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable SMS Alert</input></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 col-xs-offset-4" style="height:30px;"><input type="checkbox" class="input-sm edit_disable_email" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable Email Alert</input></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 col-xs-offset-4" style="height:30px;"><input type="checkbox" class="input-sm edit_disable_bot" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Disable Bot Alert</input></div>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../bootstrap/datepicker/js/bootstrap-datepicker.min.js"></script>
 
 <script type="text/javascript" src="../js/admin/admin.min.js"></script>
-<?php if ($tab_name == "Dashboard") echo "<script type=\"text/javascript\" src=\"../js/admin/dashboard.min.js\"></script>"; ?>
+<?php if ($tab_name == "Dashboard") echo "<script type=\"text/javascript\" src=\"../js/admin/dashboard.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate") echo "<script type=\"text/javascript\" src=\"../js/admin/affiliate.min.js\"></script>"; ?>
 <?php if ($tab_name == "Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention.min.js\"></script>"; ?>
 <?php if ($tab_name == "Sales") echo "<script type=\"text/javascript\" src=\"../js/admin/sales.min.js\"></script>"; ?>

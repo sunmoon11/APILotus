@@ -8844,4 +8844,59 @@ class DBApi
 
         return $ret;
     }
+
+    public function addCrmResult($crmID, $time, $crm_result)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order) VALUES (null,"'
+                . $time . '",' . $crmID . ',' . $crm_result[0] . ',"' . $crm_result[1] . '",' . $crm_result[2] . ','
+                . $crm_result[3] . ',' . $crm_result[4] . ',' . $crm_result[5] . ','
+                . $crm_result[6] . ',' . $crm_result[7] . ',' . $crm_result[8] . ','
+                . $crm_result[9] . ',' . $crm_result[10] . ',' . $crm_result[11] . ',' . $crm_result[12] . ')';
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE)
+                return true;
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+    public function addCrmResults($crmID, $crmGoal, $response)
+    {
+        $current_time = date('Y-m-d H:i:s');
+        foreach ($response as $crm_result) {
+            if (0 == $crm_result[0])
+                $crm_result[2] = $crmGoal;
+            $this->addCrmResult($crmID, $current_time, $crm_result);
+        }
+    }
+
+    public function getCrmResult($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return 'error';
+
+        try {
+            $arrayCrm = array();
+
+            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE crm_id=' . $crmID;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order']);
+                }
+            }
+
+            return $arrayCrm;
+        } catch (Exception $e) {
+            return 'error';
+        }
+    }
 }

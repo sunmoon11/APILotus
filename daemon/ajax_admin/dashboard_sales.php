@@ -29,6 +29,8 @@ if ($crmList != null)
 
 		$response = $llcrmHook->getCrmSalesBreakDown($token, $fromDate, $toDate, $crmID);
 
+//		$dbApi->addCrmResults($crmID, $crmGoal, $response);
+
 		if ($response != 'error')
 			echo json_encode(array('success', $crmID, $crmGoal, $response));
 		else
