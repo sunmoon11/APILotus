@@ -8,6 +8,7 @@ $crmID = $_GET['crm_id'];
 $crmGoal = $_GET['crm_goal'];
 $fromDate = $_GET['from_date'];
 $toDate = $_GET['to_date'];
+$dateType = $_GET['date_type'];
 
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
@@ -26,10 +27,9 @@ if ($crmList != null)
 	$llcrmHook = new LLCrmHook();
 	if (($token = $llcrmHook->login($crmID, $crmUrl, $userName, $password)) != null)
 	{
-
 		$response = $llcrmHook->getCrmSalesBreakDown($token, $fromDate, $toDate, $crmID);
 
-//		$dbApi->addCrmResults($crmID, $crmGoal, $response);
+		$dbApi->addCrmResults($crmID, $crmGoal, $response, $dateType);
 
 		if ($response != 'error')
 			echo json_encode(array('success', $crmID, $crmGoal, $response));

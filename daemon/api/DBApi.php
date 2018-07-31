@@ -8845,14 +8845,15 @@ class DBApi
         return $ret;
     }
 
-    public function addCrmResult($crmID, $time, $crm_result)
+    public function addCrmResult($crmID, $time, $crm_result, $dateType)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order) VALUES (null,"'
-                . $time . '",' . $crmID . ',' . $crm_result[0] . ',"' . $crm_result[1] . '",' . $crm_result[2] . ','
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, type, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order) VALUES (null,"'
+                . $dateType . '","' . $time . '",' . $crmID . ','
+                . $crm_result[0] . ',"' . $crm_result[1] . '",' . $crm_result[2] . ','
                 . $crm_result[3] . ',' . $crm_result[4] . ',' . $crm_result[5] . ','
                 . $crm_result[6] . ',' . $crm_result[7] . ',' . $crm_result[8] . ','
                 . $crm_result[9] . ',' . $crm_result[10] . ',' . $crm_result[11] . ',' . $crm_result[12] . ')';
@@ -8866,17 +8867,17 @@ class DBApi
         return false;
     }
 
-    public function addCrmResults($crmID, $crmGoal, $response)
+    public function addCrmResults($crmID, $crmGoal, $response, $dateType)
     {
         $current_time = date('Y-m-d H:i:s');
         foreach ($response as $crm_result) {
             if (0 == $crm_result[0])
                 $crm_result[2] = $crmGoal;
-            $this->addCrmResult($crmID, $current_time, $crm_result);
+            $this->addCrmResult($crmID, $current_time, $crm_result, $dateType);
         }
     }
 
-    public function getCrmResult($crmID, $fromDate, $toDate)
+    public function getCrmResult($crmID, $dateType, $fromDate, $toDate)
     {
         if (!$this->checkConnection())
             return 'error';
@@ -8884,7 +8885,7 @@ class DBApi
         try {
             $arrayCrm = array();
 
-            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE crm_id=' . $crmID;
+            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE timestamp IN (SELECT MAX(timestamp) FROM ' . $this->subdomain .'_crm_result WHERE crm_id=' . $crmID . ' and type="' . $dateType . '")';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $crm_count = mysqli_num_rows($result);
