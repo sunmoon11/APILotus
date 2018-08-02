@@ -10,7 +10,6 @@ require_once '../api/DBApi.php';
 
 
 $crmList = $_GET['crm_list'];
-$dateType = $_GET['date_type'];
 $fromDate = $_GET['from_date'];
 $toDate = $_GET['to_date'];
 
@@ -30,7 +29,7 @@ foreach ($crmList as $crm) {
 
     if ($crmList != null)
     {
-        $crm_result = $dbApi->getCrmResult($crmID, $dateType, $fromDate, $toDate);
+        $crm_result = $dbApi->getCrmResult($crmID, $fromDate, $toDate);
         if ('error' == $crm_result)
             $arrayCrm[] = json_encode(array('error', $crmID));
         else if (0 == count($crm_result))

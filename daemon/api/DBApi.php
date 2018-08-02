@@ -8845,14 +8845,14 @@ class DBApi
         return $ret;
     }
 
-    public function addCrmResult($crmID, $time, $crm_result, $dateType)
+    public function addCrmResult($crmID, $time, $crm_result, $fromDate, $toDate)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, type, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order) VALUES (null,"'
-                . $dateType . '","' . $time . '",' . $crmID . ','
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, from_date, to_date, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order) VALUES (null,"'
+                . $fromDate . '","' . $toDate . '","' . $time . '",' . $crmID . ','
                 . $crm_result[0] . ',"' . $crm_result[1] . '",' . $crm_result[2] . ','
                 . $crm_result[3] . ',' . $crm_result[4] . ',' . $crm_result[5] . ','
                 . $crm_result[6] . ',' . $crm_result[7] . ',' . $crm_result[8] . ','
@@ -8867,17 +8867,27 @@ class DBApi
         return false;
     }
 
-    public function addCrmResults($crmID, $crmGoal, $response, $dateType)
+    public function addCrmResults($crmID, $crmGoal, $response, $fromDate, $toDate)
     {
+        if (!$this->checkConnection())
+            return 'error';
+
+        try {
+            $query = 'DELETE FROM ' . $this->subdomain . '_crm_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+        } catch (Exception $e) {
+            return 'error';
+        }
+
         $current_time = date('Y-m-d H:i:s');
         foreach ($response as $crm_result) {
             if (0 == $crm_result[0])
                 $crm_result[2] = $crmGoal;
-            $this->addCrmResult($crmID, $current_time, $crm_result, $dateType);
+            $this->addCrmResult($crmID, $current_time, $crm_result, $fromDate, $toDate);
         }
     }
 
-    public function getCrmResult($crmID, $dateType, $fromDate, $toDate)
+    public function getCrmResult($crmID, $fromDate, $toDate)
     {
         if (!$this->checkConnection())
             return 'error';
@@ -8885,7 +8895,7 @@ class DBApi
         try {
             $arrayCrm = array();
 
-            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE timestamp IN (SELECT MAX(timestamp) FROM ' . $this->subdomain .'_crm_result WHERE crm_id=' . $crmID . ' and type="' . $dateType . '")';
+            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $crm_count = mysqli_num_rows($result);
@@ -8899,5 +8909,42 @@ class DBApi
         } catch (Exception $e) {
             return 'error';
         }
+    }
+
+    public function checkCrmResult($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return 'error';
+
+        try {
+            $query = 'SELECT COUNT(crm_id) FROM ' . $this->subdomain . '_crm_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $count = $row['COUNT(crm_id)'];
+                if ((int)$count > 0)
+                    return true;
+            }
+
+            return false;
+        } catch (Exception $e) {
+            return 'error';
+        }
+    }
+
+    public function deleteCrmResult($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return 'error';
+
+        try {
+            $query = 'DELETE FROM ' . $this->subdomain . '_crm_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+        } catch (Exception $e) {
+            return 'error';
+        }
+        return 'success';
     }
 }

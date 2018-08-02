@@ -252,10 +252,15 @@ jQuery(document).ready(function(t) {
                             }
                             t(".table_dashboard_sales_body").html(a);
                             show_headers();
-                            for (var r = 0; r < crm_list.length; r++)
-                                show_loading_status("crm", crm_list[r][0], true);
-                                // f(crm_list[r][0], crm_list[r][7]);
-                            get_dashboard_sales_db(crm_list);
+                            if ("date_custom" == date_type) {
+                                for (var r = 0; r < crm_list.length; r++)
+                                    f(crm_list[r][0], crm_list[r][7]);
+                            }
+                            else {
+                                for (var r = 0; r < crm_list.length; r++)
+                                    show_loading_status("crm", crm_list[r][0], true);
+                                get_dashboard_sales_db(crm_list);
+                            }
                             if (null != kkcrm_active_list)
                                 for (var r = 0; r < kkcrm_active_list.length; r++)
                                     g(kkcrm_active_list[r][0], kkcrm_active_list[r][7])
@@ -285,7 +290,7 @@ jQuery(document).ready(function(t) {
             show_loading_status("crm", e, true);
             t.ajax({
                 type: "GET",
-                url: "../daemon/ajax_admin/dashboard_sales_db.php",
+                url: "../daemon/ajax_admin/dashboard_sales.php",
                 data: {
                     crm_id: e,
                     crm_goal: a,
@@ -419,10 +424,9 @@ jQuery(document).ready(function(t) {
         else {
             t.ajax({
                 type: "GET",
-                url: "../daemon/ajax_admin/dashboard_sales_db_once.php",
+                url: "../daemon/ajax_admin/dashboard_sales_get_from_db.php",
                 data: {
                     crm_list: crm_list,
-                    date_type: date_type,
                     from_date: t("#from_date").val(),
                     to_date: t("#to_date").val()
                 },
@@ -937,7 +941,7 @@ jQuery(document).ready(function(t) {
             t("#acontent_" + a).css("background", "#fff"))
     });
 
-    setInterval(function () {
-        b();
-    }, 30000);
+    // setInterval(function () {
+    //     b();
+    // }, 30000);
 });
