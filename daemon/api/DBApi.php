@@ -8947,4 +8947,24 @@ class DBApi
         }
         return 'success';
     }
+
+    public function getTrialCampaignById($crmID)
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        try {
+            $query = 'SELECT trial_ids FROM ' . $this->subdomain . '_crm_trial WHERE crm_id=' . $crmID;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                return $row['trial_ids'];
+            }
+            return 'error';
+        } catch (Exception $e) {
+            return null;
+        }
+    }
 }

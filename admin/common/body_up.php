@@ -90,6 +90,11 @@ if (in_array(4, $features))
 											<?php } else { ?>
 												<li><a class="crm_tab_label small" href="./retention.php">Retention Report</a></li>
 											<?php } ?>
+                                            <?php if ($tab_name == "Rebill") { ?>
+                                                <li><a class="crm_tab_label active small" href="./rebill.php">Rebill Report</a></li>
+                                            <?php } else { ?>
+                                                <li><a class="crm_tab_label small" href="./rebill.php">Rebill Report</a></li>
+                                            <?php } ?>
 											<?php if ($tab_name == "Sales") { ?>
 												<li><a class="crm_tab_label active small" href="./sales.php">Sales Report</a></li>
 											<?php } else { ?>
@@ -160,6 +165,11 @@ if (in_array(4, $features))
 										<?php } else { ?>
 											<li class="crm_tab_left"><a class="crm_tab_label small" href="./retention.php">Retention Report</a></li>
 										<?php } ?>
+                                        <?php if ($tab_name == "Rebill") { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./rebill.php">Rebill Report</a></li>
+                                        <?php } else { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./rebill.php">Rebill Report</a></li>
+                                        <?php } ?>
 										<?php if ($tab_name == "Sales") { ?>
 											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./sales.php">Sales Report</a></li>
 										<?php } else { ?>

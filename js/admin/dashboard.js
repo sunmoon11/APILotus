@@ -704,7 +704,7 @@ jQuery(document).ready(function(t) {
     function format_date(year, month, date) {
         if (month < 10) month = "0" + month;
         if (date < 10) date = "0" + date;
-        return month + "/" + date + "/" + year
+        return month + "/" + date + "/" + year;
     }
 
 

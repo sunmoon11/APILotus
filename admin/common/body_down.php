@@ -16,7 +16,8 @@
 <script type="text/javascript" src="../js/admin/admin.min.js"></script>
 <?php if ($tab_name == "Dashboard") echo "<script type=\"text/javascript\" src=\"../js/admin/dashboard.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate") echo "<script type=\"text/javascript\" src=\"../js/admin/affiliate.min.js\"></script>"; ?>
-<?php if ($tab_name == "Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention.min.js\"></script>"; ?>
+<?php if ($tab_name == "Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention.js\"></script>"; ?>
+<?php if ($tab_name == "Rebill") echo "<script type=\"text/javascript\" src=\"../js/admin/rebill.js\"></script>"; ?>
 <?php if ($tab_name == "Sales") echo "<script type=\"text/javascript\" src=\"../js/admin/sales.min.js\"></script>"; ?>
 <?php if ($tab_name == "Alerts") echo "<script type=\"text/javascript\" src=\"../js/admin/alert.min.js\"></script>"; ?>
 <?php if ($tab_name == "Export Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention_export.min.js\"></script>"; ?>
