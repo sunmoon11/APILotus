@@ -8948,6 +8948,65 @@ class DBApi
         return 'success';
     }
 
+    public function getAllTrials()
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        $ret = array();
+
+        try {
+            $query = 'SELECT crm_id FROM ' . $this->subdomain . '_crm_trial';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = $row['crm_id'];
+            }
+        } catch (Exception $e) {
+            return null;
+        }
+
+        return $ret;
+    }
+
+    public function getAllTrialCrmsByAccountId($accountId)
+    {
+        $permissionString = $this->getCrmPermissionOfAccount($accountId);
+        if ($permissionString == '')
+            return array();
+
+        $arrayPermission = explode(',', $permissionString);
+
+        $allTrial = $this->getAllTrials();
+        $allCrm = $this->getAllCrm();
+        $arrayCrm = array();
+        foreach ($allTrial as $trial) {
+            if (in_array($trial, $arrayPermission)) {
+                foreach ($allCrm as $crm) {
+                    if ($crm[0] == $trial) {
+                        $arrayCrm[] = $crm;
+                        break;
+                    }
+                }
+            }
+        }
+        return $arrayCrm;
+    }
+
+    public function getAllActiveTrialCrmsByAccountId($accountId)
+    {
+        $result = array();
+        $allCrm = $this->getAllTrialCrmsByAccountId($accountId);
+
+        foreach ($allCrm as $crm) {
+            if ($crm[8] == 0)
+                $result[] = $crm;
+        }
+        return $result;
+    }
+
     public function getTrialCampaignById($crmID)
     {
         if (!$this->checkConnection())
@@ -8963,6 +9022,52 @@ class DBApi
                 return $row['trial_ids'];
             }
             return 'error';
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function addTrialCampaign($crmID, $fromDate, $toDate, $trial_result)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'DELETE FROM ' . $this->subdomain . '_crm_trial_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+        } catch (Exception $e) {
+            return false;
+        }
+
+        $current_time = date('Y-m-d H:i:s');
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_trial_result (id, crm_id, from_date, to_date, timestamp, result) VALUES (null,'
+                . $crmID . ',"'. $fromDate . '","' . $toDate . '","' . $current_time . '","' . str_replace('"', "'", $trial_result) . '")';
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE)
+                return true;
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+    public function getTrialCampaignResultById($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT result FROM ' . $this->subdomain . '_crm_trial_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                return $row['result'];
+            }
+            return false;
         } catch (Exception $e) {
             return null;
         }

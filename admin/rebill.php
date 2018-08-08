@@ -49,11 +49,7 @@ if(!$dbApi->checkClientIp())
 include ('./common/check_payment.php');
 
 $user_name = $user;
-$crmList = $dbApi->getAllActiveCrmsByAccountId($userId);
-$crmIDs = array();
-foreach ($crmList as $crm) {
-    $crmIDs[] = $crm[0];
-}
+$crmList = $dbApi->getAllActiveTrialCrmsByAccountId($userId);
 
 $tab_name = "Rebill";
 
@@ -71,31 +67,31 @@ $tab_name = "Rebill";
         <div class="crm_board" style="margin-bottom: 15px;">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">Rebill Report</div>
-                <div class="col-xs-2 retention_waiting" style="text-align:right;"></div>
+                <div class="col-xs-2 rebill_waiting" style="text-align:right;"></div>
             </div>
-            <div class="alert alert-warning retention_alert" role="alert" style="display:none"></div>
+            <div class="alert alert-warning rebill_alert" role="alert" style="display:none"></div>
             <div class="row crm_board_row">
                 <div class="col-xs-7">
                     <div class="input-daterange input-group" id="datepicker">
-							<span class="input-group-btn">
-								<button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:160px">
-									<?php
-                                    if ($crmList != null && count($crmList) > 0)
-                                        echo $crmList[0][1].' ';
-                                    else
-                                        echo 'None CRM ';
-                                    ?>
-                                    <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu crm_dropdown_menu" role="menu">
-									<?php
-                                    if ($crmList != null) {
-                                        for ($i = 0; $i < count($crmList); $i++)
-                                            echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_dropdown_list">'.$crmList[$i][1].'</a></li>';
-                                    }
-                                    ?>
-								</ul>
-							</span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:160px">
+                                <?php
+                                if ($crmList != null && count($crmList) > 0)
+                                    echo $crmList[0][1].' ';
+                                else
+                                    echo 'None CRM ';
+                                ?>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu crm_dropdown_menu" role="menu">
+                                <?php
+                                if ($crmList != null) {
+                                    for ($i = 0; $i < count($crmList); $i++)
+                                        echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_dropdown_list">'.$crmList[$i][1].'</a></li>';
+                                }
+                                ?>
+                            </ul>
+                        </span>
                         <span class="input-group-btn">
 								<button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px; border-radius: 0">
 									Custom <span class="caret"></span>
@@ -114,18 +110,8 @@ $tab_name = "Rebill";
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>
                         <span class="input-group-addon calendar_label">To</span>
                         <input id="to_date" type="text" class="input-sm form-control" name="end"/>
-                        <span class="input-group-addon calendar_label">Subscription Cycles</span>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle cycle_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:50px; border-radius: 0">
-                                2 <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu cycle_dropdown_menu" role="menu" style="width: 50px !important; min-width: 50px !important">
-                                <li><a href="#" id="cycle_1">1</a></li>
-                                <li><a href="#" id="cycle_2">2</a></li>
-                            </ul>
-                        </span>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm retention_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
+                            <button class="btn btn-default btn-sm rebill_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
                         </span>
                     </div>
                 </div>
@@ -134,29 +120,29 @@ $tab_name = "Rebill";
                     <a class="export_link" href="./retention_export.php"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;Full Export</a>
                 </div>
             </div>
-            <table class="table table-hover table_retention" style="margin-top:10px;">
-                <thead class="table_retention_head">
+
+            <table class="table table-hover table_rebill" style="margin-top:10px;">
+                <thead class="table_rebill_head">
                 <tr>
-                    <th rowspan="2" style="vertical-align:middle"><button type="button" class="btn btn-link btn-sm btn_campaign_head" id=""><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button></th>
+                    <th id="id_head_sign" rowspan="2" style="vertical-align:middle"></th>
                     <th rowspan="2" style="vertical-align:middle"></th>
-                    <th rowspan="2" style="vertical-align:middle">Campaign (ID) Name</th>
-                    <th colspan="6" style="border-left: 1px solid #dadada">Initial Cycle</th>
-                </tr>
-                <tr>
-                    <th style="border-left: 1px solid #dadada">Gross Orders</th>
-                    <th>Net Approved</th>
-                    <th>Void/Full Refund</th>
-                    <th>Partial Refund</th>
-                    <th>Void/Refund Revenue</th>
+                    <?php
+                        if ($crmList != null)
+                            echo '<th id="id_campaign_title" rowspan="2" style="vertical-align:middle">'.$crmList[0][1].'</th>';
+                        else
+                            echo '<th id="id_campaign_title" rowspan="2" style="vertical-align:middle">No Campaign</th>';
+                    ?>
+                    <th>Sales</th>
                     <th>Approval Rate</th>
+                    <th>Rebill %</th>
                 </tr>
                 </thead>
-                <tbody class="table_retention_body">
+                <tbody class="table_rebill_body">
                 </tbody>
             </table>
+
         </div>
     </div>
-    <span id="active_crms" style="display: none;"><?php echo join(",", $crmIDs); ?></span>
 </div>
 <?php include('./common/body_down.php'); ?>
 </body>

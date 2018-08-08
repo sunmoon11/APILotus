@@ -10,12 +10,10 @@ require_once '../api/DBApi.php';
 require_once '../api/LLCrmHook.php';
 
 
-$userToken = $_GET['user_token'];
 $crmID = $_GET['crm_id'];
 $fromDate = $_GET['from_date'];
 $toDate = $_GET['to_date'];
-$cycle = $_GET['cycle'];
-$delete = $_GET['delete'];
+$cycle = 2;
 
 
 $dbApi = DBApi::getInstance();
@@ -24,6 +22,13 @@ if ($dbApi->getSubDomain() == '')
     echo json_encode(array('no_cookie'));
     return;
 }
+
+$result = $dbApi->getTrialCampaignResultById($crmID, $fromDate, $toDate);
+if (false != $result && null != $result) {
+    echo str_replace("'", '"', $result);
+    return;
+}
+
 $crmList = $dbApi->getActiveCrmById($crmID);
 
 if ($crmList != null)
@@ -59,11 +64,13 @@ if ($crmList != null)
                 $trial_results[] = array($r, $sub_aids);
             }
         }
-        echo json_encode(array('success', $userToken, $crmID, $trial_results));
+        $result = json_encode(array('success', $crmID, $trial_results));
+        $dbApi->addTrialCampaign($crmID, $fromDate, $toDate, $result);
+        echo $result;
         return;
     }
 }
 
-echo json_encode(array('error', $userToken, $crmID));
+echo json_encode(array('error', $crmID));
 
 ?>
