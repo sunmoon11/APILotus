@@ -19,47 +19,28 @@ jQuery(document).ready(function(t) {
         t("#to_date").prop("disabled", true);
         var cur_date = new Date;
         var formatted_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-        if ("date_today" == date_type) {
-            from_date = formatted_date;
-            to_date = formatted_date;
-        }
-        else if ("date_yesterday" == date_type) {
-            cur_date.setDate(cur_date.getDate() - 1);
-            from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-            to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-        }
-        else if ("date_thisweek" == date_type) {
-            var r = cur_date.getDate() + 1;
-            0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
-            cur_date.setDate(r);
-            from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-            to_date = formatted_date;
-        } else if ("date_thismonth" == date_type) {
-            from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, 1);
-            to_date = formatted_date;
-        }
-        else if ("date_thisyear" == date_type) {
-            from_date = format_date(cur_date.getFullYear(), 1, 1);
-            to_date = formatted_date;
-        }
-        else if ("date_lastweek" == date_type) {
-            r = cur_date.getDate() + 1 - 7;
+        if ("date_fullweek" == date_type) {
+            var r = cur_date.getDate() - 21;
             0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
             cur_date.setDate(r);
             from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
             r = cur_date.getDate() + 6;
             cur_date.setDate(r);
             to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
+
+            t("#rebill_date").val(formatted_date);
+            t("#rebill_date_label").show();
+            t("#rebill_date").show();
         } else if ("date_custom" == date_type) {
             from_date = "";
             to_date = "";
+            t("#rebill_date_label").hide();
+            t("#rebill_date").hide();
             t("#from_date").prop("disabled", false);
             t("#to_date").prop("disabled", false);
         }
         t("#from_date").val(from_date);
         t("#to_date").val(to_date);
-        t("#from_date").val('07/08/2018');
-        t("#to_date").val('07/14/2018');
     }
     function format_date(year, month, date) {
         if (month < 10) month = "0" + month;
@@ -172,7 +153,21 @@ jQuery(document).ready(function(t) {
         crm_id = t(this).find("a").attr("id");
         t(".crm_toggle_button").html(crm_name + ' <span class="caret"></span>');
     });
-    t(".input-daterange").datepicker({});
+    t("#from_date").datepicker({});
+    t("#to_date").datepicker({});
+    t("#rebill_date").datepicker({});
+    t("#rebill_date").change(function () {
+        var cur_date = new Date($(this).val());
+        var r = cur_date.getDate() - 21;
+        0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
+        cur_date.setDate(r);
+        from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
+        r = cur_date.getDate() + 6;
+        cur_date.setDate(r);
+        to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
+        t("#from_date").val(from_date);
+        t("#to_date").val(to_date);
+    });
     t(".date_dropdown_menu li").on("click", function(e) {
         var r = t(this).text();
         date_type = t(this).find("a").attr("id");
@@ -190,7 +185,7 @@ jQuery(document).ready(function(t) {
     var loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
     var minus_sign = '<span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>';
     var triangle_sign = '<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" style="color: #ffa5a5"></span>';
-    var date_type = "date_custom";
+    var date_type = "date_fullweek";
     var from_date = "";
     var to_date = "";
     var crm_id = -1;

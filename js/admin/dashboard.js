@@ -941,7 +941,7 @@ jQuery(document).ready(function(t) {
             t("#acontent_" + a).css("background", "#fff"))
     });
 
-    // setInterval(function () {
-    //     b();
-    // }, 30000);
+    setInterval(function () {
+        b();
+    }, 30000);
 });

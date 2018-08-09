@@ -1330,15 +1330,3 @@ input[disabled] {
 .navbar-collapse {
 	background-color: white;
 }
-
-.table_rebill th:nth-child(1), th:nth-child(2) {
-	width: 5%;
-}
-
-.table_rebill th:nth-child(3) {
-	width: 30%;
-}
-
-.table_rebill th:nth-child(4), th:nth-child(5), th:nth-child(6) {
-	width: 20%;
-}

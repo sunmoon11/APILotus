@@ -93,23 +93,21 @@ $tab_name = "Rebill";
                             </ul>
                         </span>
                         <span class="input-group-btn">
-								<button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px; border-radius: 0">
-									Custom <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu date_dropdown_menu" role="menu">
-									<li><a href="#" id="date_today">Today</a></li>
-									<li><a href="#" id="date_yesterday">Yesterday</a></li>
-									<li><a href="#" id="date_thisweek">Week To Date</a></li>
-									<li><a href="#" id="date_thismonth">Month To Date</a></li>
-									<li><a href="#" id="date_thisyear">Year To Date</a></li>
-									<li><a href="#" id="date_lastweek">Last Week</a></li>
-									<li><a href="#" id="date_custom">Custom</a></li>
-								</ul>
-							</span>
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px; border-radius: 0">
+                                Full Week <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu date_dropdown_menu" role="menu">
+                                <li><a href="#" id="date_fullweek">Full Week</a></li>
+                                <li><a href="#" id="date_custom">Custom</a></li>
+                            </ul>
+                        </span>
+                        <span id="rebill_date_label" class="input-group-addon calendar_label">Date</span>
+                        <input id="rebill_date" type="text" class="input-sm form-control" name="rebill"/>
                         <span class="input-group-addon calendar_label">From</span>
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>
                         <span class="input-group-addon calendar_label">To</span>
                         <input id="to_date" type="text" class="input-sm form-control" name="end"/>
+
                         <span class="input-group-btn">
                             <button class="btn btn-default btn-sm rebill_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
                         </span>
