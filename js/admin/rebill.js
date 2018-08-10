@@ -92,30 +92,28 @@ jQuery(document).ready(function(t) {
                                 result_html += "<td><b>" + "Total" + "</b></td>";
                             }
                             else {
-                                "yes" === campaign[14] ? result_html += '<td>' + minus_sign + '</td>' : result_html += "<td></td>";
+                                result_html += '<td>' + minus_sign + '</td>';
                                 result_html += "<td></td>";
                                 result_html += "<td>(" + campaign[0] + ") " + campaign[1] + "</td>";
                             }
-                            result_html += '<td style="border-left: 1px solid #dadada">' + campaign[3] + "</td>";
-                            result_html += "<td>" + campaign[7] + "%" + "</td>";
-                            var color = campaign[13] < 65.0 ? 'red': campaign[13] < 80.0 ? 'yellow': 'green';
-                            result_html += '<td style="background-color: ' + color + '"><b>' + campaign[13] + '%' + '</b></td>';
+                            result_html += '<td style="border-left: 1px solid #dadada">' + campaign[2] + "</td>";
+                            result_html += "<td>" + campaign[3] + "%" + "</td>";
+                            var color = campaign[4] < 65.0 ? 'red': campaign[4] < 80.0 ? 'yellow': 'green';
+                            result_html += '<td style="background-color: ' + color + '"><b>' + campaign[4] + '%' + '</b></td>';
                             result_html += "</tr>";
 
                             var affiliates = data[2][campaign_id][1];
                             for (var affiliate_id = 0; affiliate_id < affiliates.length; affiliate_id++) {
                                 var affiliate = affiliates[affiliate_id][0];
-                                if (affiliate[2] <= 10) // Remove all of the rows that have 10 or less Gross Orders
-                                    continue;
 
                                 var a = '<tr id="affrow_' + campaign[0] + "_" + affiliate[0] + '" class="aff_item_by_' + campaign[0] + '">';
                                 a += '<td style="border-top:none"></td>';
                                 a += '<td id="affmark_' + campaign[0] + "_" + affiliate[0] + '">' + triangle_sign + "</td>";
                                 a += "<td>(" + affiliate[0] + ") " + affiliate[1] + "</td>";
-                                a += '<td style="border-left: 1px solid #dadada">' + affiliate[3] + "</td>";
-                                a += "<td>" + affiliate[7] + "%</td>";
-                                color = affiliate[13] < 65.0 ? 'red': affiliate[13] < 80.0 ? 'yellow': 'green';
-                                a += '<td style="background-color: ' + color + '">' + affiliate[13] + '%</td>';
+                                a += '<td style="border-left: 1px solid #dadada">' + affiliate[2] + "</td>";
+                                a += "<td>" + affiliate[3] + "%</td>";
+                                color = affiliate[4] < 65.0 ? 'red': affiliate[4] < 80.0 ? 'yellow': 'green';
+                                a += '<td style="background-color: ' + color + '">' + affiliate[4] + '%</td>';
                                 a += "</tr>";
                                 result_html += a;
 
@@ -123,17 +121,15 @@ jQuery(document).ready(function(t) {
                                 sub_affiliates.length > 0 && 0 === affiliate_id && t("#affrow_" + campaign[0] + "_" + affiliate[0]).css("border-bottom", "none");
                                 for (var sub_affiliate_id = 0; sub_affiliate_id < sub_affiliates.length; sub_affiliate_id++) {
                                     var sub_affiliate = sub_affiliates[sub_affiliate_id];
-                                    if (sub_affiliate[2] <= 10) // Remove all of the rows that have 10 or less Gross Orders
-                                        continue;
 
                                     var o = '<tr id="subaff_' + sub_affiliate[0] + '" class="subaff_item_by_' + campaign[0] + " esubaff_" + campaign[0] + "_" + affiliate[0] + '">';
                                     o += '<td style="border-top:none"></td>';
                                     o += '<td style="border-top:none"></td>';
                                     o += "<td>(" + sub_affiliate[0] + ") " + sub_affiliate[1] + "</td>";
-                                    o += '<td style="border-left: 1px solid #dadada">' + sub_affiliate[3] + "</td>";
-                                    o += "<td>" + sub_affiliate[7] + "%</td>";
-                                    color = sub_affiliate[13] < 65.0 ? 'red': sub_affiliate[13] < 80.0 ? 'yellow': 'green';
-                                    o += '<td style="background-color: ' + color + '">' + sub_affiliate[13] + '%</td>';
+                                    o += '<td style="border-left: 1px solid #dadada">' + sub_affiliate[2] + "</td>";
+                                    o += "<td>" + sub_affiliate[3] + "%</td>";
+                                    color = sub_affiliate[4] < 65.0 ? 'red': sub_affiliate[4] < 80.0 ? 'yellow': 'green';
+                                    o += '<td style="background-color: ' + color + '">' + sub_affiliate[4] + '%</td>';
                                     o += "</tr>";
                                     result_html += o;
                                 }
@@ -177,9 +173,13 @@ jQuery(document).ready(function(t) {
     t(".rebill_search_button").click(function() {
         get_rebill("1");
     });
-    t(".btn_export").click(function() {
-        // var e = "./export_quick_retention.php?type=retention&user_token=" + k + "&from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val() + "&crm_id=" + crm_id + "&crm_name=" + crm_name;
-        // window.location.href = e
+    t(".btn_export_quick").click(function() {
+        var e = "./export_quick_rebill.php?from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val() + "&crm_id=" + crm_id + "&crm_name=" + crm_name;
+        window.location.href = e
+    });
+    t(".btn_export_full").click(function() {
+        var e = "./export_full_rebill.php?from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val();
+        window.location.href = e
     });
 
     var loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';

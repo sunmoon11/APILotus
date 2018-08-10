@@ -114,8 +114,8 @@ $tab_name = "Rebill";
                     </div>
                 </div>
                 <div class="col-xs-5" style="text-align:right; height:30px; padding-right: 30px;">
-                    <button class="btn btn-default btn-sm btn_export" type="button" style="width:120px;margin-right: 10px"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;&nbsp;Quick Export</button>
-                    <a class="export_link" href="./retention_export.php"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;Full Export</a>
+                    <button class="btn btn-default btn-sm btn_export_quick" type="button" style="width:120px;margin-right: 10px"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;&nbsp;Quick Export</button>
+                    <button class="btn btn-default btn-sm btn_export_full" type="button" style="width:120px;margin-right: 10px"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;Full Export</button>
                 </div>
             </div>
 

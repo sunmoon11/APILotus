@@ -8973,6 +8973,9 @@ class DBApi
 
     public function getAllTrialCrmsByAccountId($accountId)
     {
+        if (!$this->checkConnection())
+            return null;
+
         $permissionString = $this->getCrmPermissionOfAccount($accountId);
         if ($permissionString == '')
             return array();
@@ -8997,6 +9000,9 @@ class DBApi
 
     public function getAllActiveTrialCrmsByAccountId($accountId)
     {
+        if (!$this->checkConnection())
+            return null;
+
         $result = array();
         $allCrm = $this->getAllTrialCrmsByAccountId($accountId);
 
@@ -9071,5 +9077,26 @@ class DBApi
         } catch (Exception $e) {
             return null;
         }
+    }
+
+    public function getTrialCampaignResult($fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        $ret = array();
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_trial_result WHERE from_date="' . $fromDate . '" AND to_date="' . $toDate . '" ORDER BY crm_id';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['crm_id'], $row['result']);
+            }
+        } catch (Exception $e) {
+            return null;
+        }
+        return $ret;
     }
 }

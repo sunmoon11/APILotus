@@ -25,7 +25,7 @@ if ($dbApi->getSubDomain() == '')
 
 $result = $dbApi->getTrialCampaignResultById($crmID, $fromDate, $toDate);
 if (false != $result && null != $result) {
-    echo str_replace("'", '"', $result);
+    echo json_encode(array('success', $crmID, json_decode(str_replace("'", '"', $result))));
     return;
 }
 
@@ -43,30 +43,37 @@ if ($crmList != null)
     {
         $response = $llcrmHook->getRetentionReport($token, $fromDate, $toDate, $cycle);
         $result = $llcrmHook->parseRetentionByCampaign($response);
-        // $llcrmHook->writeQuickRetentionByCrm($userToken, $crmID, $result, $delete, $cycle);
 
         $trials = $dbApi->getTrialCampaignById($crmID);
         $trials = explode(',', $trials);
 
         foreach ($result['report'] as $r) {
             if (in_array((string)$r[0], $trials)) {
+                if ((int)$r[2] <= 10)
+                    continue;
                 $aid_response = $llcrmHook->getRetentionReportByCampaign($token, $fromDate, $toDate , $cycle, $r[0]);
                 $aid_result = $llcrmHook->parseRetentionByAffiliate($aid_response);
-                // $llcrmHook->writeRetentionQuickByCampaign($crmID, $campaignID, $result, $cycle, $userToken, $delete);
 
-                $sub_aids = array();
+                $aids = array();
                 foreach ($aid_result['report'] as $aid_r) {
+                    if ((int)$aid_r[2] <= 10)
+                        continue;
                     $sub_response = $llcrmHook->getRetentionReportByAffiliate($token, $fromDate, $toDate , $cycle, $r[0], $aid_r[0]);
                     $sub_result = $llcrmHook->parseRetentionBySubAffiliate($sub_response);
-                    // $llcrmHook->writeRetentionQuickByAffiliate($crmID, $campaignID, $affiliateID, $result, $cycle, $userToken, $delete);
-                    $sub_aids[] = array($aid_r, $sub_result['report']);
+                    $sub_aids = array();
+                    foreach ($sub_result['report'] as $sub_r) {
+                        if ((int)$sub_r[2] <= 10)
+                            continue;
+                        $sub_aids[] = array($sub_r[0], $sub_r[1], $sub_r[3], $sub_r[7], $sub_r[13]);
+                    }
+                    $aids[] = array(array($aid_r[0], $aid_r[1], $aid_r[3], $aid_r[7], $aid_r[13]), $sub_aids);
                 }
-                $trial_results[] = array($r, $sub_aids);
+                $trial_results[] = array(array($r[0], $r[1], $r[3], $r[7], $r[13]), $aids);
             }
         }
-        $result = json_encode(array('success', $crmID, $trial_results));
-        $dbApi->addTrialCampaign($crmID, $fromDate, $toDate, $result);
-        echo $result;
+
+        $dbApi->addTrialCampaign($crmID, $fromDate, $toDate, json_encode($trial_results));
+        echo json_encode(array('success', $crmID, $trial_results));
         return;
     }
 }
