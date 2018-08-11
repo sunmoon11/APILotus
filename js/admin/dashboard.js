@@ -424,7 +424,7 @@ jQuery(document).ready(function(t) {
         else {
             t.ajax({
                 type: "GET",
-                url: "../daemon/ajax_admin/dashboard_sales_get_from_db.php",
+                url: "../daemon/ajax_admin/dashboard_sales_all.php",
                 data: {
                     crm_list: crm_list,
                     from_date: t("#from_date").val(),
