@@ -25,9 +25,8 @@ $arrayCrm = array();
 foreach ($crmList as $crm) {
     $crmID = $crm[0];
     $crmGoal = $crm[7];
-    $crmList = $dbApi->getActiveCrmById($crmID);
 
-    if ($crmList != null)
+    if ($dbApi->getActiveCrmById($crmID) != null)
     {
         $crm_result = $dbApi->getCrmResult($crmID, $fromDate, $toDate);
         if ('error' == $crm_result)
