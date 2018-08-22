@@ -80,6 +80,11 @@ if (in_array(4, $features))
 												<li><a class="crm_tab_label small" href="./dashboard.php">Dashboard</a></li>
 											<?php } ?>
 											<li role="presentation" class="divider"></li>
+                                            <?php if ($tab_name == "CAP Update") { ?>
+                                                <li><a class="crm_tab_label active small" href="./cap_update.php">CAP Update</a></li>
+                                            <?php } else { ?>
+                                                <li><a class="crm_tab_label small" href="./cap_update.php">CAP Update</a></li>
+                                            <?php } ?>
 											<?php if ($tab_name == "Affiliate" && $enableAffiliate) { ?>
 												<li><a class="crm_tab_label active small" href="./affiliate.php">Affiliate Report</a></li>
 											<?php } else if ($enableAffiliate){ ?>
@@ -226,6 +231,34 @@ if (in_array(4, $features))
 											<?php } ?>
 										</ul>
 									</li>
+
+                                <?php if ($tab_name == "Cap Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings") { ?>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
+                                <?php } else { ?>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle crm_tab_label" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
+                                <?php } ?>
+                                        <ul class="dropdown-menu crm_setting_dropdown" role="menu">
+                                            <?php if ($tab_name == "CAP Update") { ?>
+                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./cap_update.php">CAP Update</a></li>
+                                            <?php } else { ?>
+                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./cap_update.php">CAP Update</a></li>
+                                            <?php } ?>
+                                            <?php if ($tab_name == "Offers") { ?>
+                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./cap_update.php">Offers</a></li>
+                                            <?php } else { ?>
+                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./cap_update.php">Offers</a></li>
+                                            <?php } ?>
+                                            <?php if ($tab_name == "Affiliate Settings") { ?>
+                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./cap_update.php">Affiliate Settings</a></li>
+                                            <?php } else { ?>
+                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./cap_update.php">Affiliate Settings</a></li>
+                                            <?php } ?>
+                                        </ul>
+                                    </li>
+
+
 	                            <?php if ($enableKKCRM) { ?>
 									<?php if ($tab_name == "Konnektive Order Summary" || $tab_name == "Konnektive Retention" || $tab_name == "Konnektive Account Management" || $tab_name == "Konnektive Campaign Management") { ?>
 	                                    <li class="dropdown">

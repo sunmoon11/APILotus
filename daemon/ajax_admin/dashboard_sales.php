@@ -15,6 +15,13 @@ if ($dbApi->getSubDomain() == '')
     echo json_encode(array('no_cookie'));
     return;
 }
+
+if ($dbApi->checkCrmResult($crmID, $fromDate, $toDate)) {
+    $crm_result = $dbApi->getCrmResult($crmID, $fromDate, $toDate);
+    echo json_encode(array('success', $crmID, $crmGoal, $crm_result));
+    return;
+}
+
 $crmList = $dbApi->getActiveCrmById($crmID);
 
 if ($crmList != null)
@@ -27,8 +34,6 @@ if ($crmList != null)
 	if (($token = $llcrmHook->login($crmID, $crmUrl, $userName, $password)) != null)
 	{
 		$response = $llcrmHook->getCrmSalesBreakDown($token, $fromDate, $toDate, $crmID);
-
-//		$dbApi->addCrmResults($crmID, $crmGoal, $response, $fromDate, $toDate);
 
 		if ($response != 'error')
 			echo json_encode(array('success', $crmID, $crmGoal, $response));

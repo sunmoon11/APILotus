@@ -95,7 +95,7 @@ jQuery(document).ready(function(t) {
                     window.location.href = "../../admin/login.php";
                 }
                 else {
-                    crm_list = jQuery.parseJSON(e); // 59,75,83,84,86,87,88,89,90,91,92,93,94,95,96
+                    crm_list = jQuery.parseJSON(e);
                     show_loading_status("sales", "", true);
                     t.ajax({
                         type: "GET",
@@ -111,7 +111,7 @@ jQuery(document).ready(function(t) {
                             else
                                 kkcrm_active_list = jQuery.parseJSON(e);
                             var a = "";
-                            if ("" == crm_positions) {  // ll59,ll84,ll90,ll83,ll91,ll87,ll89,ll75,ll93,ll92,kk2,ll88,ll86
+                            if ("" == crm_positions) {
                                 for (var r = 0; r < crm_list.length; r++)
                                     a += '<tr id="row_' + crm_list[r][0] + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (r + 1) + "</td>";
                                     a += '<td><span id="ll' + crm_list[r][0] + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[r][1] + "</span></td>";
@@ -943,5 +943,5 @@ jQuery(document).ready(function(t) {
 
     setInterval(function () {
         b();
-    }, 30000);
+    }, 60000);
 });

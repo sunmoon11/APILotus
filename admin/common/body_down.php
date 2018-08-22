@@ -15,6 +15,7 @@
 
 <script type="text/javascript" src="../js/admin/admin.min.js"></script>
 <?php if ($tab_name == "Dashboard") echo "<script type=\"text/javascript\" src=\"../js/admin/dashboard.js\"></script>"; ?>
+<?php if ($tab_name == "CAP Update") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate") echo "<script type=\"text/javascript\" src=\"../js/admin/affiliate.min.js\"></script>"; ?>
 <?php if ($tab_name == "Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention.js\"></script>"; ?>
 <?php if ($tab_name == "Rebill") echo "<script type=\"text/javascript\" src=\"../js/admin/rebill.js\"></script>"; ?>
