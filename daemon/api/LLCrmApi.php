@@ -294,10 +294,10 @@ class LLCrmApi {
 						break;
 					}
 				}
-				$labelName = $labelName.$lName." ";
+				$labelName = $labelName.$lName.", ";
 			}				
 
-			$labelNames[] = trim($labelName, " ");
+			$labelNames[] = trim($labelName, ", ");
 		}
 		return $labelNames;
 	}
@@ -352,6 +352,100 @@ class LLCrmApi {
 
 
 	}*/
+
+    /*
+	*	A method to get all offer from LLCRM.
+	*
+	*	@return offer array (id, name) or null
+	*/
+    public function getAllOffer($crmId) {
+
+        $parameter = array();
+//        $parameter['campaign_id'] = 4;
+
+        $ret = $this->getResponse('campaign_find_active', 'membership', $parameter);
+
+        if( !is_null($ret) ) {
+
+            parse_str($ret, $data);
+
+            if ( $data['response'] == 100 ) {
+
+                $campaignIds = explode(',', $data['campaign_id']);
+                $campaignNames = explode(',', $data['campaign_name']);
+
+                $campaigns['ids'] = $campaignIds;
+                $campaigns['names'] = $campaignNames;
+                $campaigns['labels'] = $this->getLabelsOfCampaigns($crmId, $campaigns['ids']);
+                $campaigns['length'] = count($campaignIds);
+                return $campaigns;
+
+            } else {
+
+                return null;
+
+            }
+        } else {
+
+            return null;
+        }
+
+    }
+    /*
+    *	A method to get offers meeting criteria
+    *	@ offerIds - array of offer ids to search
+    *	@ pageNumber - page number
+    *	@ items4Page - item count per page
+    *	@ return array of offers(id, name)
+    */
+    public function getOffers($crmId, $offerIds = array(), $pageNumber = -1, $items4Page = -1) {
+
+        $allCampaign = $this->getAllOffer($crmId);
+        $campaigns = array();
+        $cIds = array();
+        $cNames = array();
+
+        if(count($offerIds) > 0) {
+            $index = -1;
+            foreach($offerIds as $cId) {
+                $index = array_search($cId, $allCampaign['ids']);
+                if($index !== FALSE) {
+                    $cName = $allCampaign['names'][$index];
+                    $cIds[] = $cId;
+                    $cNames[] = $cName;
+                }
+            }
+
+            if($index != -1)
+            {
+                $campaigns['ids'] = $cIds;
+                $campaigns['names'] = $cNames;
+            }
+
+        } else {
+            $allCampaign['ids'] = array_reverse($allCampaign['ids']);
+            $allCampaign['names'] = array_reverse($allCampaign['names']);
+            $campaigns = $allCampaign;
+        }
+
+        $campaigns['length'] = count($campaigns['ids']);
+
+        if($pageNumber >= 1 && $items4Page != -1) {
+            if(count($campaigns['ids']) > ($pageNumber - 1) * $items4Page) {
+                $offerIds = array_slice($campaigns['ids'], ($pageNumber - 1) * $items4Page, $items4Page);
+                $campaignNames = array_slice($campaigns['names'], ($pageNumber - 1) * $items4Page, $items4Page);
+            } else {
+                $offerIds = array();
+                $campaignNames = array();
+            }
+            $campaigns['ids'] = $offerIds;
+            $campaigns['names'] = $campaignNames;
+        }
+
+        $campaigns['labels'] = $this->getLabelsOfCampaigns($crmId, $campaigns['ids']);
+
+        return $campaigns;
+    }
 	
 }
 

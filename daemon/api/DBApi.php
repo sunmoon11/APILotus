@@ -9099,4 +9099,26 @@ class DBApi
         }
         return $ret;
     }
+
+    public function getOfferGoal($crmID, $offerID)
+    {
+        if (!$this->checkConnection())
+            return array();
+
+        $ret = array();
+        try {
+            $query = 'SELECT ' . $this->subdomain . '_affiliate.*, offer.sales_goal FROM ' . $this->subdomain . '_affiliate LEFT JOIN ' . $this->subdomain . '_label_offer AS offer ON ' . $this->subdomain . '_affiliate.id = offer.affiliate_id';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['id'], $row['name'], $row['sales_goal']);
+            }
+
+            return $ret;
+        } catch (Exception $e) {
+            return array();
+        }
+    }
 }

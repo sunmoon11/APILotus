@@ -232,7 +232,7 @@ if (in_array(4, $features))
 										</ul>
 									</li>
 
-                                <?php if ($tab_name == "Cap Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings") { ?>
+                                <?php if ($tab_name == "CAP Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings") { ?>
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
                                 <?php } else { ?>
@@ -246,9 +246,9 @@ if (in_array(4, $features))
                                                 <li class="crm_tab_left"><a class="crm_tab_label small" href="./cap_update.php">CAP Update</a></li>
                                             <?php } ?>
                                             <?php if ($tab_name == "Offers") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./cap_update.php">Offers</a></li>
+                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_offer.php">Offers</a></li>
                                             <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./cap_update.php">Offers</a></li>
+                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_offer.php">Offers</a></li>
                                             <?php } ?>
                                             <?php if ($tab_name == "Affiliate Settings") { ?>
                                                 <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./cap_update.php">Affiliate Settings</a></li>

@@ -130,7 +130,7 @@ $tab_name = "Campaign Management";
 					<table class="table table-hover" style="margin-top:10px;">
 						<thead>
 							<tr>
-								<th><input type="checkbox" class="campagin_select_all"></th>
+								<th><input type="checkbox" class="campaign_select_all"></th>
 								<th>Campaign ID</th>
 								<th>Campaign Name</th>
 								<th>Campaign Labels</th>

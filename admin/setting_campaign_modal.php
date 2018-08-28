@@ -117,7 +117,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <label>Vertical Label</label>
+                    <label style="margin-top: 10px;">Vertical Label</label>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
@@ -152,6 +152,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success modal_btn_action_delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="campaign_action_goal_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Set Goal</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="affiliate_set_goal">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success modal_btn_set_goal">Set Goal</button>
             </div>
         </div>
     </div>
