@@ -1,75 +1,10 @@
-<div class="modal fade" id="campaign_label_add_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Campaign Label</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="alert alert-warning label_add_alert" role="alert" style="display:none"></div>
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-3 modal_input_label">Label Name</div>
-                        <div class="col-xs-9"><input type="text" class="form-control input-sm add_label_name"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success modal_btn_label_add">Add Label</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="campaign_label_edit_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Campaign Label</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="alert alert-warning label_edit_alert" role="alert" style="display:none"></div>
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-3 modal_input_label">Label Name</div>
-                        <div class="col-xs-9"><input type="text" class="form-control input-sm edit_label_name"></div>
-                    </div>
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-3 modal_input_label">Sales Goal</div>
-                        <div class="col-xs-9"><input type="text" class="form-control input-sm edit_label_goal"></div>
-                    </div>
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-9 col-xs-offset-3" style="height:30px;"><input type="checkbox" class="input-sm edit_label_show" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Show Label</input></div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success modal_btn_label_edit">Edit Label</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="campaign_label_delete_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Message</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    Do you want to delete this label?
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success modal_btn_label_delete">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
+/**
+ * Created by PhpStorm.
+ * User: zaza3
+ * Date: 8/29/2018
+ * Time: 7:03 AM
+ */
+
 <div class="modal fade" id="campaign_action_edit_modal">
     <div class="modal-dialog">
         <div class="modal-content">

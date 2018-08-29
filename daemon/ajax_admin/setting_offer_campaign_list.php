@@ -2,21 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: zaza3
- * Date: 8/23/2018
- * Time: 7:08 AM
+ * Date: 8/29/2018
+ * Time: 7:15 AM
  */
-
 require_once '../api/LLCrmApi.php';
 require_once '../api/DBApi.php';
 
 
-$crmID = $_GET['crm_id'];					// crm id
-$offerIDs = $_GET['offer_ids'];		        // array of offer id or id list
-
-$offerIDs = preg_replace('/\s+/', '', $offerIDs);
-$arrayOfferID = array();
-if ($offerIDs != '')
-    $arrayOfferID = explode(',', $offerIDs);
+$crmID = $_GET['crm_id'];
+$offerID = $_GET['offer_id'];
 
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
@@ -32,7 +26,8 @@ if ($crmList != null)
     $apiUserName = $crmList[3];
     $apiPassword = $crmList[4];
 
-    $ret = $dbApi->getOffers($crmID);
+    $crmApi = LLCrmApi::getInstanceWithCredentials($apiUrl, $apiUserName, $apiPassword);
+    $ret = $crmApi->getOfferCampaigns($crmID);
 
     echo json_encode($ret);
     return;

@@ -6,7 +6,7 @@ class DBApi
     private $host_name = "localhost";
     private $db_name = "commercials_apilotus";
     private $username = "root";
-    private $password = "rootroot";
+    private $password = "apilotusdb123456";
     private $subdomain = "primary";
 
     public static function getInstance()
@@ -9114,6 +9114,28 @@ class DBApi
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
                     $ret[] = array($row['id'], $row['name'], $row['sales_goal']);
+            }
+
+            return $ret;
+        } catch (Exception $e) {
+            return array();
+        }
+    }
+
+    public function getOffers($crmID)
+    {
+        if (!$this->checkConnection())
+            return array();
+
+        $ret = array();
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_offer WHERE crm_id=' . $crmID;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['id'], $row['name'], $row['campaign_ids'], $row['label_ids']);
             }
 
             return $ret;

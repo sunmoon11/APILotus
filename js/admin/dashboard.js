@@ -943,5 +943,5 @@ jQuery(document).ready(function(t) {
 
     setInterval(function () {
         b();
-    }, 60000);
+    }, 120000);
 });

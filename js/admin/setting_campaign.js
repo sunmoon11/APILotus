@@ -65,7 +65,7 @@ jQuery(document).ready(function($) {
                     crm_id : crm_id,
                     campaign_ids : $(".search_campaign_ids").val(),
                     page_number : cur_page_num,
-                    items_page : height
+                    items_page : show_count
                 },
                 success : function(data) {
                     show_waiting("campaign", false);
@@ -110,9 +110,9 @@ jQuery(document).ready(function($) {
             var n = Math.floor((cur_page_num - 1) / p);
             var m = n * p + 1;
             var i = (n + 1) * p;
-            if (i * height > total_campaigns_count) {
-                i = Math.floor(total_campaigns_count / height);
-                if (total_campaigns_count % height > 0) {
+            if (i * show_count > total_campaigns_count) {
+                i = Math.floor(total_campaigns_count / show_count);
+                if (total_campaigns_count % show_count > 0) {
                     i++;
                 }
             }
@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
                 pagination_html = pagination_html + '<button type="button" class="btn btn-default btn-sm campaign_page" id="page_first">&lt;&lt;</button><button type="button" class="btn btn-default btn-sm campaign_page" id="page_prev">&lt;</button>';
             }
             pagination_html = pagination_html + meg;
-            if (i * height < total_campaigns_count) {
+            if (i * show_count < total_campaigns_count) {
                 pagination_html = pagination_html + '<button type="button" class="btn btn-default btn-sm campaign_page" id="page_next">&gt;</button><button type="button" class="btn btn-default btn-sm campaign_page" id="page_last">&gt;&gt;</button>';
             }
         }
@@ -151,9 +151,8 @@ jQuery(document).ready(function($) {
                         window.location.href = "../../admin/login.php";
                     }
                     else {
-                        var label_list = jQuery.parseJSON(data);
+                        label_list = jQuery.parseJSON(data);
                         var label_table_html = "";
-                        label_data = label_list;
                         var c = 1;
                         if (label_list.length > 0) {
                             for (var i = 0; i < label_list.length; i++) {
@@ -276,7 +275,7 @@ jQuery(document).ready(function($) {
             url : "../daemon/ajax_admin/setting_campaign_action_edit.php",
             data : {
                 crm_id : crm_id,
-                campaign_ids : value,
+                campaign_ids : selected_campaigns,
                 label_ids : url
             },
             success : function(status) {
@@ -302,7 +301,7 @@ jQuery(document).ready(function($) {
             url : "../daemon/ajax_admin/setting_campaign_action_delete.php",
             data : {
                 crm_id : crm_id,
-                campaign_ids : value
+                campaign_ids : selected_campaigns
             },
             success : function(status) {
                 show_waiting("campaign", false);
@@ -319,17 +318,17 @@ jQuery(document).ready(function($) {
             }
         });
     }
-    var label_data;
+    var label_list;
     var crm_id = -1;
     var title = "";
     var cur_page_num = 1;
-    var height = 10;
+    var show_count = 10;
     var p = 7;
     var total_campaigns_count = 0;
     var campaign_waiting = false;
     var label_id = -1;
     var label_waiting = false;
-    var value = "";
+    var selected_campaigns = "";
     var j = "&#10003;";
     var loading_icon = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
     get_crm_id();
@@ -350,9 +349,10 @@ jQuery(document).ready(function($) {
         $(".crm_toggle_button").html(title + ' <span class="caret"></span>');
     });
     $(".campaign_action_dropdown_menu li").on("click", function(a) {
-        var salesTeam = $(this).find("a").attr("id");
-        if ("" != (value = get_checked_campaigns())) {
-            if ("action_edit" == salesTeam) {
+        var selected_action = $(this).find("a").attr("id");
+        selected_campaigns = get_checked_campaigns();
+        if ("" != selected_campaigns) {
+            if ("action_edit" == selected_action) {
                 $(".modal_tlabel_item").each(function(a) {
                     $(this).prop("checked", false);
                 });
@@ -362,24 +362,17 @@ jQuery(document).ready(function($) {
                 $("#tlabel_22").prop("checked", false);
                 $("#tlabel_41").prop("checked", false);
                 $("#tlabel_42").prop("checked", false);
-                /** @type {string} */
-                var scrolltable = "";
-                /** @type {number} */
-                var i = 0;
-                for (; i < label_data.length; i++) {
-                    if ("3" == label_data[i][2]) {
-                        /** @type {string} */
-                        scrolltable = scrolltable + ('<tr><td><input type="radio" id="vlabel_' + label_data[i][0] + '" class="modal_vlabel_item" name="vertical"></td>');
-                        /** @type {string} */
-                        scrolltable = scrolltable + ("<td>" + label_data[i][1] + "</td></tr>");
+                var modal_table_html = "";
+                for (var i = 0; i < label_list.length; i++) {
+                    if ("3" == label_list[i][2]) {
+                        modal_table_html += '<tr><td><input type="radio" id="vlabel_' + label_list[i][0] + '" class="modal_vlabel_item" name="vertical"></td>';
+                        modal_table_html += "<td>" + label_list[i][1] + "</td></tr>";
                     }
                 }
-                $(".modal_vlabel_body").html(scrolltable);
+                $(".modal_vlabel_body").html(modal_table_html);
                 $("#campaign_action_edit_modal").modal("toggle");
-            } else {
-                if ("action_delete" == salesTeam) {
-                    $("#campaign_action_delete_modal").modal("toggle");
-                }
+            } else if ("action_delete" == selected_action) {
+                $("#campaign_action_delete_modal").modal("toggle");
             }
         } else {
             show_alert("campaign", "Please select campaign items.");
@@ -442,58 +435,41 @@ jQuery(document).ready(function($) {
         $("#tlabel_41").prop("checked", false);
     });
     $(".modal_btn_action_edit").click(function() {
-        /** @type {string} */
-        var journal = "";
-        /** @type {string} */
-        var authors = "";
+        var campaign_type = "";
+        var vertical_label = "";
         $(".modal_tlabel_item").each(function(e) {
             if ($(this).prop("checked")) {
-                if ("1" == (journal = $(this).prop("id").substring(7))) {
+                campaign_type = $(this).prop("id").substring(7);
+                if ("1" == campaign_type) {
                     if ($("#tlabel_11").prop("checked")) {
-                        /** @type {string} */
-                        journal = "1,5";
-                    } else {
-                        if ($("#tlabel_12").prop("checked")) {
-                            /** @type {string} */
-                            journal = "1,6";
-                        }
+                        campaign_type = "1,5";
+                    } else if ($("#tlabel_12").prop("checked")) {
+                        campaign_type = "1,6";
                     }
-                } else {
-                    if ("2" == journal) {
-                        if ($("#tlabel_21").prop("checked")) {
-                            /** @type {string} */
-                            journal = "2,5";
-                        } else {
-                            if ($("#tlabel_22").prop("checked")) {
-                                /** @type {string} */
-                                journal = "2,6";
-                            }
-                        }
-                    } else {
-                        if ("4" == journal) {
-                            if ($("#tlabel_41").prop("checked")) {
-                                /** @type {string} */
-                                journal = "4,1";
-                            } else {
-                                if ($("#tlabel_42").prop("checked")) {
-                                    /** @type {string} */
-                                    journal = "4,2";
-                                }
-                            }
-                        }
+                } else if ("2" == campaign_type) {
+                    if ($("#tlabel_21").prop("checked")) {
+                        campaign_type = "2,5";
+                    } else if ($("#tlabel_22").prop("checked")) {
+                        campaign_type = "2,6";
+                    }
+                } else if ("4" == campaign_type) {
+                    if ($("#tlabel_41").prop("checked")) {
+                        campaign_type = "4,1";
+                    } else if ($("#tlabel_42").prop("checked")) {
+                        campaign_type = "4,2";
                     }
                 }
             }
         });
-        if ("" != journal) {
+        if ("" != campaign_type) {
             $(".modal_vlabel_item").each(function(a) {
                 if ($(this).prop("checked")) {
-                    authors = $(this).prop("id").substring(7);
+                    vertical_label = $(this).prop("id").substring(7);
                 }
             });
-            if ("" != authors) {
+            if ("" != vertical_label) {
                 $("#campaign_action_edit_modal").modal("toggle");
-                update_campaign(journal + "," + authors);
+                update_campaign(campaign_type + "," + vertical_label);
             } else {
                 show_alert("action_edit", "Please select vertical label.");
             }
@@ -506,37 +482,30 @@ jQuery(document).ready(function($) {
         delete_campaign();
     });
     $(".count_dropdown_menu li").on("click", function(a) {
-        height = $(this).text();
-        $(".count_toggle_button").html(height + ' <span class="caret"></span>');
-        /** @type {number} */
+        show_count = $(this).text();
+        $(".count_toggle_button").html(show_count + ' <span class="caret"></span>');
         cur_page_num = 1;
         get_campaign_list();
     });
     $(".campaign_search_button").click(function() {
-        /** @type {number} */
         cur_page_num = 1;
         get_campaign_list();
     });
     $(".campaign_pagination").on("click", ".campaign_page", function(a) {
         var i = $(this).prop("id").substring(5);
-        /** @type {number} */
         var n = Math.floor((cur_page_num - 1) / p);
         if ("first" == i) {
-            /** @type {number} */
             cur_page_num = 1;
         } else {
             if ("prev" == i) {
-                /** @type {number} */
                 cur_page_num = (n - 1) * p + 1;
             } else {
                 if ("next" == i) {
-                    /** @type {number} */
                     cur_page_num = (n + 1) * p + 1;
                 } else {
                     if ("last" == i) {
-                        /** @type {number} */
-                        cur_page_num = Math.floor(total_campaigns_count / height);
-                        if (total_campaigns_count % height > 0) {
+                        cur_page_num = Math.floor(total_campaigns_count / show_count);
+                        if (total_campaigns_count % show_count > 0) {
                             cur_page_num++;
                         }
                     } else {
