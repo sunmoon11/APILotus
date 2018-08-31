@@ -9100,28 +9100,6 @@ class DBApi
         return $ret;
     }
 
-    public function getOfferGoal($crmID, $offerID)
-    {
-        if (!$this->checkConnection())
-            return array();
-
-        $ret = array();
-        try {
-            $query = 'SELECT ' . $this->subdomain . '_affiliate.*, offer.sales_goal FROM ' . $this->subdomain . '_affiliate LEFT JOIN ' . $this->subdomain . '_label_offer AS offer ON ' . $this->subdomain . '_affiliate.id = offer.affiliate_id';
-            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-
-            $count = mysqli_num_rows($result);
-            if ($count > 0) {
-                while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['name'], $row['sales_goal']);
-            }
-
-            return $ret;
-        } catch (Exception $e) {
-            return array();
-        }
-    }
-
     public function getOffers($crmID)
     {
         if (!$this->checkConnection())
@@ -9135,12 +9113,70 @@ class DBApi
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['name'], $row['campaign_ids'], $row['label_ids']);
+                    $ret[] = array($row['id'], $row['name'], $row['campaign_ids']);
             }
 
             return $ret;
         } catch (Exception $e) {
             return array();
+        }
+    }
+
+    public function addOffer($crmID, $name, $campaignIDs)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_offer (id, name, crm_id, campaign_ids) VALUES (null,"' . $name . '", ' . $crmID . ',"' . $campaignIDs . '")';
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function editOffer($offerID, $name, $campaignIDs)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'UPDATE ' . $this->subdomain . '_offer SET name="' . $name . '", campaign_ids="' . $campaignIDs . '" WHERE id=' . $offerID;
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function deleteOffer($offerID)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'DELETE FROM ' . $this->subdomain . '_offer WHERE id=' . $offerID;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
         }
     }
 }

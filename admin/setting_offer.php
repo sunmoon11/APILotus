@@ -69,7 +69,7 @@ $tab_name = "Offers";
 <?php include('./setting_offer_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-12">
         <div class="crm_board">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">Offers</div>
@@ -105,7 +105,7 @@ $tab_name = "Offers";
                     </div>
                 </div>
                 <div class="col-xs-4" style="text-align:right; padding-right: 30px">
-                    <button type="button" class="btn btn-default btn-sm btn_offer_add" data-toggle="modal" data-target="#offer_add_modal">
+                    <button type="button" class="btn btn-default btn-sm btn_offer_add">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Offer
                     </button>
                 </div>
@@ -120,69 +120,6 @@ $tab_name = "Offers";
                 </tr>
                 </thead>
                 <tbody class="table_offer_body">
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-xs-8">
-        <div class="crm_board">
-            <div class="row crm_board_title">
-                <div class="col-xs-10" style="padding-left: 0">Add Offer</div>
-                <div class="col-xs-2 setting_campaign_waiting" style="text-align:right"></div>
-            </div>
-            <div class="alert alert-warning setting_campaign_alert" role="alert" style="display:none"></div>
-            <div class="row crm_board_row">
-                <div class="col-xs-4">
-                    <div class="col-xs-3 modal_input_label">Name</div>
-                    <div class="col-xs-9"><input type="text" class="form-control input-sm add_label_name"></div>
-                </div>
-                <div class="col-xs-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control input-sm search_campaign_ids" placeholder="Search by Campaign Id">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm campaign_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-xs-1">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm dropdown-toggle campaign_action_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:100px">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu campaign_action_dropdown_menu" role="menu">
-                            <li><a href="#" id="action_edit">Edit Label</a></li>
-                            <li><a href="#" id="action_delete">Delete Label</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xs-4" style="text-align:right; padding-right: 30px">
-                    <div class="btn-group campaign_pagination" role="group">
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm dropdown-toggle count_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:60px">
-                            10 <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right count_dropdown_menu" role="menu" style="width: 80px !important; min-width: 80px !important">
-                            <li><a href="#">10</a></li>
-                            <li><a href="#">20</a></li>
-                            <li><a href="#">50</a></li>
-                            <li><a href="#">100</a></li>
-                            <li><a href="#">500</a></li>
-                            <li><a href="#">1000</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <table class="table table-hover" style="margin-top:10px;">
-                <thead>
-                <tr>
-                    <th><input type="checkbox" class="campaign_select_all"></th>
-                    <th>Campaign ID</th>
-                    <th>Campaign Name</th>
-                    <th>Campaign Labels</th>
-                </tr>
-                </thead>
-                <tbody class="table_campaign_body">
                 </tbody>
             </table>
         </div>

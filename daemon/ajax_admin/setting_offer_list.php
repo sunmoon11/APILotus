@@ -6,7 +6,6 @@
  * Time: 7:08 AM
  */
 
-require_once '../api/LLCrmApi.php';
 require_once '../api/DBApi.php';
 
 
@@ -25,15 +24,12 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$crmList = $dbApi->getActiveCrmById($crmID);
-if ($crmList != null)
-{
-    $apiUrl = $crmList[0].'/admin/';
-    $apiUserName = $crmList[3];
-    $apiPassword = $crmList[4];
-
-    $ret = $dbApi->getOffers($crmID);
-
+$ret = $dbApi->getOffers($crmID);
+if ($ret != null) {
+    echo json_encode($ret);
+    return;
+}
+else if (0 == sizeof($ret)) {
     echo json_encode($ret);
     return;
 }
