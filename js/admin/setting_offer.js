@@ -143,6 +143,7 @@ jQuery(document).ready(function($) {
                 },
                 success : function(data) {
                     show_waiting("offer", false);
+                    $(".table_offer_body").html('');
                     if ("error" == data) {
                         show_alert("offer", "Cannot load offer list.");
                     }

@@ -9100,10 +9100,32 @@ class DBApi
         return $ret;
     }
 
-    public function getOffers($crmID)
+    public function getAllOffersWithCRMGoal()
     {
         if (!$this->checkConnection())
-            return array();
+            return null;
+
+        $ret = array();
+        try {
+            $query = 'SELECT po.*, pca.crm_name, pca.sales_goal FROM ' . $this->subdomain . '_offer po LEFT JOIN ' . $this->subdomain . '_crm_account pca ON po.crm_id=pca.id';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal']);
+            }
+
+            return $ret;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function getOffersByCrmID($crmID)
+    {
+        if (!$this->checkConnection())
+            return null;
 
         $ret = array();
         try {
@@ -9118,7 +9140,7 @@ class DBApi
 
             return $ret;
         } catch (Exception $e) {
-            return array();
+            return null;
         }
     }
 
@@ -9177,6 +9199,48 @@ class DBApi
             }
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    public function getAffiliation()
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        $ret = array();
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_affiliate';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['id'], $row['name']);
+            }
+            return $ret;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function getAffiliationGoal($fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        $ret = array();
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_affiliate_goal WHERE from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['id'], $row['affiliate_id'], $row['offer_id'], $row['goal']);
+            }
+            return $ret;
+        } catch (Exception $e) {
+            return null;
         }
     }
 }

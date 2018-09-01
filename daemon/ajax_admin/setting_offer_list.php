@@ -24,12 +24,8 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret = $dbApi->getOffers($crmID);
-if ($ret != null) {
-    echo json_encode($ret);
-    return;
-}
-else if (0 == sizeof($ret)) {
+$ret = $dbApi->getOffersByCrmID($crmID);
+if (null != $ret or 0 == sizeof($ret)) {
     echo json_encode($ret);
     return;
 }
