@@ -76,33 +76,7 @@ $tab_name = "Offers";
             </div>
             <div class="alert alert-warning setting_offer_alert" role="alert" style="display:none"></div>
             <div class="row crm_board_row">
-                <div class="col-xs-8">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:160px">
-                                <?php
-                                if ($crmList != null && count($crmList) > 0)
-                                    echo $crmList[0][1].' ';
-                                else
-                                    echo 'None CRM ';
-                                ?>
-                                <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu crm_dropdown_menu" role="menu">
-                                <?php
-                                if ($crmList != null) {
-                                    for ($i = 0; $i < count($crmList); $i++)
-                                        echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_dropdown_list">'.$crmList[$i][1].'</a></li>';
-                                }
-                                ?>
-                            </ul>
-                        </span>
-                        <input type="text" class="form-control input-sm search_offer_ids" placeholder="Search by Offer Id">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm offer_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
-                        </span>
-                    </div>
-                </div>
+                <div class="col-xs-8"></div>
                 <div class="col-xs-4" style="text-align:right; padding-right: 30px">
                     <button type="button" class="btn btn-default btn-sm btn_offer_add">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Offer
@@ -113,6 +87,7 @@ $tab_name = "Offers";
                 <thead>
                 <tr>
                     <th>Offer ID</th>
+                    <th>CRM/Client</th>
                     <th>Offer Name</th>
                     <th>Campaigns of Offer</th>
                     <th>Action</th>

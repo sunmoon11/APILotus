@@ -9,14 +9,6 @@
 require_once '../api/DBApi.php';
 
 
-$crmID = $_GET['crm_id'];					// crm id
-$offerIDs = $_GET['offer_ids'];		        // array of offer id or id list
-
-$offerIDs = preg_replace('/\s+/', '', $offerIDs);
-$arrayOfferID = array();
-if ($offerIDs != '')
-    $arrayOfferID = explode(',', $offerIDs);
-
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
 {
@@ -24,7 +16,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret = $dbApi->getOffersByCrmID($crmID);
+$ret = $dbApi->getAllOffersWithCRMGoal();
 if (null != $ret or 0 == sizeof($ret)) {
     echo json_encode($ret);
     return;

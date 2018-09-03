@@ -25,29 +25,29 @@
                     <div class="row crm_board_row">
                         <div style="text-align:right; padding-right: 30px">
                             <div class="input-group">
+                                <span class="input-group-btn">
+									<button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:160px">
+										<?php
+                                        if ($crmList != null && count($crmList) > 0)
+                                            echo $crmList[0][1].' ';
+                                        else
+                                            echo 'None CRM ';
+                                        ?>
+                                        <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu crm_dropdown_menu" role="menu">
+										<?php
+                                        if ($crmList != null) {
+                                            for ($i = 0; $i < count($crmList); $i++)
+                                                echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_dropdown_list">'.$crmList[$i][1].'</a></li>';
+                                        }
+                                        ?>
+									</ul>
+								</span>
                                 <input type="text" class="form-control input-sm search_campaign_ids" placeholder="Search by Campaign Id">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default btn-sm campaign_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
                                 </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row crm_board_row">
-                        <div class="col-xs-12" style="text-align:right; padding-right: 30px">
-                            <div class="btn-group campaign_pagination" role="group">
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle count_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:60px">
-                                    10 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-right count_dropdown_menu" role="menu" style="width: 80px !important; min-width: 80px !important">
-                                    <li><a href="#">10</a></li>
-                                    <li><a href="#">20</a></li>
-                                    <li><a href="#">50</a></li>
-                                    <li><a href="#">100</a></li>
-                                    <li><a href="#">500</a></li>
-                                    <li><a href="#">1000</a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
