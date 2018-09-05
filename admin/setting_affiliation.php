@@ -90,11 +90,17 @@ $tab_name = "Affiliate Settings";
                         </span>
                     </div>
                 </div>
+                <div class="col-xs-6" style="text-align:right; padding-right: 30px">
+                    <button type="button" class="btn btn-default btn-sm btn_affiliation_add" data-toggle="modal" data-target="#affiliation_add_modal">
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Affiliate
+                    </button>
+                </div>
             </div>
             <table class="table table-hover" style="margin-top:10px;">
                 <thead>
                 <tr>
                     <th>Affiliate</th>
+                    <th>AFIDs</th>
                     <th>Offer Name</th>
                     <th>CRM/Client</th>
                     <th>Sales Goal(CAP)</th>

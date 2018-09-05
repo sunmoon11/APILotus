@@ -285,8 +285,33 @@ jQuery(document).ready(function($) {
         reset_offer_modal();
         $("#offer_add_modal").modal("toggle");
     });
+    $(document).on("click", ".modal_btn_offer_add", function () {
+        if ("" === $(".add_offer_name").val()) {
+            show_alert("campaign", "Please input Offer Name.");
+            $(".add_offer_name").focus();
+            return;
+        }
+        selected_campaigns = get_checked_campaigns();
+        $("#offer_add_modal").modal("toggle");
+        if ('Add Offer' === $(".modal_btn_offer_add").html())
+            add_offer();
+        else
+            edit_offer();
+    });
+    $(document).on("click", ".btn_offer_expand", function () {
+        var id = $(this).prop("id").substring(3);
+        if ("none" === $("#table_" + id).css("display")) {
+            $("#table_" + id).css("display", "block");
+            $(this).html('<span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>');
+        }
+        else {
+            $("#table_" + id).css("display", "none");
+            $(this).html('<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>');
+        }
+    });
 
-    $(document).on("click", ".setting_offer_edit", function() {
+    $(".table_offer_body").on("click", ".setting_offer_edit", function(a) {
+        offer_id = $(this).prop("id").substring(6);
         $("#label_add_offer").html('Edit Offer&nbsp;<span class="setting_campaign_waiting" style="text-align:right"></span>');
         $(".modal_btn_offer_add").html('Edit Offer');
         reset_offer_modal();
@@ -306,34 +331,6 @@ jQuery(document).ready(function($) {
         $("#offer_add_modal").modal("toggle");
     });
 
-    $(document).on("click", ".btn_offer_expand", function () {
-        var id = $(this).prop("id").substring(3);
-        if ("none" === $("#table_" + id).css("display")) {
-            $("#table_" + id).css("display", "block");
-            $(this).html('<span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>');
-        }
-        else {
-            $("#table_" + id).css("display", "none");
-            $(this).html('<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>');
-        }
-    });
-
-    $(document).on("click", ".modal_btn_offer_add", function () {
-        if ("" === $(".add_offer_name").val()) {
-            show_alert("campaign", "Please input Offer Name.");
-            $(".add_offer_name").focus();
-            return;
-        }
-        selected_campaigns = get_checked_campaigns();
-        $("#offer_add_modal").modal("toggle");
-        if ('Add Offer' === $(".modal_btn_offer_add").html())
-            add_offer();
-        else
-            edit_offer();
-    });
-    $(".table_offer_body").on("click", ".setting_offer_edit", function(a) {
-        offer_id = $(this).prop("id").substring(6);
-    });
     $(".table_offer_body").on("click", ".setting_offer_delete", function(a) {
         offer_id = $(this).prop("id").substring(8);
     });

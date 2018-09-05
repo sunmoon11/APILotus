@@ -19,7 +19,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$affiliates = $dbApi->getAffiliation();
+$affiliates = $dbApi->getAllAffiliations();
 $offers = $dbApi->getAllOffersWithCRMGoal();
 $affiliates_goal = $dbApi->getAffiliationGoal($fromDate, $toDate);
 
@@ -29,17 +29,17 @@ foreach ($affiliates as $affiliate) {
     $sub_result = array();
     foreach ($offers as $offer) {
         $goal = 0;
-        $id = 0;
+        $affiliate_goal_id = 0;
         foreach ($affiliates_goal as $affiliate_goal) {
             if ($affiliate[0] == $affiliate_goal[1] and $offer[0] == $affiliate_goal[2]) {
                 $goal = $affiliate_goal[3];
-                $id = $affiliates_goal[0];
+                $affiliate_goal_id = $affiliate_goal[0];
                 break;
             }
         }
-        $sub_result[] = array($id, $offer[1], $offer[2] . '(' . $offer[3] . ')', $goal);
+        $sub_result[] = array($affiliate_goal_id, $goal, $offer[0], $offer[1], $offer[2] . '(' . $offer[3] . ')');
     }
-    $result[] = array($affiliate[1], $sub_result);
+    $result[] = array($affiliate, $sub_result);
 }
 
 echo json_encode($result);

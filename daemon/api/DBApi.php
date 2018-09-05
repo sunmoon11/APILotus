@@ -9202,7 +9202,7 @@ class DBApi
         }
     }
 
-    public function getAffiliation()
+    public function getAllAffiliations()
     {
         if (!$this->checkConnection())
             return null;
@@ -9215,7 +9215,7 @@ class DBApi
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['name']);
+                    $ret[] = array($row['id'], $row['name'], $row['afid']);
             }
             return $ret;
         } catch (Exception $e) {
@@ -9241,6 +9241,102 @@ class DBApi
             return $ret;
         } catch (Exception $e) {
             return null;
+        }
+    }
+
+    public function addAffiliation($name, $afid)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_affiliate (id, name, afid) VALUES (null,"' . $name . '", "' . $afid . '")';
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function editAffiliation($affiliate_id, $name, $afid)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'UPDATE ' . $this->subdomain . '_affiliate SET name="' . $name . '", afid="' . $afid . '" WHERE id=' . $affiliate_id;
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function deleteAffiliation($affiliate_id)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'DELETE FROM ' . $this->subdomain . '_affiliate WHERE id=' . $affiliate_id;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function addAffiliationGoal($affiliate_id, $offer_id, $goal, $from_date, $to_date)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ', ' . $offer_id . ', "' . $from_date . '", "' . $to_date . '", '. $goal . ')';
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function editAffiliationGoal($affiliate_goal_id, $goal)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'UPDATE ' . $this->subdomain . '_affiliate_goal SET goal=' . $goal . ' WHERE id=' . $affiliate_goal_id;
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
         }
     }
 }
