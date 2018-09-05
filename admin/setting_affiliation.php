@@ -79,7 +79,7 @@ $tab_name = "Affiliate Settings";
                 <div class="col-xs-5">
                     <div class="input-daterange input-group" id="datepicker">
                         <span class="input-group-addon calendar_label">Date</span>
-                        <input id="affiliation_date" type="text" class="input-sm form-control" name="rebill"/>
+                        <input id="affiliation_date" type="text" class="input-sm form-control"/>
                         <span class="input-group-addon calendar_label">From</span>
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>
                         <span class="input-group-addon calendar_label">To</span>

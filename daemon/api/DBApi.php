@@ -9202,6 +9202,39 @@ class DBApi
         }
     }
 
+    public function getCapUpdate($fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        $ret = array();
+        try {
+            $query = 'SELECT
+                          pag.*, pa.name as affiliate_name, pa.afid,
+                          po.name as offer_name, po.crm_name, po.sales_goal
+                      FROM
+                          primary_affiliate_goal pag
+                      LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
+                      LEFT JOIN (SELECT po.*, pca.crm_name, pca.sales_goal FROM primary_offer po LEFT JOIN primary_crm_account pca ON po.crm_id=pca.id) po ON pag.offer_id = po.id
+                      WHERE
+                          from_date = "' . $fromDate . '" AND to_date = "' . $toDate . '"
+                      ORDER BY 2, 3';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array(
+                        $row['id'], $row['affiliate_id'], $row['offer_id'], $row['goal'],
+                        $row['affiliate_name'], $row['afid'], $row['offer_name'],
+                        $row['crm_name'], $row['sales_goal']);
+            }
+            return $ret;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
     public function getAllAffiliations()
     {
         if (!$this->checkConnection())

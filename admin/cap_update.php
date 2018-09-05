@@ -65,35 +65,40 @@ $tab_name = "CAP Update";
         <div class="crm_board">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">CAP Update</div>
-                <div class="col-xs-2 dashboard_sales_waiting" style="text-align:right;"></div>
+                <div class="col-xs-2 cap_update_waiting" style="text-align:right;"></div>
             </div>
-            <div class="alert alert-warning dashboard_sales_alert" role="alert" style="display:none"></div>
+            <div class="alert alert-warning cap_update_alert" role="alert" style="display:none"></div>
             <div class="row crm_board_row">
+                <div class="col-xs-1">
+                </div>
                 <div class="col-xs-5">
                     <div class="input-daterange input-group" id="datepicker">
                         <span class="input-group-addon calendar_label">Date</span>
-                        <input id="cap_date" type="text" class="input-sm form-control" name="cap"/>
+                        <input id="cap_date" type="text" class="input-sm form-control"/>
                         <span class="input-group-addon calendar_label">From</span>
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>
                         <span class="input-group-addon calendar_label">To</span>
                         <input id="to_date" type="text" class="input-sm form-control" name="end"/>
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm sales_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
+                            <button class="btn btn-default btn-sm cap_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
                         </span>
                     </div>
                 </div>
             </div>
-            <table class="table table-hover table_dashboard" style="margin-top:10px;">
+            <table class="table table-hover table_cap_update" style="margin-top:10px;">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>CRM/CAMPAIGN/AFFILIATE</th>
-                    <th>GOAL</th>
-                    <th>EDIT</th>
-                    <th>CLEAR</th>
+                    <th>Affiliate</th>
+                    <th>AFIDs</th>
+                    <th>Offer</th>
+                    <th>CRM/Client</th>
+                    <th>Goal(%)</th>
+                    <th>Goal</th>
+<!--                    <th>Setting</th>-->
+                    <th><button type="button" class="btn btn-link btn-sm btn_goal_refresh_all"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></th>
                 </tr>
                 </thead>
-                <tbody class="table_dashboard_sales_body">
+                <tbody class="table_cap_update_body">
                 </tbody>
             </table>
         </div>

@@ -50,7 +50,6 @@ jQuery(document).ready(function(t) {
                 },
                 success: function(e) {
                     show_waiting(false);
-                    t(".table_affiliation_body").html('');
                     if ("no_cookie" === e)
                         return void (window.location.href = "../../admin/login.php");
 
@@ -86,6 +85,7 @@ jQuery(document).ready(function(t) {
                     t(".table_affiliation_body").html(html);
                 },
                 failure: function(t) {
+                    show_waiting(false);
                     show_alert("Cannot load affiliate goal information.");
                 }
             })
