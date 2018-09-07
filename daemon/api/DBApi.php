@@ -625,6 +625,28 @@ class DBApi
         }
     }
 
+    public function updateCrmGoal($crmID, $goal)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+
+            $query = 'UPDATE ' . $this->subdomain . '_crm_account SET sales_goal=' . $goal . ' WHERE id=' . $crmID;
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            if ($result === TRUE) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+
+            return false;
+        }
+    }
+
     /*
 	*@description
 	*	Update Crm Info

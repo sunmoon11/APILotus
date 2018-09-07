@@ -707,6 +707,34 @@ jQuery(document).ready(function(t) {
         return month + "/" + date + "/" + year;
     }
 
+    function bulk_update_crm_goal(ids, goals) {
+        show_loading_status("sales", "", true);
+        t.ajax({
+            type: "GET",
+            url: "../daemon/ajax_admin/setting_crm_goal.php",
+            data: {
+                crm_ids: ids,
+                crm_goals: goals
+            },
+            success: function(e) {
+                show_loading_status("sales", "", false);
+                if ("error" == e) {
+                    h("sales", "Cannot update CRM Sales Goal.");
+                }
+                else if ("no_cookie" == e) {
+                    window.location.href = "../../admin/login.php";
+                }
+                else {
+                    b();
+                }
+            },
+            failure: function(t) {
+                show_loading_status("sales", "", !1);
+                h("sales", "Cannot update CRM Sales Goal.");
+            }
+        })
+    }
+
 
     crm_positions = t("#crm_positions").html();
     set_dates();
@@ -789,10 +817,34 @@ jQuery(document).ready(function(t) {
                 }
             }),
             t("#crm_position_modal").modal("toggle")
-    }),
+    });
+
+    t(".btn_quick_edit").click(function() {
+        var html = "";
+        for (var i = 0; i < crm_list.length; i++) {
+            html += '<div class="row" style="margin-bottom:5px;">';
+            html += '<div class="col-xs-4 modal_input_label">' + crm_list[i][1] + "</div>";
+            html += '<div class="col-xs-8"><input type="text" id="editgoal_' + crm_list[i][0] + '" class="form-control input-sm edit_goals" value="' + crm_list[i][7] + '"></div>';
+            html += "</div>";
+        }
+        t(".quick_edit_body").html(html);
+    });
+    t(".modal_btn_apply_goal").click(function() {
+        var ids = "";
+        var goals = "";
+        t(".edit_goals").each(function() {
+            "" != ids && (ids += ",");
+            "" != goals && (goals += ",");
+            ids += t(this).prop("id").substring(9);
+            "" == t(this).val() ? goals += "0" : goals += t(this).val();
+        });
+        t("#quick_edit_modal").modal("toggle");
+        bulk_update_crm_goal(ids, goals);
+    });
+
     t(".btn_refresh_all").click(function() {
         b();
-    }),
+    });
     t(".table_dashboard_sales_body").on("click", ".btn_refresh", function(e) {
         i = t(this).prop("id").substring(8);
         for (var a = 0; a < crm_list.length; a++)

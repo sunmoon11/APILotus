@@ -124,7 +124,8 @@ $tab_name = "Dashboard";
 						</div>
 					</div>
 					<div class="col-xs-7" style="text-align: right; padding-right: 30px">
-						<button type="button" class="btn btn-default btn-sm btn_crm_position" id=""><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> CRM Position</button>
+						<button type="button" class="btn btn-default btn-sm btn_crm_position"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> CRM Position</button>
+						<button type="button" class="btn btn-default btn-sm btn_quick_edit" data-toggle="modal" data-target="#quick_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Quick Edit</button>
 					</div>
 					<!--
 					<div class="col-xs-6" style="text-align:right">
