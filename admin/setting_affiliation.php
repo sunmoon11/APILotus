@@ -66,7 +66,7 @@ $tab_name = "Affiliate Settings";
 <?php include('./setting_affiliation_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-8">
         <div class="crm_board">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">Affiliate Source Settings</div>
@@ -99,12 +99,11 @@ $tab_name = "Affiliate Settings";
             <table class="table table-hover" style="margin-top:10px;">
                 <thead>
                 <tr>
-                    <th>Affiliate</th>
+                    <th style="width: 400px">Affiliate</th>
                     <th>AFIDs</th>
                     <th>Offer Name</th>
                     <th>CRM/Client</th>
                     <th>Sales Goal(CAP)</th>
-                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody class="table_affiliation_body">

@@ -9394,4 +9394,33 @@ class DBApi
             return false;
         }
     }
+
+    public function editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals, $from_date, $to_date)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        foreach ($offer_ids as $index=>$offer_id) {
+            try {
+                $query = 'SELECT id FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id . ' AND offer_id=' . $offer_id . ' AND from_date="' . $from_date . '" AND to_date="' . $to_date . '"';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+                $count = mysqli_num_rows($result);
+                if ($count > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    $id = $row['id'];
+
+                    $query = 'UPDATE ' . $this->subdomain . '_affiliate_goal SET goal=' . $offer_goals[$index] . ' WHERE id=' . $id;
+                    $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                }
+                else {
+                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ', ' . $offer_id . ', "' . $from_date . '", "' . $to_date . '", '. $offer_goals[$index] . ')';
+                    $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                }
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

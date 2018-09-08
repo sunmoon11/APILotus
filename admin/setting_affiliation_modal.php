@@ -10,15 +10,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Sales Goal</h4>
+                <h4 class="modal-title affiliation_goal_edit_body_label">Sales Goal</h4>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="alert alert-warning affiliation_goal_edit_alert" role="alert" style="display:none"></div>
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-3 modal_input_label">Sales Goal</div>
-                        <div class="col-xs-9"><input type="text" class="form-control input-sm edit_affiliation_goal"></div>
-                    </div>
+                <div class="container-fluid affiliation_goal_edit_body">
                 </div>
             </div>
             <div class="modal-footer">
