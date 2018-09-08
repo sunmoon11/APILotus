@@ -34,9 +34,6 @@ if ($crmList != null)
         $yesterday = date('m/d/Y', strtotime('-1 day'));
         $year_start = date('01/01/Y');
 
-        if (!$dbApi->checkCrmResult($crmID, $year_start, $today))
-            $dbApi->deleteCrmResult($crmID, $year_start, $yesterday);
-
         $date_thisyear = $llcrmHook->getCrmSalesBreakDown($token, $year_start, $today, $crmID);
         $dbApi->addCrmResults($crmID, $crmGoal, $date_thisyear, $year_start, $today);
 

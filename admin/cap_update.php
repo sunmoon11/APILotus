@@ -73,7 +73,7 @@ $tab_name = "CAP Update";
                 </div>
                 <div class="col-xs-5">
                     <div class="input-daterange input-group" id="datepicker">
-                        <span class="input-group-addon calendar_label">Date</span>
+                        <span class="input-group-addon calendar_label" style="border-left: 1px solid #ccc;">Date</span>
                         <input id="cap_date" type="text" class="input-sm form-control"/>
                         <span class="input-group-addon calendar_label">From</span>
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>

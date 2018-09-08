@@ -34,9 +34,6 @@ if ($crmList != null)
         $yesterday = date('m/d/Y', strtotime('-1 day'));
         $month_start = date('m/01/Y');
 
-        if (!$dbApi->checkCrmResult($crmID, $month_start, $today))
-            $dbApi->deleteCrmResult($crmID, $month_start, $yesterday);
-
         $date_thismonth = $llcrmHook->getCrmSalesBreakDown($token, $month_start, $today, $crmID);
         $dbApi->addCrmResults($crmID, $crmGoal, $date_thismonth, $month_start, $today);
         return true;

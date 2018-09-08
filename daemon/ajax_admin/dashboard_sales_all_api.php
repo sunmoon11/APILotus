@@ -43,24 +43,11 @@ if ($crmList != null)
         $month_start = date('m/01/Y');
         $year_start = date('01/01/Y');
 
-        if (!$dbApi->checkCrmResult($crmID, $week_start, $today))
-            $dbApi->deleteCrmResult($crmID, $week_start, $yesterday);
-//        if (!$dbApi->checkCrmResult($crmID, $month_start, $today))
-//            $dbApi->deleteCrmResult($crmID, $month_start, $yesterday);
-//        if (!$dbApi->checkCrmResult($crmID, $year_start, $today))
-//            $dbApi->deleteCrmResult($crmID, $year_start, $yesterday);
-
         $date_today = $llcrmHook->getCrmSalesBreakDown($token, $today, $today, $crmID);
         $dbApi->addCrmResults($crmID, $crmGoal, $date_today, $today, $today);
 
         $date_thisweek = $llcrmHook->getCrmSalesBreakDown($token, $week_start, $today, $crmID);
         $dbApi->addCrmResults($crmID, $crmGoal, $date_thisweek, $week_start, $today);
-
-//        $date_thismonth = $llcrmHook->getCrmSalesBreakDown($token, $month_start, $today, $crmID);
-//        $dbApi->addCrmResults($crmID, $crmGoal, $date_thismonth, $month_start, $today);
-
-//        $date_thisyear = $llcrmHook->getCrmSalesBreakDown($token, $year_start, $today, $crmID);
-//        $dbApi->addCrmResults($crmID, $crmGoal, $date_thisyear, $year_start, $today);
 
         if (!$dbApi->checkCrmResult($crmID, $yesterday, $yesterday)) {
             $date_yesterday = $llcrmHook->getCrmSalesBreakDown($token, $yesterday, $yesterday, $crmID);

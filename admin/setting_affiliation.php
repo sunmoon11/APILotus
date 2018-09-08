@@ -66,6 +66,8 @@ $tab_name = "Affiliate Settings";
 <?php include('./setting_affiliation_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
+    <div class="col-xs-2">
+    </div>
     <div class="col-xs-8">
         <div class="crm_board">
             <div class="row crm_board_title">
@@ -76,9 +78,9 @@ $tab_name = "Affiliate Settings";
             <div class="row crm_board_row">
                 <div class="col-xs-1">
                 </div>
-                <div class="col-xs-5">
+                <div class="col-xs-7">
                     <div class="input-daterange input-group" id="datepicker">
-                        <span class="input-group-addon calendar_label">Date</span>
+                        <span class="input-group-addon calendar_label" style="border-left: 1px solid #ccc;">Date</span>
                         <input id="affiliation_date" type="text" class="input-sm form-control"/>
                         <span class="input-group-addon calendar_label">From</span>
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>
@@ -90,7 +92,7 @@ $tab_name = "Affiliate Settings";
                         </span>
                     </div>
                 </div>
-                <div class="col-xs-6" style="text-align:right; padding-right: 30px">
+                <div class="col-xs-4" style="text-align:right; padding-right: 30px">
                     <button type="button" class="btn btn-default btn-sm btn_affiliation_add" data-toggle="modal" data-target="#affiliation_add_modal">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Affiliate
                     </button>
@@ -110,6 +112,8 @@ $tab_name = "Affiliate Settings";
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="col-xs-2">
     </div>
 </div>
 <?php include('./common/body_down.php'); ?>
