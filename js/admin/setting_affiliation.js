@@ -1,9 +1,23 @@
 jQuery(document).ready(function(t) {
-    function show_alert(e) {
-        t(".affiliation_alert").html(e);
-        t(".affiliation_alert").fadeIn(1e3, function() {
-            t(".affiliation_alert").fadeOut(3e3);
-        });
+    function show_alert(type, content) {
+        if ("main" === type) {
+            t(".affiliation_alert").html(content);
+            t(".affiliation_alert").fadeIn(1e3, function () {
+                t(".affiliation_alert").fadeOut(3e3);
+            });
+        }
+        else if ("add" == type) {
+            t(".affiliation_add_alert").html(content);
+            t(".affiliation_add_alert").fadeIn(1e3, function () {
+                t(".affiliation_add_alert").fadeOut(3e3);
+            });
+        }
+        else if ("edit" == type) {
+            t(".affiliation_edit_alert").html(content);
+            t(".affiliation_edit_alert").fadeIn(1e3, function () {
+                t(".affiliation_edit_alert").fadeOut(3e3);
+            });
+        }
     }
     function show_waiting(status) {
         status ? t(".affiliation_waiting").html(loading_gif) : t(".affiliation_waiting").html("");
@@ -35,10 +49,10 @@ jQuery(document).ready(function(t) {
         show_waiting(true);
         t(".table_affiliation_body").html("");
         if ("" == t("#from_date").val()) {
-            show_alert("Please select FROM DATE.");
+            show_alert("main", "Please select FROM DATE.");
         }
         else if ("" == t("#to_date").val()) {
-            show_alert("Please select TO DATE.");
+            show_alert("main", "Please select TO DATE.");
         }
         else {
             t.ajax({
@@ -84,7 +98,7 @@ jQuery(document).ready(function(t) {
                 },
                 failure: function(t) {
                     show_waiting(false);
-                    show_alert("Cannot load affiliate goal information.");
+                    show_alert("main", "Cannot load affiliate goal information.");
                 }
             })
         }
@@ -102,7 +116,7 @@ jQuery(document).ready(function(t) {
             success : function(status) {
                 show_waiting(false);
                 if ("error" == status)
-                    show_alert("Affiliate cannot be added.");
+                    show_alert("main", "Affiliate cannot be added.");
                 else if ("no_cookie" == status)
                     window.location.href = "../../admin/login.php";
                 else if ("success" == status)
@@ -110,7 +124,7 @@ jQuery(document).ready(function(t) {
             },
             failure : function(e) {
                 show_waiting(false);
-                show_alert("Affiliate cannot be added.");
+                show_alert("main", "Affiliate cannot be added.");
             }
         });
     }
@@ -128,7 +142,7 @@ jQuery(document).ready(function(t) {
             success : function(status) {
                 show_waiting(false);
                 if ("error" == status)
-                    show_alert("Affiliate cannot be changed.");
+                    show_alert("main", "Affiliate cannot be changed.");
                 else if ("no_cookie" == status)
                     window.location.href = "../../admin/login.php";
                 else if ("success" == status)
@@ -136,7 +150,7 @@ jQuery(document).ready(function(t) {
             },
             failure : function(e) {
                 show_waiting(false);
-                show_alert("Affiliate cannot be changed.");
+                show_alert("main", "Affiliate cannot be changed.");
             }
         });
     }
@@ -152,7 +166,7 @@ jQuery(document).ready(function(t) {
             success : function(status) {
                 show_waiting(false);
                 if ("error" == status)
-                    show_alert("Affiliate cannot be deleted.");
+                    show_alert("main", "Affiliate cannot be deleted.");
                 else if ("no_cookie" == status)
                     window.location.href = "../../admin/login.php";
                 else if ("success" == status)
@@ -160,7 +174,7 @@ jQuery(document).ready(function(t) {
             },
             failure : function(e) {
                 show_waiting(false);
-                show_alert("Affiliate cannot be deleted.");
+                show_alert("main", "Affiliate cannot be deleted.");
             }
         });
     }
@@ -180,7 +194,7 @@ jQuery(document).ready(function(t) {
             success : function(status) {
                 show_waiting(false);
                 if ("error" == status)
-                    show_alert("Affiliate goals cannot be changed.");
+                    show_alert("main", "Affiliate goals cannot be changed.");
                 else if ("no_cookie" == status)
                     window.location.href = "../../admin/login.php";
                 else if ("success" == status)
@@ -188,9 +202,20 @@ jQuery(document).ready(function(t) {
             },
             failure : function(e) {
                 show_waiting(false);
-                show_alert("Affiliate goals cannot be changed.");
+                show_alert("main", "Affiliate goals cannot be changed.");
             }
         });
+    }
+
+    function check_afids(afids) {
+        afids = afids.split(',');
+        if ((new Set(afids)).size !== afids.length)
+            return false;
+        for (var i = 0; i < afids.length; i++) {
+            if (isNaN(afids[i]))
+                return false;
+        }
+        return true;
     }
 
     t("#from_date").datepicker({});
@@ -217,6 +242,22 @@ jQuery(document).ready(function(t) {
         $(".add_affiliation_afid").val("");
     });
     $(".modal_btn_affiliation_add").click(function() {
+        if ("" == $(".add_affiliation_name").val()) {
+            show_alert("add", "Please input Affiliate Name.");
+            $(".add_affiliation_name").focus();
+            return;
+        }
+        if ("" == $(".add_affiliation_afid").val()) {
+            show_alert("add", "Please input AFIDs of Affiliate.");
+            $(".add_affiliation_afid").focus();
+            return;
+        }
+        if (false === check_afids($(".add_affiliation_afid").val())) {
+            show_alert("add", "There is duplicates or incorrect ids in AFIDs. Please check again.");
+            $(".add_affiliation_afid").focus();
+            return;
+        }
+
         $("#affiliation_add_modal").modal("toggle");
         add_affiliate();
     });
@@ -228,6 +269,22 @@ jQuery(document).ready(function(t) {
         $(".edit_affiliation_afid").val(results[id][0][2]);
     });
     $(".modal_btn_affiliation_edit").click(function() {
+        if ("" == $(".edit_affiliation_name").val()) {
+            show_alert("edit", "Please input Affiliate Name.");
+            $(".edit_affiliation_name").focus();
+            return;
+        }
+        if ("" == $(".edit_affiliation_afid").val()) {
+            show_alert("edit", "Please input AFIDs of Affiliate.");
+            $(".edit_affiliation_afid").focus();
+            return;
+        }
+        if (false === check_afids($(".edit_affiliation_afid").val())) {
+            show_alert("edit", "There is duplicates or incorrect ids in AFIDs. Please check again.");
+            $(".edit_affiliation_afid").focus();
+            return;
+        }
+
         $("#affiliation_edit_modal").modal("toggle");
         edit_affiliate();
     });
