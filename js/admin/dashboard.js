@@ -735,6 +735,27 @@ jQuery(document).ready(function(t) {
         })
     }
 
+    function refresh() {
+        t.ajax({
+            type: "GET",
+            url: "../daemon/ajax_admin/dashboard_refresh.php",
+            data: {
+                date_type: date_type
+            },
+            success: function(e) {
+                if (1 == e) {
+                    b();
+                }
+                else if ("no_cookie" == e) {
+                    window.location.href = "../../admin/login.php";
+                }
+            },
+            failure: function(t) {
+
+            }
+        })
+    }
+
 
     crm_positions = t("#crm_positions").html();
     set_dates();
@@ -994,6 +1015,7 @@ jQuery(document).ready(function(t) {
     });
 
     setInterval(function () {
+        // refresh();
         b();
-    }, 120000);
+    }, 600000);
 });

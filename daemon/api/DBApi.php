@@ -8907,6 +8907,7 @@ class DBApi
                 $crm_result[2] = $crmGoal;
             $this->addCrmResult($crmID, $current_time, $crm_result, $fromDate, $toDate);
         }
+        return true;
     }
 
     public function getCrmResult($crmID, $fromDate, $toDate)
@@ -9420,6 +9421,60 @@ class DBApi
             } catch (Exception $e) {
                 return false;
             }
+        }
+        return true;
+    }
+
+    public function getDashboardRefresh($date_type)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        $ret = "0";
+        try {
+            $query = 'SELECT refresh FROM ' . $this->subdomain . '_dashboard_refresh WHERE date_type="' . $date_type . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $ret = $row['refresh'];
+
+                if ("1" == $ret) {
+                    $query = 'UPDATE ' . $this->subdomain . '_dashboard_refresh SET refresh=0 WHERE date_type="' . $date_type . '"';
+                    $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                }
+            }
+            else {
+                $query = 'INSERT INTO ' . $this->subdomain . '_dashboard_refresh VALUES (null,"' . $date_type . '", 0)';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+        return $ret;
+    }
+
+    public function updateDashboardRefresh($date_type)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT refresh FROM ' . $this->subdomain . '_dashboard_refresh WHERE date_type="' . $date_type . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                $query = 'UPDATE ' . $this->subdomain . '_dashboard_refresh SET refresh=1 WHERE date_type="' . $date_type . '"';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            }
+            else {
+                $query = 'INSERT INTO ' . $this->subdomain . '_dashboard_refresh VALUES (null,"' . $date_type . '", 1)';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            }
+        } catch (Exception $e) {
+            return false;
         }
         return true;
     }
