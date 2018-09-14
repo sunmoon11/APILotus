@@ -53,6 +53,9 @@ include ('./common/check_payment.php');
 
 $user_name = $user;
 
+$affiliationList = $dbApi->getAllAffiliations();
+$offerList = $dbApi->getAllOffers();
+
 $tab_name = "Affiliate Settings";
 
 
@@ -95,6 +98,9 @@ $tab_name = "Affiliate Settings";
                 <div class="col-xs-4" style="text-align:right; padding-right: 30px">
                     <button type="button" class="btn btn-default btn-sm btn_affiliation_add" data-toggle="modal" data-target="#affiliation_add_modal">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Affiliate
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm btn_affiliation_offer_add" data-toggle="modal" data-target="#affiliation_offer_add_modal">
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Offer
                     </button>
                 </div>
             </div>

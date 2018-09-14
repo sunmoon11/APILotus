@@ -1,4 +1,10 @@
 jQuery(document).ready(function(t) {
+    function get_affiliate_offer_id() {
+        if ($(".affiliate_dropdown_list").length > 0) {
+            affiliate_offer_id = $(".affiliate_dropdown_list").prop("id");
+        }
+    }
+
     function show_alert(type, content) {
         if ("main" === type) {
             t(".affiliation_alert").html(content);
@@ -6,21 +12,32 @@ jQuery(document).ready(function(t) {
                 t(".affiliation_alert").fadeOut(3e3);
             });
         }
-        else if ("add" == type) {
+        else if ("add" === type) {
             t(".affiliation_add_alert").html(content);
             t(".affiliation_add_alert").fadeIn(1e3, function () {
                 t(".affiliation_add_alert").fadeOut(3e3);
             });
         }
-        else if ("edit" == type) {
+        else if ("edit" === type) {
             t(".affiliation_edit_alert").html(content);
             t(".affiliation_edit_alert").fadeIn(1e3, function () {
                 t(".affiliation_edit_alert").fadeOut(3e3);
             });
         }
+        else if ("ao_waiting" === type) {
+            t(".affiliation_offer_add_alert").html(content);
+            t(".affiliation_offer_add_alert").fadeIn(1e3, function () {
+                t(".affiliation_offer_add_alert").fadeOut(3e3);
+            });
+        }
     }
-    function show_waiting(status) {
-        status ? t(".affiliation_waiting").html(loading_gif) : t(".affiliation_waiting").html("");
+    function show_waiting(type, status) {
+        if ("main" === type) {
+            status ? t(".affiliation_waiting").html(loading_gif) : t(".affiliation_waiting").html("");
+        }
+        else if ("ao_waiting") {
+            status ? t(".affiliate_offer_waiting").html(loading_gif) : t(".affiliate_offer_waiting").html("");
+        }
     }
     function set_dates() {
         t("#from_date").prop("disabled", true);
@@ -46,7 +63,7 @@ jQuery(document).ready(function(t) {
         return month + "/" + date + "/" + year;
     }
     function get_affiliation_list() {
-        show_waiting(true);
+        show_waiting("main", true);
         t(".table_affiliation_body").html("");
         if ("" == t("#from_date").val()) {
             show_alert("main", "Please select FROM DATE.");
@@ -63,7 +80,7 @@ jQuery(document).ready(function(t) {
                     to_date: t("#to_date").val()
                 },
                 success: function(e) {
-                    show_waiting(false);
+                    show_waiting("main", false);
                     if ("no_cookie" === e)
                         return void (window.location.href = "../../admin/login.php");
 
@@ -72,7 +89,7 @@ jQuery(document).ready(function(t) {
                     for (var i = 0; i < results.length; i++) {
                         var affiliate = results[i];
                         html += '<tr>';
-                        html += '<td><span class="payment_badge payment_badge_blue">' + affiliate[0][1] + '</span>';
+                        html += '<td><div class="payment_badge_blue" style="display: inline-block; text-align: right; min-width: 200px;">' + affiliate[0][1] + '</div>';
                         html += '<button type="button" class="btn btn-link btn-sm btn_affiliation_edit" id="aedit_' + i + '" data-toggle="modal" data-target="#affiliation_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button>';
                         html += '<button type="button" class="btn btn-link btn-sm btn_affiliation_delete" id="adelete_' + i + '" data-toggle="modal" data-target="#affiliation_delete_modal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>&nbsp;Delete</button></td>';
                         if (null == affiliate[0][2])
@@ -97,7 +114,7 @@ jQuery(document).ready(function(t) {
                     t(".table_affiliation_body").html(html);
                 },
                 failure: function(t) {
-                    show_waiting(false);
+                    show_waiting("main", false);
                     show_alert("main", "Cannot load affiliate goal information.");
                 }
             })
@@ -105,7 +122,7 @@ jQuery(document).ready(function(t) {
     }
 
     function add_affiliate() {
-        show_waiting(true);
+        show_waiting("main", true);
         $.ajax({
             type : "GET",
             url : "../daemon/ajax_admin/setting_affiliation_add.php",
@@ -114,7 +131,7 @@ jQuery(document).ready(function(t) {
                 afid : $(".add_affiliation_afid").val()
             },
             success : function(status) {
-                show_waiting(false);
+                show_waiting("main", false);
                 if ("error" == status)
                     show_alert("main", "Affiliate cannot be added.");
                 else if ("no_cookie" == status)
@@ -123,14 +140,14 @@ jQuery(document).ready(function(t) {
                     get_affiliation_list();
             },
             failure : function(e) {
-                show_waiting(false);
+                show_waiting("main", false);
                 show_alert("main", "Affiliate cannot be added.");
             }
         });
     }
 
     function edit_affiliate() {
-        show_waiting(true);
+        show_waiting("main", true);
         $.ajax({
             type : "GET",
             url : "../daemon/ajax_admin/setting_affiliation_edit.php",
@@ -140,7 +157,7 @@ jQuery(document).ready(function(t) {
                 afid : $(".edit_affiliation_afid").val()
             },
             success : function(status) {
-                show_waiting(false);
+                show_waiting("main", false);
                 if ("error" == status)
                     show_alert("main", "Affiliate cannot be changed.");
                 else if ("no_cookie" == status)
@@ -149,14 +166,14 @@ jQuery(document).ready(function(t) {
                     get_affiliation_list();
             },
             failure : function(e) {
-                show_waiting(false);
+                show_waiting("main", false);
                 show_alert("main", "Affiliate cannot be changed.");
             }
         });
     }
 
     function delete_affiliate() {
-        show_waiting(true);
+        show_waiting("main", true);
         $.ajax({
             type : "GET",
             url : "../daemon/ajax_admin/setting_affiliation_delete.php",
@@ -164,7 +181,7 @@ jQuery(document).ready(function(t) {
                 affiliate_id: affiliate_id
             },
             success : function(status) {
-                show_waiting(false);
+                show_waiting("main", false);
                 if ("error" == status)
                     show_alert("main", "Affiliate cannot be deleted.");
                 else if ("no_cookie" == status)
@@ -173,14 +190,14 @@ jQuery(document).ready(function(t) {
                     get_affiliation_list();
             },
             failure : function(e) {
-                show_waiting(false);
+                show_waiting("main", false);
                 show_alert("main", "Affiliate cannot be deleted.");
             }
         });
     }
 
     function edit_affiliate_goal(affiliation_goal_id, offer_ids, offer_goals) {
-        show_waiting(true);
+        show_waiting("main", true);
         $.ajax({
             type : "GET",
             url : "../daemon/ajax_admin/setting_affiliation_edit_goal.php",
@@ -192,7 +209,7 @@ jQuery(document).ready(function(t) {
                 to_date : $("#to_date").val()
             },
             success : function(status) {
-                show_waiting(false);
+                show_waiting("main", false);
                 if ("error" == status)
                     show_alert("main", "Affiliate goals cannot be changed.");
                 else if ("no_cookie" == status)
@@ -201,7 +218,7 @@ jQuery(document).ready(function(t) {
                     get_affiliation_list();
             },
             failure : function(e) {
-                show_waiting(false);
+                show_waiting("main", false);
                 show_alert("main", "Affiliate goals cannot be changed.");
             }
         });
@@ -216,6 +233,61 @@ jQuery(document).ready(function(t) {
                 return false;
         }
         return true;
+    }
+
+    function get_affiliate_offers() {
+        show_waiting("ao_waiting", true);
+        $(".affiliate_offers").removeAttr('checked');
+        $.ajax({
+            type : "GET",
+            url : "../daemon/ajax_admin/setting_affiliation_offer_list.php",
+            data : {
+                affiliate_id: affiliate_offer_id
+            },
+            success : function(data) {
+                show_waiting("ao_waiting", false);
+                if ("error" == data)
+                    show_alert("main", "Affiliate offers cannot be loaded.");
+                else if ("no_cookie" == data)
+                    window.location.href = "../../admin/login.php";
+                else {
+                    var offers = jQuery.parseJSON(data);
+                    for (var i = 0; i < offers.length; i++) {
+                        $("#aoffer_" + offers[i][2]).prop('checked', 'checked');
+                    }
+                }
+            },
+            failure : function(e) {
+                show_waiting("ao_waiting", false);
+                show_alert("ao_waiting", "Affiliate offers cannot be loaded.");
+            }
+        });
+    }
+
+    function set_affiliate_offers(offer_ids) {
+        show_waiting("ao_waiting", true);
+        $.ajax({
+            type : "GET",
+            url : "../daemon/ajax_admin/setting_affiliation_offer_set.php",
+            data : {
+                affiliate_id: affiliate_offer_id,
+                offer_ids: offer_ids
+            },
+            success : function(status) {
+                show_waiting("ao_waiting", false);
+                if ("error" == status)
+                    show_alert("ao_waiting", "Affiliate offers cannot be saved.");
+                else if ("no_cookie" == status)
+                    window.location.href = "../../admin/login.php";
+                else if ("success" == status) {
+                    get_affiliation_list();
+                }
+            },
+            failure : function(e) {
+                show_waiting("ao_waiting", false);
+                show_alert("ao_waiting", "Affiliate offers cannot be saved.");
+            }
+        });
     }
 
     t("#from_date").datepicker({});
@@ -325,15 +397,33 @@ jQuery(document).ready(function(t) {
         edit_affiliate_goal(results[affiliate_goal_id][0][0], ids, goals);
     });
 
+    $(".affiliate_dropdown_menu li").on("click", function() {
+        affiliate_offer_id = $(this).find("a").attr("id");
+        $(".affiliate_toggle_button").html($(this).text() + ' <span class="caret"></span>');
+        get_affiliate_offers();
+    });
+    $(".modal_btn_affiliation_offer_add").click(function() {
+        var ids = "";
+        t(".affiliate_offers").each(function() {
+            if ($(this).prop('checked')) {
+                "" != ids && (ids += ",");
+                ids += $(this).prop("id").substring(7);
+            }
+        });
+        $("#affiliation_offer_add_modal").modal("toggle");
+        set_affiliate_offers(ids);
+    });
+
     var loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
-    var minus_sign = '<span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>';
-    var triangle_sign = '<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" style="color: #ffa5a5"></span>';
     var from_date = "";
     var to_date = "";
     var results = null;
     var affiliate_id = -1;
     var affiliate_goal_id = -1;
+    var affiliate_offer_id = -1;
 
     set_dates();
     get_affiliation_list();
+    get_affiliate_offer_id();
+    get_affiliate_offers();
 });
