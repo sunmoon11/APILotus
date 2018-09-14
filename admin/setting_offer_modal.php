@@ -23,6 +23,19 @@
                         </div>
                     </div>
                     <div class="row crm_board_row">
+                        <label style="margin-top: 10px;">Vertical Label</label>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th style="width:100px">#</th>
+                                <th>Label Name</th>
+                            </tr>
+                            </thead>
+                            <tbody class="modal_offer_vlabel_body">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row crm_board_row">
                         <div style="text-align:right; padding-right: 30px">
                             <div class="input-group">
                                 <span class="input-group-btn">

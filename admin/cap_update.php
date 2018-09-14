@@ -91,7 +91,7 @@ $tab_name = "CAP Update";
                     <th>Affiliate</th>
                     <th>AFIDs</th>
                     <th>Offer</th>
-                    <th>CRM/Client</th>
+                    <th>Client</th>
                     <th>Goal(%)</th>
                     <th>Goal</th>
 <!--                    <th>Setting</th>-->

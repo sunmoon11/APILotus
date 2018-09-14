@@ -110,7 +110,7 @@ $tab_name = "Affiliate Settings";
                     <th style="width: 400px">Affiliate</th>
                     <th>AFIDs</th>
                     <th>Offer Name</th>
-                    <th>CRM/Client</th>
+                    <th>Client</th>
                     <th>Sales Goal(CAP)</th>
                 </tr>
                 </thead>

@@ -87,9 +87,10 @@ $tab_name = "Offers";
                 <thead>
                 <tr>
                     <th>Offer ID</th>
-                    <th>CRM/Client</th>
+                    <th>Client</th>
                     <th>Offer Name</th>
                     <th>Campaigns of Offer</th>
+                    <th>Vertical Labels of Offer</th>
                     <th>Action</th>
                 </tr>
                 </thead>

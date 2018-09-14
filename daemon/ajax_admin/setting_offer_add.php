@@ -11,6 +11,7 @@ require_once '../api/DBApi.php';
 $name = $_GET['name'];
 $crmID = $_GET['crm_id'];
 $campaignIDs = $_GET['campaign_ids'];
+$labelIDs = $_GET['label_ids'];
 
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
@@ -19,7 +20,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret = $dbApi->addOffer($crmID, $name, $campaignIDs);
+$ret = $dbApi->addOffer($crmID, $name, $campaignIDs, $labelIDs);
 if ($ret)
     echo 'success';
 else

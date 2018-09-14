@@ -9220,14 +9220,27 @@ class DBApi
             return null;
 
         $ret = array();
+        $all_offer_labels = $this->getOfferLabels();
         try {
             $query = 'SELECT po.*, pca.crm_name, pca.sales_goal FROM ' . $this->subdomain . '_offer po LEFT JOIN ' . $this->subdomain . '_crm_account pca ON po.crm_id=pca.id';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $count = mysqli_num_rows($result);
             if ($count > 0) {
-                while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids']);
+                while($row = mysqli_fetch_assoc($result)) {
+                    $label_ids = explode(',', $row['label_ids']);
+                    $labels = "";
+                    foreach ($label_ids as $label_id) {
+                        foreach ($all_offer_labels as $offer_label) {
+                            if ($label_id == $offer_label[0]) {
+                                if ("" !== $labels)
+                                    $labels = $labels.",";
+                                $labels = $labels.$offer_label[1];
+                            }
+                        }
+                    }
+                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids'], $row['label_ids'], $labels);
+                }
             }
 
             return $ret;
@@ -9258,13 +9271,13 @@ class DBApi
         }
     }
 
-    public function addOffer($crmID, $name, $campaignIDs)
+    public function addOffer($crmID, $name, $campaignIDs, $labelIDs)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_offer (id, name, crm_id, campaign_ids) VALUES (null,"' . $name . '", ' . $crmID . ',"' . $campaignIDs . '")';
+            $query = 'INSERT INTO ' . $this->subdomain . '_offer (id, name, crm_id, campaign_ids, label_ids) VALUES (null,"' . $name . '", ' . $crmID . ',"' . $campaignIDs . '","' . $labelIDs . '")';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             if ($result === TRUE) {
@@ -9277,13 +9290,13 @@ class DBApi
         }
     }
 
-    public function editOffer($offerID, $name, $campaignIDs)
+    public function editOffer($offerID, $name, $campaignIDs, $labelIDs)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
-            $query = 'UPDATE ' . $this->subdomain . '_offer SET name="' . $name . '", campaign_ids="' . $campaignIDs . '" WHERE id=' . $offerID;
+            $query = 'UPDATE ' . $this->subdomain . '_offer SET name="' . $name . '", campaign_ids="' . $campaignIDs . '", label_ids="'. $labelIDs . '" WHERE id=' . $offerID;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
@@ -9568,5 +9581,26 @@ class DBApi
             return false;
         }
         return true;
+    }
+
+    public function getOfferLabels()
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        $ret = array();
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_offer_label';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['id'], $row['label_name']);
+            }
+            return $ret;
+        } catch (Exception $e) {
+            return null;
+        }
     }
 }
