@@ -268,7 +268,7 @@ class LLCrmHook
                 $url .= '&campaign_id='.$campaignID;
         }
         
-            curl_setopt_array($curl, array(
+        curl_setopt_array($curl, array(
             CURLOPT_URL => $this->crmUrl.$url,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_RETURNTRANSFER => true,
@@ -437,8 +437,8 @@ class LLCrmHook
 
             // get prospects
             $response = substr($response, $end);
-            $start = strpos($response, 'style=', $start);
-            $start += 9; // style=\"\">
+            $start = strpos($response, 'style=');
+            $start += 9; // style="">
             $end = strpos($response, '<', $start);
             $pros = substr($response, $start, $end - $start);
             $val = intval(str_replace(',', '', $pros));

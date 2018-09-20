@@ -7649,7 +7649,7 @@ class DBApi
         }
     }
     /*
-     * return all user accont info for admin panel
+     * return all user account info for admin panel
      */
     public function getAllCustomers()
     {
@@ -9338,7 +9338,7 @@ class DBApi
         try {
             $query = 'SELECT
                           pag.*, pa.name as affiliate_name, pa.afid,
-                          po.name as offer_name, po.crm_name, po.sales_goal
+                          po.name as offer_name, po.crm_id, po.crm_name, po.sales_goal, po.campaign_ids, po.label_ids
                       FROM
                           primary_affiliate_goal pag
                       LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
@@ -9354,7 +9354,7 @@ class DBApi
                     $ret[] = array(
                         $row['id'], $row['affiliate_id'], $row['offer_id'], $row['goal'],
                         $row['affiliate_name'], $row['afid'], $row['offer_name'],
-                        $row['crm_name'], $row['sales_goal']);
+                        $row['crm_id'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids'], $row['label_ids']);
             }
             return $ret;
         } catch (Exception $e) {

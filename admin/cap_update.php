@@ -73,8 +73,17 @@ $tab_name = "CAP Update";
                 </div>
                 <div class="col-xs-5">
                     <div class="input-daterange input-group" id="datepicker">
-                        <span class="input-group-addon calendar_label" style="border-left: 1px solid #ccc;">Date</span>
-                        <input id="cap_date" type="text" class="input-sm form-control"/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px; border-radius: 0">
+                                Week To Date <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu date_dropdown_menu" role="menu">
+                                <li><a href="#" id="date_today">Today</a></li>
+                                <li><a href="#" id="date_yesterday">Yesterday</a></li>
+                                <li><a href="#" id="date_thisweek">Week To Date</a></li>
+                                <li><a href="#" id="date_lastweek">Last Week</a></li>
+                            </ul>
+                        </span>
                         <span class="input-group-addon calendar_label">From</span>
                         <input id="from_date" type="text" class="input-sm form-control" name="start"/>
                         <span class="input-group-addon calendar_label">To</span>
@@ -94,8 +103,6 @@ $tab_name = "CAP Update";
                     <th>Client</th>
                     <th>Goal(%)</th>
                     <th>Goal</th>
-<!--                    <th>Setting</th>-->
-                    <th><button type="button" class="btn btn-link btn-sm btn_goal_refresh_all"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></th>
                 </tr>
                 </thead>
                 <tbody class="table_cap_update_body">
