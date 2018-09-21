@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: zaza3
- * Date: 9/19/2018
- * Time: 2:33 PM
+ * Date: 9/21/2018
+ * Time: 5:08 AM
  */
 
 require_once '../api/DBApi.php';
@@ -20,13 +20,6 @@ if ($dbApi->getSubDomain() == '')
     echo json_encode(array('no_cookie'));
     return;
 }
-
-$result = $dbApi->getCapUpdateResult($crmID, $fromDate, $toDate);
-if (false != $result && null != $result) {
-    echo json_encode(array('success', $crmID, json_decode(str_replace("'", '"', $result))));
-    return;
-}
-
 $crmList = $dbApi->getActiveCrmById($crmID);
 
 if ($crmList != null)
@@ -53,6 +46,13 @@ if ($crmList != null)
             $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
         }
 
+        $db_result = $dbApi->getCapUpdateResult($crmID, $fromDate, $toDate);
+        if (false != $db_result && null != $db_result) {
+            if (str_replace("'", '"', $db_result) == json_encode($ret)) {
+                echo json_encode(array('success', $crmID, 'same result'));
+                return;
+            }
+        }
         $dbApi->addCapUpdateResult($crmID, $fromDate, $toDate, json_encode($ret));
         echo json_encode(array('success', $crmID, $ret));
         return;

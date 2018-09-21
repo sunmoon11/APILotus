@@ -9222,7 +9222,7 @@ class DBApi
         $ret = array();
         $all_offer_labels = $this->getOfferLabels();
         try {
-            $query = 'SELECT po.*, pca.crm_name, pca.sales_goal FROM ' . $this->subdomain . '_offer po LEFT JOIN ' . $this->subdomain . '_crm_account pca ON po.crm_id=pca.id';
+            $query = 'SELECT po.*, pca.crm_name, pca.id as crm_id FROM ' . $this->subdomain . '_offer po LEFT JOIN ' . $this->subdomain . '_crm_account pca ON po.crm_id=pca.id';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $count = mysqli_num_rows($result);
@@ -9239,7 +9239,7 @@ class DBApi
                             }
                         }
                     }
-                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids'], $row['label_ids'], $labels);
+                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['crm_id'], $row['campaign_ids'], $row['label_ids'], $labels);
                 }
             }
 
@@ -9599,6 +9599,51 @@ class DBApi
                     $ret[] = array($row['id'], $row['label_name']);
             }
             return $ret;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function addCapUpdateResult($crmID, $fromDate, $toDate, $ret)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT id FROM ' . $this->subdomain . '_cap_update_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            $current_time = date('Y-m-d H:i:s');
+            if ($count > 0) {
+                $query = 'UPDATE ' . $this->subdomain . '_cap_update_result SET timestamp="'. $current_time . '", result="' . str_replace('"', "'", $ret) . '" WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            }
+            else {
+                $query = 'INSERT INTO ' . $this->subdomain . '_cap_update_result VALUES (null,' . $crmID . ',"' . $fromDate . '","' . $toDate . '","' . $current_time . '","' . str_replace('"', "'", $ret) . '")';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    public function getCapUpdateResult($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT result FROM ' . $this->subdomain . '_cap_update_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                return $row['result'];
+            }
+            return false;
         } catch (Exception $e) {
             return null;
         }

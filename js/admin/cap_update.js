@@ -19,7 +19,9 @@ jQuery(document).ready(function(t) {
     function set_dates() {
         t("#from_date").prop("disabled", true);
         t("#to_date").prop("disabled", true);
-        var cur_date = new Date;
+        var date = new Date;
+        var cur_date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
+            date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
         var formatted_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
         if ("date_today" == date_type) {
             from_date = formatted_date;
