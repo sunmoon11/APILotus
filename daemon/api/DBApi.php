@@ -9635,13 +9635,13 @@ class DBApi
             return false;
 
         try {
-            $query = 'SELECT result FROM ' . $this->subdomain . '_cap_update_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
+            $query = 'SELECT result, timestamp FROM ' . $this->subdomain . '_cap_update_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $crm_count = mysqli_num_rows($result);
             if ($crm_count > 0) {
                 $row = mysqli_fetch_assoc($result);
-                return $row['result'];
+                return array($row['result'], $row['timestamp']);
             }
             return false;
         } catch (Exception $e) {

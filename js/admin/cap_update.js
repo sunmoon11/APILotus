@@ -185,6 +185,7 @@ jQuery(document).ready(function(t) {
                                             html += '<td><div class="bar-main-container"><div id="bar_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '" class="bar-percentage">0%</div><div class="bar-container"><div class="bar"></div></div></div></td>';
                                             html += '<td id="capgoal_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '">' + '0/' + affiliate_goal[3] + '&nbsp;&nbsp;';
                                             html += '<span>' + loading_gif + '</span></td>';
+                                            html += '<td id="updated_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '"></td>';
                                             html += '</tr>';
                                         }
                                         t(".table_cap_update_body").html(html);
@@ -260,6 +261,7 @@ jQuery(document).ready(function(t) {
                             $("#capgoal_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
                                 count.toString() + '/' + affiliate_goal[3]
                             );
+                            $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(goal[3]);
 
                             var M = Math.round(100 * count / affiliate_goal[3]);
                             var C = t("#bar_" + affiliate_goal[1] + '_' + affiliate_goal[2]);

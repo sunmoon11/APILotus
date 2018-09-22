@@ -103,6 +103,7 @@ $tab_name = "CAP Update";
                     <th>Client</th>
                     <th>Goal(%)</th>
                     <th>Goal</th>
+                    <th>Last Updated(UTC)</th>
                 </tr>
                 </thead>
                 <tbody class="table_cap_update_body">

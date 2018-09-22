@@ -23,7 +23,7 @@ if ($dbApi->getSubDomain() == '')
 
 $result = $dbApi->getCapUpdateResult($crmID, $fromDate, $toDate);
 if (false != $result && null != $result) {
-    echo json_encode(array('success', $crmID, json_decode(str_replace("'", '"', $result))));
+    echo json_encode(array('success', $crmID, json_decode(str_replace("'", '"', $result[0])), $result[1]));
     return;
 }
 
@@ -54,7 +54,8 @@ if ($crmList != null)
         }
 
         $dbApi->addCapUpdateResult($crmID, $fromDate, $toDate, json_encode($ret));
-        echo json_encode(array('success', $crmID, $ret));
+        $current_time = gmdate('Y-m-d H:i:s');
+        echo json_encode(array('success', $crmID, $ret, $current_time));
         return;
     }
 }
