@@ -93,6 +93,11 @@ $tab_name = "CAP Update";
                         </span>
                     </div>
                 </div>
+                <div class="col-xs-6" style="text-align:right; height:30px; padding-right: 30px;">
+                    <a download="cap_result.txt" id="downloadlink">
+                    <button class="btn btn-default btn-sm btn_cap_export" type="button" style="width:120px;margin-right: 10px"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;&nbsp;Export</button>
+                    </a>
+                </div>
             </div>
             <table class="table table-hover table_cap_update" style="margin-top:10px;">
                 <thead>

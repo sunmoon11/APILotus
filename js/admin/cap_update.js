@@ -235,6 +235,7 @@ jQuery(document).ready(function(t) {
                     window.location.href = '../../admin/login.php';
                 }
                 else {
+                    goals.push(goal);
                     for (var i = 0; i < cap_update_list.length; i++) {
                         var affiliate_goal = cap_update_list[i];
                         if (goal[1] == affiliate_goal[7]) {
@@ -263,12 +264,12 @@ jQuery(document).ready(function(t) {
                             );
                             $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(goal[3]);
 
-                            var M = Math.round(100 * count / affiliate_goal[3]);
+                            var percent = 0 != affiliate_goal[3] ? percent = Math.round(100 * count / affiliate_goal[3]) : 0;
                             var C = t("#bar_" + affiliate_goal[1] + '_' + affiliate_goal[2]);
                             t({
-                                countNum: M
+                                countNum: percent
                             }).animate({
-                                countNum: M
+                                countNum: percent
                             }, {
                                 duration: 2e3,
                                 easing: "linear",
@@ -288,6 +289,54 @@ jQuery(document).ready(function(t) {
         });
     }
 
+    function get_export_result() {
+        var affiliate_goal_id = -1;
+        var text_result = '';
+        for (var i = 0; i < cap_update_list.length; i++) {
+            var affiliate_goal = cap_update_list[i];
+            if (affiliate_goal_id != affiliate_goal[1]) {
+                affiliate_goal_id = affiliate_goal[1];
+                if (i != 0) text_result += '\n\n';
+                text_result += "To " + affiliate_goal[4] + '\n\n';
+                text_result += "Here are remaining caps for the week\n\n";
+            }
+            for (var j = 0; j < goals.length; j++) {
+                var goal = goals[j];
+                if (goal[1] == affiliate_goal[7]) {
+                    var count = 0;
+                    var afids = affiliate_goal[5].split(',');
+                    var campaign_ids = affiliate_goal[10].split(',');
+                    for (var k = 0; k < goal[2].length; k++) {
+                        var campaign_prospects = goal[2][k];
+                        for (var l = 0; l < campaign_ids.length; l++) {
+                            if ("step1" === campaign_ids[l].split('_')[0]) {
+                                var campaign_id = campaign_ids[l].split('_')[1];
+                                if (campaign_id == campaign_prospects[0]) {
+                                    for (var m = 0; m < campaign_prospects[1].length; m++) {
+                                        for (var n = 0; n < afids.length; n++) {
+                                            if (campaign_prospects[1][m][0] == afids[n]) {
+                                                count += campaign_prospects[1][m][2];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    text_result += affiliate_goal[6] + ' ';
+                    text_result += (parseInt(affiliate_goal[3]) - count).toString() + ' remaining ';
+                    text_result += '(' + affiliate_goal[3] + ' for the week)\n';
+                }
+            }
+        }
+        var data = new Blob([text_result], {type: 'text/plain'});
+        var textFile = window.URL.createObjectURL(data);
+        var link = document.getElementById('downloadlink');
+        link.setAttribute('download', 'cap_result_' +
+            t("#from_date").val().replace(new RegExp('/', 'g'), '-') + '_' +
+            t("#to_date").val().replace(new RegExp('/', 'g'), '-') + '.txt');
+        link.href = textFile;
+    }
 
     t(".input-daterange").datepicker({});
     t(".date_dropdown_menu li").on("click", function(e) {
@@ -299,6 +348,9 @@ jQuery(document).ready(function(t) {
     t(".cap_search_button").click(function() {
         get_cap_update_list();
     });
+    t(".btn_cap_export").click(function() {
+        get_export_result();
+    });
 
 
     var loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
@@ -306,6 +358,7 @@ jQuery(document).ready(function(t) {
     var to_date = "";
     var cap_update_list = null;
     var crm_sales_goal = null;
+    var goals = [];
     var date_type = "date_thisweek";
 
     set_dates();
