@@ -37,7 +37,8 @@ jQuery(document).ready(function($) {
         }
     }
 
-    function get_campaign_list() {
+    function get_campaign_list(edit) {
+        edit = edit || false;
         if (!(campaign_waiting || -1 == crm_id)) {
             show_waiting("campaign", true);
             $.ajax({
@@ -92,6 +93,28 @@ jQuery(document).ready(function($) {
                         }
                         $("#div_select_campaign").html(campaign_table_html);
                         $(".campaign_select_all").prop("checked", false);
+
+                        if (true === edit) {
+                            for (i = 0; i < offer_list.length; i++) {
+                                var offer = offer_list[i];
+                                if (offer[0] == offer_id) {
+                                    if (offer[4] != null) {
+                                        var campaign_ids = offer[4].split(',');
+                                        for (j = 0; j < campaign_ids.length; j++) {
+                                            var campaign_id = campaign_ids[j];
+                                            $("#campaign_" + campaign_id).prop("checked", true);
+                                        }
+                                    }
+
+                                    if (offer[5] != null) {
+                                        var label_ids = offer[5].split(',');
+                                        for (j = 0; j < label_ids.length; j++) {
+                                            $("#vlabel_" + label_ids[j]).prop("checked", true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 failure : function(e) {
@@ -374,26 +397,28 @@ jQuery(document).ready(function($) {
         $(".modal_btn_offer_add").html('Edit Offer');
         reset_offer_modal();
 
-        var id = $(this).prop("id").substring(6);
         for (var i = 0; i < offer_list.length; i++) {
             var offer = offer_list[i];
-            if (offer[0] == id) {
+            if (offer[0] == offer_id) {
                 $(".add_offer_name").val(offer[1]);
+                crm_id = offer[3];
+                $(".crm_toggle_button").html(offer[2] + ' <span class="caret"></span>');
+                get_campaign_list(true);
 
-                if (offer[4] != null) {
-                    var campaign_ids = offer[4].split(',');
-                    for (var j = 0; j < campaign_ids.length; j++) {
-                        var campaign_id = campaign_ids[j];
-                        $("#campaign_" + campaign_id).prop("checked", true);
-                    }
-                }
-
-                if (offer[5] != null) {
-                    var label_ids = offer[5].split(',');
-                    for (j = 0; j < label_ids.length; j++) {
-                        $("#vlabel_" + label_ids[j]).prop("checked", true);
-                    }
-                }
+                // if (offer[4] != null) {
+                //     var campaign_ids = offer[4].split(',');
+                //     for (var j = 0; j < campaign_ids.length; j++) {
+                //         var campaign_id = campaign_ids[j];
+                //         $("#campaign_" + campaign_id).prop("checked", true);
+                //     }
+                // }
+                //
+                // if (offer[5] != null) {
+                //     var label_ids = offer[5].split(',');
+                //     for (j = 0; j < label_ids.length; j++) {
+                //         $("#vlabel_" + label_ids[j]).prop("checked", true);
+                //     }
+                // }
             }
         }
         $("#offer_add_modal").modal("toggle");

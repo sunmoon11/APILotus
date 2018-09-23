@@ -136,7 +136,7 @@ jQuery(document).ready(function(t) {
                                 var from_to_date = get_dates();
                                 t.ajax({
                                     type: "GET",
-                                    url: "../daemon/ajax_admin/cap_update_list.php",
+                                                url: "../daemon/ajax_admin/cap_update_list.php",
                                     data: {
                                         from_date: from_to_date[0],
                                         to_date : from_to_date[1]
@@ -264,7 +264,7 @@ jQuery(document).ready(function(t) {
                             );
                             $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(goal[3]);
 
-                            var percent = 0 != affiliate_goal[3] ? percent = Math.round(100 * count / affiliate_goal[3]) : 0;
+                            var percent = 0 != affiliate_goal[3] ? Math.round(100 * count / affiliate_goal[3]) : 0;
                             var C = t("#bar_" + affiliate_goal[1] + '_' + affiliate_goal[2]);
                             t({
                                 countNum: percent
