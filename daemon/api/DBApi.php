@@ -9222,7 +9222,7 @@ class DBApi
         $ret = array();
         $all_offer_labels = $this->getOfferLabels();
         try {
-            $query = 'SELECT po.*, pca.crm_name, pca.id as crm_id FROM ' . $this->subdomain . '_offer po LEFT JOIN ' . $this->subdomain . '_crm_account pca ON po.crm_id=pca.id';
+            $query = 'SELECT po.*, pca.crm_name, pca.sales_goal, pca.id as crm_id FROM ' . $this->subdomain . '_offer po LEFT JOIN ' . $this->subdomain . '_crm_account pca ON po.crm_id=pca.id';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $count = mysqli_num_rows($result);
@@ -9239,7 +9239,7 @@ class DBApi
                             }
                         }
                     }
-                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['crm_id'], $row['campaign_ids'], $row['label_ids'], $labels);
+                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids'], $row['label_ids'], $labels, $row['crm_id']);
                 }
             }
 

@@ -20,8 +20,7 @@ jQuery(document).ready(function(t) {
         t("#from_date").prop("disabled", true);
         t("#to_date").prop("disabled", true);
         var date = new Date;
-        var cur_date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
-            date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+        var cur_date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
         var formatted_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
         if ("date_today" == date_type) {
             from_date = formatted_date;
@@ -136,7 +135,7 @@ jQuery(document).ready(function(t) {
                                 var from_to_date = get_dates();
                                 t.ajax({
                                     type: "GET",
-                                                url: "../daemon/ajax_admin/cap_update_list.php",
+                                    url: "../daemon/ajax_admin/cap_update_list.php",
                                     data: {
                                         from_date: from_to_date[0],
                                         to_date : from_to_date[1]
@@ -160,6 +159,7 @@ jQuery(document).ready(function(t) {
                                                     html += '<td></td>';
                                                 else
                                                     html += '<td>' + affiliate_goal[5] + '</td>';
+                                                html += '<td></td>';
                                                 html += '<td></td>';
                                                 html += '<td></td>';
                                                 html += '<td></td>';
@@ -228,7 +228,7 @@ jQuery(document).ready(function(t) {
 
                 if (goal[0] == 'error')
                 {
-                    show_alert('Cannot load sales report.');
+                    show_alert('Cannot load sales information of ' + goal[1]);
                 }
                 else if (goal[0] == 'no_cookie')
                 {
@@ -262,6 +262,13 @@ jQuery(document).ready(function(t) {
                             $("#capgoal_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
                                 count.toString() + '/' + affiliate_goal[3]
                             );
+
+                            // var est = new Date(goal[3]);
+                            // est.setHours(est.getHours() - 5);
+                            // var est_str = est.toISOString();
+                            // $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
+                            //     est_str.slice(0, 10) + ' ' + est_str.slice(11, 19)
+                            // );
                             $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(goal[3]);
 
                             var percent = 0 != affiliate_goal[3] ? Math.round(100 * count / affiliate_goal[3]) : 0;

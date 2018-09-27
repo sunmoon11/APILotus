@@ -401,24 +401,9 @@ jQuery(document).ready(function($) {
             var offer = offer_list[i];
             if (offer[0] == offer_id) {
                 $(".add_offer_name").val(offer[1]);
-                crm_id = offer[3];
+                crm_id = offer[7];
                 $(".crm_toggle_button").html(offer[2] + ' <span class="caret"></span>');
                 get_campaign_list(true);
-
-                // if (offer[4] != null) {
-                //     var campaign_ids = offer[4].split(',');
-                //     for (var j = 0; j < campaign_ids.length; j++) {
-                //         var campaign_id = campaign_ids[j];
-                //         $("#campaign_" + campaign_id).prop("checked", true);
-                //     }
-                // }
-                //
-                // if (offer[5] != null) {
-                //     var label_ids = offer[5].split(',');
-                //     for (j = 0; j < label_ids.length; j++) {
-                //         $("#vlabel_" + label_ids[j]).prop("checked", true);
-                //     }
-                // }
             }
         }
         $("#offer_add_modal").modal("toggle");

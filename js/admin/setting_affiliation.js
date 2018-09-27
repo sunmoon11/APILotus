@@ -98,7 +98,7 @@ jQuery(document).ready(function(t) {
                             html += '<td>' + affiliate[0][2] + '</td>';
                         html += '<td></td>';
                         html += '<td></td>';
-                        html += '<td><button type="button" class="btn btn-link btn-sm btn_affiliation_goal_edit" id="gedit_' + i + '" data-toggle="modal" data-target="#affiliation_goal_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit Goal</button></td>';
+                        html += '<td><button type="button" class="btn btn-link btn-sm btn_affiliation_goal_edit" id="gedit_' + i + '" data-toggle="modal" data-target="#affiliation_goal_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button></td>';
                         html += '</tr>';
                         for (var j = 0; j < affiliate[1].length; j++) {
                             var offer = affiliate[1][j];

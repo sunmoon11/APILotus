@@ -18,7 +18,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success modal_btn_affiliation_goal_edit">Edit Affiliate Goal</button>
+                <button type="button" class="btn btn-success modal_btn_affiliation_goal_edit">Edit Offer Cap</button>
             </div>
         </div>
     </div>

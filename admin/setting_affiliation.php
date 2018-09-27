@@ -111,7 +111,7 @@ $tab_name = "Affiliate Settings";
                     <th>AFIDs</th>
                     <th>Offer Name</th>
                     <th>Client</th>
-                    <th>Sales Goal(CAP)</th>
+                    <th>Offer CAP</th>
                 </tr>
                 </thead>
                 <tbody class="table_affiliation_body">
