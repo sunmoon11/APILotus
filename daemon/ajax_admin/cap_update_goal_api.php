@@ -60,14 +60,8 @@ if ($crmList != null)
             $sub_result = $llcrmHook->parseSalesReport($sub_response);
             $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
         }
-        $db_result = $dbApi->getCapUpdateResult($crmID, $week_start, $today);
-        if (false != $db_result && null != $db_result && str_replace("'", '"', $db_result[0]) == json_encode($ret)) {
-            $total_result[] = array($week_start, $today, 'Week To Date', 'same result');
-        }
-        else {
-            $dbApi->addCapUpdateResult($crmID, $week_start, $today, json_encode($ret));
-            $total_result[] = array($week_start, $today, 'Week To Date', 'updated result');
-        }
+        $dbApi->addCapUpdateResult($crmID, $week_start, $today, json_encode($ret));
+        $total_result[] = array($week_start, $today, 'Week To Date');
 
         # Today
         $response = $llcrmHook->getSalesReport($token, $today, $today, '', '', '', '');
@@ -81,55 +75,49 @@ if ($crmList != null)
             $sub_result = $llcrmHook->parseSalesReport($sub_response);
             $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
         }
-        $db_result = $dbApi->getCapUpdateResult($crmID, $today, $today);
-        if (false != $db_result && null != $db_result && str_replace("'", '"', $db_result[0]) == json_encode($ret)) {
-            $total_result[] = array($today, $today, 'Today', 'same result');
-        }
-        else {
-            $dbApi->addCapUpdateResult($crmID, $today, $today, json_encode($ret));
-            $total_result[] = array($today, $today, 'Today', 'updated result');
-        }
+        $dbApi->addCapUpdateResult($crmID, $today, $today, json_encode($ret));
+        $total_result[] = array($today, $today, 'Today');
 
         # Yesterday
-        $response = $llcrmHook->getSalesReport($token, $yesterday, $yesterday, '', '', '', '');
-        $result = $llcrmHook->parseSalesReport($response);
-        $ret = array();
-        foreach ($result as $item)
-        {
-            if ("Total" == $item[0])
-                break;
-            $sub_response = $llcrmHook->getSalesReport($token, $yesterday, $yesterday, '', "1", $item[0], "0");
-            $sub_result = $llcrmHook->parseSalesReport($sub_response);
-            $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
-        }
         $db_result = $dbApi->getCapUpdateResult($crmID, $yesterday, $yesterday);
-        if (false != $db_result && null != $db_result && str_replace("'", '"', $db_result[0]) == json_encode($ret)) {
-            $total_result[] = array($yesterday, $yesterday, 'Yesterday', 'same result');
+        if (false == $db_result) {
+            $response = $llcrmHook->getSalesReport($token, $yesterday, $yesterday, '', '', '', '');
+            $result = $llcrmHook->parseSalesReport($response);
+            $ret = array();
+            foreach ($result as $item)
+            {
+                if ("Total" == $item[0])
+                    break;
+                $sub_response = $llcrmHook->getSalesReport($token, $yesterday, $yesterday, '', "1", $item[0], "0");
+                $sub_result = $llcrmHook->parseSalesReport($sub_response);
+                $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
+            }
+            $dbApi->addCapUpdateResult($crmID, $yesterday, $yesterday, json_encode($ret));
+            $total_result[] = array($yesterday, $yesterday, 'Yesterday', 'updated');
         }
         else {
-            $dbApi->addCapUpdateResult($crmID, $yesterday, $yesterday, json_encode($ret));
-            $total_result[] = array($yesterday, $yesterday, 'Yesterday', 'updated result');
+            $total_result[] = array($yesterday, $yesterday, 'Yesterday', 'exists');
         }
 
         # Last Week
-        $response = $llcrmHook->getSalesReport($token, $last_week_start, $last_week_end, '', '', '', '');
-        $result = $llcrmHook->parseSalesReport($response);
-        $ret = array();
-        foreach ($result as $item)
-        {
-            if ("Total" == $item[0])
-                break;
-            $sub_response = $llcrmHook->getSalesReport($token, $last_week_start, $last_week_end, '', "1", $item[0], "0");
-            $sub_result = $llcrmHook->parseSalesReport($sub_response);
-            $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
-        }
         $db_result = $dbApi->getCapUpdateResult($crmID, $last_week_start, $last_week_end);
-        if (false != $db_result && null != $db_result && str_replace("'", '"', $db_result[0]) == json_encode($ret)) {
-            $total_result[] = array($last_week_start, $last_week_end, 'Last Week', 'same result');
+        if (false == $db_result) {
+            $response = $llcrmHook->getSalesReport($token, $last_week_start, $last_week_end, '', '', '', '');
+            $result = $llcrmHook->parseSalesReport($response);
+            $ret = array();
+            foreach ($result as $item)
+            {
+                if ("Total" == $item[0])
+                    break;
+                $sub_response = $llcrmHook->getSalesReport($token, $last_week_start, $last_week_end, '', "1", $item[0], "0");
+                $sub_result = $llcrmHook->parseSalesReport($sub_response);
+                $ret[] = array($item[0], array_slice($sub_result, 0, count($sub_result) - 1));
+            }
+            $dbApi->addCapUpdateResult($crmID, $last_week_start, $last_week_end, json_encode($ret));
+            $total_result[] = array($last_week_start, $last_week_end, 'Last Week', 'updated');
         }
         else {
-            $dbApi->addCapUpdateResult($crmID, $last_week_start, $last_week_end, json_encode($ret));
-            $total_result[] = array($last_week_start, $last_week_end, 'Last Week', 'updated result');
+            $total_result[] = array($last_week_start, $last_week_end, 'Last Week', 'exists');
         }
 
         echo json_encode($total_result);

@@ -16,6 +16,13 @@ jQuery(document).ready(function(t) {
         return month + "/" + date + "/" + year;
     }
 
+    function format_time(hour, minute, second) {
+        if (hour < 10) hour = "0" + hour;
+        if (minute < 10) minute = "0" + minute;
+        if (second < 10) second = "0" + second;
+        return hour + ":" + minute + ":" + second;
+    }
+
     function set_dates() {
         t("#from_date").prop("disabled", true);
         t("#to_date").prop("disabled", true);
@@ -263,13 +270,15 @@ jQuery(document).ready(function(t) {
                                 count.toString() + '/' + affiliate_goal[3]
                             );
 
-                            // var est = new Date(goal[3]);
-                            // est.setHours(est.getHours() - 5);
-                            // var est_str = est.toISOString();
-                            // $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
-                            //     est_str.slice(0, 10) + ' ' + est_str.slice(11, 19)
-                            // );
-                            $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(goal[3]);
+                            var est = new Date(goal[3]);
+                            if (moment(new Date).isDST())
+                                est.setHours(est.getHours() - 4);
+                            else
+                                est.setHours(est.getHours() - 5);
+                            $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
+                                format_date(est.getFullYear(), est.getMonth() + 1, est.getDate()) + ' ' +
+                                format_time(est.getHours(), est.getMinutes(), est.getSeconds())
+                            );
 
                             var percent = 0 != affiliate_goal[3] ? Math.round(100 * count / affiliate_goal[3]) : 0;
                             var C = t("#bar_" + affiliate_goal[1] + '_' + affiliate_goal[2]);
@@ -367,6 +376,11 @@ jQuery(document).ready(function(t) {
     var crm_sales_goal = null;
     var goals = [];
     var date_type = "date_thisweek";
+
+    if (moment(new Date).isDST())
+        $("#est_edt").html('Last Updated(EDT)');
+    else
+        $("#est_edt").html('Last Updated(EST)');
 
     set_dates();
     get_cap_update_list();
