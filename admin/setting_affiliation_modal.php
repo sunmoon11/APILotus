@@ -131,15 +131,18 @@
                             </span>
                         </div>
                     </div>
-                    <div class="row" id="affiliation_offers" style="margin-top:20px;">
-                        <div class="col-xs-3 modal_input_label">Select Offers</div>
-                        <div class="col-xs-9">
-                        <?php
-                        if ($offerList != null && count($offerList) > 0) {
-                            for ($i = 0; $i < count($offerList); $i++)
-                                echo '<input type="checkbox" id="aoffer_' . $offerList[$i][0] . '" class="input-sm affiliate_offers" style="vertical-align:middle;margin:0;padding:0;">  ' . $offerList[$i][1] . '<br>';
-                        }
-                        ?>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-xs-5">
+                            <select multiple="multiple" name="all_options" class="all_options" style="width: 200px; height: 300px;">
+                            </select>
+                        </div>
+                        <div class="col-xs-2" style="margin-top: 119px;">
+                            <button class="go_in" style="display: block; margin: 0 auto 10px auto;">&gt;</button>
+                            <button class="go_out" style="display: block; margin: auto;">&lt;</button>
+                        </div>
+                        <div class="col-xs-5">
+                            <select multiple="multiple" name="chosen_options" class="chosen_options" style="width: 200px; height: 300px;">
+                            </select>
                         </div>
                     </div>
                 </div>

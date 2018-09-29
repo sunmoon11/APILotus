@@ -69,6 +69,31 @@ jQuery(document).ready(function (t) {
         return month + "/" + date + "/" + year;
     }
 
+    function get_offer_list() {
+        show_waiting("main", true);
+        t.ajax({
+            type: "GET",
+            url: "../daemon/ajax_admin/offer_list.php",
+            data: {},
+            success: function (e) {
+                show_waiting("main", false);
+                if ("no_cookie" === e)
+                    window.location.href = "../../admin/login.php";
+                else if ("error" === e) {
+                    show_alert("main", "Offers cannot be loaded.");
+                }
+                else {
+                    all_offers = jQuery.parseJSON(e);
+                    get_affiliate_offers();
+                }
+            },
+            failure: function () {
+                show_waiting("main", false);
+                show_alert("main", "Offers cannot be loaded.");
+            }
+        })
+    }
+
     function get_affiliation_list() {
         show_waiting("main", true);
         t(".table_affiliation_body").html("");
@@ -242,7 +267,6 @@ jQuery(document).ready(function (t) {
 
     function get_affiliate_offers() {
         show_waiting("ao_waiting", true);
-        $(".affiliate_offers").removeAttr('checked');
         $.ajax({
             type: "GET",
             url: "../daemon/ajax_admin/setting_affiliation_offer_list.php",
@@ -256,13 +280,27 @@ jQuery(document).ready(function (t) {
                 else if ("no_cookie" == data)
                     window.location.href = "../../admin/login.php";
                 else {
-                    var offers = jQuery.parseJSON(data);
-                    for (var i = 0; i < offers.length; i++) {
-                        $("#aoffer_" + offers[i][2]).prop('checked', 'checked');
+                    var sub_offers = jQuery.parseJSON(data);
+                    var all_options = '';
+                    var chosen_options = '';
+                    for (var i = 0; i < all_offers.length; i++) {
+                        var contains = false;
+                        for (var j = 0; j < sub_offers.length; j++) {
+                            if (all_offers[i][0] == sub_offers[j][2]) {
+                                contains = true;
+                                break;
+                            }
+                        }
+                        if (contains)
+                            chosen_options += '<option value="' + all_offers[i][0] + '">' + all_offers[i][1] + '</option>';
+                        else
+                            all_options += '<option value="' + all_offers[i][0] + '">' + all_offers[i][1] + '</option>';
+                        $(".all_options").html(all_options);
+                        $(".chosen_options").html(chosen_options);
                     }
                 }
             },
-            failure: function (e) {
+            failure: function () {
                 show_waiting("ao_waiting", false);
                 show_alert("ao_waiting", "Affiliate offers cannot be loaded.");
             }
@@ -408,11 +446,9 @@ jQuery(document).ready(function (t) {
     });
     $(".modal_btn_affiliation_offer_add").click(function () {
         var ids = "";
-        t(".affiliate_offers").each(function () {
-            if ($(this).prop('checked')) {
-                "" != ids && (ids += ",");
-                ids += $(this).prop("id").substring(7);
-            }
+        t(".chosen_options option").each(function () {
+            "" != ids && (ids += ",");
+            ids += $(this).val();
         });
         $("#affiliation_offer_add_modal").modal("toggle");
         set_affiliate_offers(ids);
@@ -442,17 +478,25 @@ jQuery(document).ready(function (t) {
         $("#remove_offer_modal").modal("toggle");
     });
 
+    $('.go_in').click(function() {
+        return !$('.all_options option:selected').remove().appendTo('.chosen_options');
+    });
+    $('.go_out').click(function() {
+        return !$('.chosen_options option:selected').remove().appendTo('.all_options');
+    });
+
     var loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
     var from_date = "";
     var to_date = "";
     var results = null;
+    var all_offers = null;
     var affiliate_id = -1;
     var affiliate_goal_id = -1;
     var affiliate_offer_id = -1;
     var selected_offer_id = -1;
 
     set_dates();
+    get_offer_list();
     get_affiliation_list();
     get_affiliate_offer_id();
-    get_affiliate_offers();
 });

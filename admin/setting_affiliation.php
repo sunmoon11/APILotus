@@ -54,7 +54,6 @@ include ('./common/check_payment.php');
 $user_name = $user;
 
 $affiliationList = $dbApi->getAllAffiliations();
-$offerList = $dbApi->getAllOffers();
 
 $tab_name = "Affiliate Settings";
 

@@ -9136,7 +9136,7 @@ class DBApi
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['name'], $row['campaign_ids']);
+                    $ret[] = array($row['id'], $row['name']);
             }
 
             return $ret;
