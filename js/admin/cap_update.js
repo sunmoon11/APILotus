@@ -271,10 +271,7 @@ jQuery(document).ready(function(t) {
                             );
 
                             var est = new Date(goal[3]);
-                            if (moment(new Date).isDST())
-                                est.setHours(est.getHours() - 4);
-                            else
-                                est.setHours(est.getHours() - 5);
+                            est.setHours(est.getHours() - 5);
                             $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
                                 format_date(est.getFullYear(), est.getMonth() + 1, est.getDate()) + ' ' +
                                 format_time(est.getHours(), est.getMinutes(), est.getSeconds())
@@ -376,11 +373,6 @@ jQuery(document).ready(function(t) {
     var crm_sales_goal = null;
     var goals = [];
     var date_type = "date_thisweek";
-
-    if (moment(new Date).isDST())
-        $("#est_edt").html('Last Updated(EDT)');
-    else
-        $("#est_edt").html('Last Updated(EST)');
 
     set_dates();
     get_cap_update_list();

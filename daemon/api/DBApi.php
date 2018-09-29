@@ -9196,7 +9196,6 @@ class DBApi
             $query = 'DELETE FROM ' . $this->subdomain . '_affiliate_offer WHERE affiliate_id=' . $affiliate_id;
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             if ($result === TRUE) {
-                $offer_ids = explode(',', $offer_ids);
                 foreach ($offer_ids as $offer_id) {
                     $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_offer (id, affiliate_id, offer_id) VALUES (null,' . $affiliate_id . ',' . $offer_id . ')';
                     $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));

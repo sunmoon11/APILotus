@@ -10,7 +10,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title affiliation_goal_edit_body_label">Sales Goal</h4>
+                <h4 class="modal-title affiliation_goal_edit_body_label"></h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid affiliation_goal_edit_body">
@@ -73,6 +73,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success modal_btn_affiliation_edit">Edit Affiliate</button>
+                <button type="button" class="btn btn-danger btn_affiliation_delete" data-toggle="modal" data-target="#affiliation_delete_modal" style="color: white">Delete Affiliate</button>
             </div>
         </div>
     </div>
@@ -146,6 +147,25 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success modal_btn_affiliation_offer_add">Add Offers</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="remove_offer_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    Do you want to remove this offer?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success modal_btn_remove_offer">Remove</button>
             </div>
         </div>
     </div>

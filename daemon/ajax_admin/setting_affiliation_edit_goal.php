@@ -21,10 +21,10 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret = $dbApi->editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals, $from_date, $to_date);
-if ($ret)
+$ret1 = $dbApi->editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals, $from_date, $to_date);
+$ret2 = $dbApi->setOffersOfAffiliateID($affiliate_id, $offer_ids);
+
+if ($ret1 && $ret2)
     echo 'success';
 else
     echo 'error';
-
-?>

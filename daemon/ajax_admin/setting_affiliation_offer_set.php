@@ -10,7 +10,7 @@ require_once '../api/DBApi.php';
 
 
 $affiliate_id = $_GET['affiliate_id'];
-$offer_ids = $_GET['offer_ids'];
+$offer_ids = explode(',', $_GET['offer_ids']);
 
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
