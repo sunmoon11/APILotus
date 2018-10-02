@@ -1662,6 +1662,66 @@ class LLCrmHook
         
         return $ret;
     }
+
+    public function parseInitialReport($response, $html) {
+        if(strstr($response, 'No results exist at this time'))
+        {
+            $ret['report'] = array();
+
+            return $ret;
+        }
+
+        $report = array();
+
+        $trs = array_slice($html->find('#report_8', 0)->find('tr'), 2);
+        $total = end($trs);
+        foreach ($trs as $tr) {
+            $td = $tr->find('td');
+
+            // get campaign id, name
+            $campaign = $td[0]->plaintext;
+            $start = strpos($campaign, '(', 0);
+            $end = strpos($campaign, ')', $start);
+            $val = substr($campaign, $start + 1, $end - $start - 1);
+            $campaignId = intval(str_replace(',', '', $val));
+            $campaignName = substr($campaign, $end + 2);
+
+            // get Gross Orders
+            $grossOrders = $this->valueFilterInRetention($td[1]->plaintext);
+            // get Net Approved
+            $netApproved = $this->valueFilterInRetention($td[2]->plaintext);
+            // get Subscriptions Approved
+            $subscriptions = $this->valueFilterInRetention($td[3]->plaintext);
+            // get Declined
+            $declined = $this->valueFilterInRetention($td[4]->plaintext);
+            // get Void/Full Refund
+            $voidFull = $this->valueFilterInRetention($td[5]->plaintext);
+            // get Partial Refund
+            $partial = $this->valueFilterInRetention($td[6]->plaintext);
+            // get Void/Refund
+            $voidRefund = $this->valueFilterInRetention($td[7]->plaintext);
+            // get Canceled
+            $cancel = $this->valueFilterInRetention($td[8]->plaintext);
+            // get Hold
+            $hold = $this->valueFilterInRetention($td[9]->plaintext);
+            // get Pending
+            $pending = $this->valueFilterInRetention($td[10]->plaintext);
+            // get Approval Rate
+            $approvalRate = $this->valueFilterInRetention($td[11]->plaintext);
+            // get Net Revenue
+            $netRevenue = $this->valueFilterInRetention($td[12]->plaintext);
+
+            if ($td[13]->plaintext)
+                $report[] = array($campaignId, $campaignName, $netApproved, $declined, $approvalRate, 'yes');
+            else
+                $report[] = array($campaignId, $campaignName, $netApproved, $declined, $approvalRate, 'no');
+        }
+
+        $ret['report'] = $report;
+
+        return $ret;
+    }
+
     public function getAffiliateLabel($allLabels, $affiliateId)
     {
         if($allLabels == null)

@@ -63,7 +63,8 @@ $tab_name = "Rebill";
 <body>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
         <div class="crm_board" style="margin-bottom: 15px;">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">Rebill Report</div>
@@ -141,6 +142,7 @@ $tab_name = "Rebill";
 
         </div>
     </div>
+    <div class="col-xs-1"></div>
 </div>
 <?php include('./common/body_down.php'); ?>
 </body>

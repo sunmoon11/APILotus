@@ -5,13 +5,13 @@ jQuery(document).ready(function(t) {
             crm_name = t(".crm_dropdown_list").html();
         }
     }
-    function r(e) {
+    function show_alert(e) {
         t(".retention_alert").html(e),
             t(".retention_alert").fadeIn(1e3, function() {
                 t(".retention_alert").fadeOut(3e3)
             })
     }
-    function a(e, r, a) {
+    function show_waiting(e, r, a) {
         "list" == e && (a ? t(".retention_waiting").html(c) : t(".retention_waiting").html(""))
     }
     function d(e) {
@@ -73,97 +73,80 @@ jQuery(document).ready(function(t) {
         if (date < 10) date = "0" + date;
         return month + "/" + date + "/" + year;
     }
-    function i(e) {
-        k = (new Date).getTime();
+    function get_initial_report(e) {
+        cur_time = (new Date).getTime();
         if ("" == t("#from_date").val()) {
-            r("Please select FROM DATE.");
+            show_alert("Please select FROM DATE.");
         }
         else if ("" == t("#to_date").val()) {
-            r("Please select TO DATE.");
+            show_alert("Please select TO DATE.");
         }
         else {
-            a("list", "", !0);
+            show_waiting("list", "", !0);
             t.ajax({
                 type: "GET",
                 url: "../daemon/ajax_admin/retention_list.php",
                 data: {
-                    user_token: k,
+                    user_token: cur_time,
                     crm_id: crm_id,
                     from_date: t("#from_date").val(),
-                    to_date: t("#to_date").val(),
-                    cycle: cycle,
-                    delete: e
+                    to_date: t("#to_date").val()
                 },
                 success: function(e) {
-                    a("list", "", !1);
-                    var d = jQuery.parseJSON(e);
-                    if ("error" == d[0])
-                        r("Cannot load retention information.");
-                    else if ("no_cookie" == d[0])
-                        return void (window.location.href = "../../admin/login.php");
+                    show_waiting("list", "", !1);
+                    var result = jQuery.parseJSON(e);
+                    if ("error" == result[0])
+                        show_alert("Cannot load retention information.");
+                    else if ("no_cookie" == result[0])
+                        window.location.href = "../../admin/login.php";
                     else {
-                        x = d[3].cycle;
-                        var o = d[3].report.length;
-                        var n = "";
-                        var i = "";
-                        var l = "";
-                        n = "<tr>";
+                        var length = result[3].report.length;
+                        var n = "<tr>";
                         n += '<th rowspan="2" style="vertical-align:middle"><button type="button" class="btn btn-link btn-sm btn_campaign_head"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button></th>';
                         n += '<th rowspan="2" style="vertical-align:middle"></th>';
                         n += '<th rowspan="2" style="vertical-align:middle">Campaign (ID) Name</th>';
                         n += '<th colspan="6" style="border-left: 1px solid #dadada">Initial Cycle</th>';
-                        for (s = 1; s < x; s++)
-                            n += '<th colspan="6" style="border-left: 1px solid #dadada">Subscription Cycle ' + s + "</th>";
                         n += "</tr>";
                         n += "<tr>";
-                        n += '<th style="border-left: 1px solid #dadada">Gross Orders</th>';
-                        n += "<th>Net Approved</th>";
-                        n += "<th>Void/Full Refund</th>";
-                        n += "<th>Partial Refund</th>";
-                        n += "<th>Void/Refund Revenue</th>";
+                        n += '<th style="border-left: 1px solid #dadada">Approved</th>';
+                        n += "<th>Declined</th>";
                         n += "<th>Approval Rate</th>";
-                        for (s = 1; s < x; s++)
-                            n += '<th style="border-left: 1px solid #dadada">Gross Orders</th>',
-                                n += "<th>Net Approved</th>",
-                                n += "<th>Void/Full Refund</th>",
-                                n += "<th>Partial Refund</th>",
-                                n += "<th>Void/Refund Revenue</th>",
-                                n += "<th>Conversion</th>";
                         n += "</tr>";
                         t(".table_retention_head").html(n);
-                        if (0 == o)
-                            return void r("There is no any retention information.");
+                        if (0 == length)
+                            return void show_alert("There is no any retention information.");
                         n = "";
-                        for (var s = 0; s < o; s++) {
-                            n += '<tr id="camprow_' + d[3].report[s][0] + '" class="camp_tr">',
-                                "-1" == d[3].report[s][0] ? (n += "<td></td>",
-                                    n += "<td></td>",
-                                    n += "<td>" + (i = "<b>") + "Total" + (l = "</b>") + "</td>") : (i = "",
-                                    l = "",
-                                    "yes" == d[3].report[s][2 + 6 * x] ? n += '<td><button type="button" class="btn btn-link btn-sm btn_campaign_expand" id="camp_' + d[3].report[s][0] + '"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button></td>' : n += "<td></td>",
-                                    n += "<td></td>",
-                                    n += "<td>(" + d[3].report[s][0] + ") " + d[3].report[s][1] + "</td>"),
-                                n += '<td style="border-left: 1px solid #dadada">' + i + d[3].report[s][2] + l + "</td>",
-                                n += "<td>" + i + d[3].report[s][3] + l + "</td>",
-                                n += "<td>" + i + d[3].report[s][4] + l + "</td>",
-                                n += "<td>" + i + d[3].report[s][5] + l + "</td>",
-                                n += "<td>" + i + "$" + d[3].report[s][6] + l + "</td>",
-                                n += "<td>" + i + d[3].report[s][7] + "%" + l + "</td>";
-                            for (var p = 1; p < x; p++)
-                                n += '<td style="border-left: 1px solid #dadada">' + i + d[3].report[s][6 * p + 2] + l + "</td>",
-                                    n += "<td>" + i + d[3].report[s][6 * p + 3] + l + "</td>",
-                                    n += "<td>" + i + d[3].report[s][6 * p + 4] + l + "</td>",
-                                    n += "<td>" + i + d[3].report[s][6 * p + 5] + l + "</td>",
-                                    n += "<td>" + i + "$" + d[3].report[s][6 * p + 6] + l + "</td>",
-                                    n += "<td>" + i + d[3].report[s][6 * p + 7] + "%" + l + "</td>";
-                            n += "</tr>"
+                        for (var s = 0; s < length; s++) {
+                            n += '<tr id="camprow_' + result[3].report[s][0] + '" class="camp_tr">';
+                            if (0 == result[3].report[s][0]) {
+                                n += "<td></td>";
+                                n += "<td></td>";
+                                n += "<td><b>" + "Total" + "</b></td>";
+                                n += '<td style="border-left: 1px solid #dadada"><b>' + result[3].report[s][2] + "</b></td>";
+                                n += "<td><b>" + result[3].report[s][3] + "</b></td>";
+                                n += "<td><b>" + result[3].report[s][4] + "%" + "</b></td>";
+                                n += "</tr>";
+                                break;
+                            }
+                            else {
+                                if ("yes" == result[3].report[s][5])
+                                    n += '<td><button type="button" class="btn btn-link btn-sm btn_campaign_expand" id="camp_' + result[3].report[s][0] + '"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button></td>';
+                                else
+                                    n += "<td></td>";
+                                n += "<td></td>";
+                                n += "<td>(" + result[3].report[s][0] + ") " + result[3].report[s][1] + "</td>";
+                            }
+                            n += '<td style="border-left: 1px solid #dadada">' + result[3].report[s][2] + "</td>";
+                            n += "<td>" + result[3].report[s][3] + "</td>";
+                            n += "<td>" + result[3].report[s][4] + "%" + "</td>";
+                            n += "</tr>";
                         }
                         t(".table_retention_body").html(n)
                     }
                 },
                 failure: function(t) {
-                    a("list", "", !1),
-                        r("Cannot load retention information.")
+                    show_waiting("list", "", !1),
+                        show_alert("Cannot load retention information.")
                 }
             })
         }
@@ -174,7 +157,7 @@ jQuery(document).ready(function(t) {
                 type: "GET",
                 url: "../daemon/ajax_admin/retention_aid.php",
                 data: {
-                    user_token: k,
+                    user_token: cur_time,
                     crm_id: crm_id,
                     campaign_id: e,
                     from_date: t("#from_date").val(),
@@ -220,7 +203,7 @@ jQuery(document).ready(function(t) {
                 },
                 failure: function(t) {
                     p = !1,
-                        r("Cannot load affiliate information.")
+                        show_alert("Cannot load affiliate information.")
                 }
             })
     }
@@ -229,7 +212,7 @@ jQuery(document).ready(function(t) {
             type: "GET",
             url: "../daemon/ajax_admin/retention_sub_aid.php",
             data: {
-                user_token: k,
+                user_token: cur_time,
                 crm_id: crm_id,
                 campaign_id: e,
                 affiliate_id: r,
@@ -289,10 +272,10 @@ jQuery(document).ready(function(t) {
     var to_date = "";
     var cycle = 1;
     var x = 1;
-    var k = "";
+    var cur_time = "";
     get_selected_crm();
     set_dates();
-    i("1");
+    get_initial_report("1");
     t(".crm_dropdown_menu li").on("click", function(e) {
         crm_name = t(this).text(),
             crm_id = t(this).find("a").attr("id"),
@@ -306,16 +289,11 @@ jQuery(document).ready(function(t) {
             set_dates()
     });
     t(".btn_export").click(function() {
-        var e = "./export_quick_retention.php?type=retention&user_token=" + k + "&from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val() + "&crm_id=" + crm_id + "&crm_name=" + crm_name;
+        var e = "./export_quick_retention.php?type=retention&user_token=" + cur_time + "&from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val() + "&crm_id=" + crm_id + "&crm_name=" + crm_name;
         window.location.href = e
     });
-    t(".cycle_dropdown_menu li").on("click", function(e) {
-        cycle = t(this).text(),
-            cycle_id = t(this).prop("id").substring(6),
-            t(".cycle_toggle_button").html(cycle + ' <span class="caret"></span>')
-    });
     t(".retention_search_button").click(function() {
-        i("1")
+        get_initial_report("1")
     });
     t(".table_retention_body").on("click", ".btn_campaign_expand", function(e) {
         if (!p) {

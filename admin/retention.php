@@ -58,15 +58,17 @@ $tab_name = "Retention";
 <body>
 	<?php include('./common/body_up.php'); ?>
 	<div class="row">
-		<div class="col-xs-12">
+        <div class="col-xs-1"></div>
+		<div class="col-xs-10">
 			<div class="crm_board" style="margin-bottom: 15px;">
 				<div class="row crm_board_title">
-					<div class="col-xs-10" style="padding-left: 0">Retention Report</div>
+					<div class="col-xs-10" style="padding-left: 0">Initial's Report</div>
 					<div class="col-xs-2 retention_waiting" style="text-align:right;"></div>
 				</div>
 				<div class="alert alert-warning retention_alert" role="alert" style="display:none"></div>
 				<div class="row crm_board_row">
-					<div class="col-xs-7">
+                    <div class="col-xs-1"></div>
+					<div class="col-xs-6">
 						<div class="input-daterange input-group" id="datepicker">
 							<span class="input-group-btn">
 								<button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:160px">
@@ -105,16 +107,6 @@ $tab_name = "Retention";
 						    <input id="from_date" type="text" class="input-sm form-control" name="start"/>
 						    <span class="input-group-addon calendar_label">To</span>
 						    <input id="to_date" type="text" class="input-sm form-control" name="end"/>
-						    <span class="input-group-addon calendar_label">Subscription Cycles</span>
-						    <span class="input-group-btn">
-								<button type="button" class="btn btn-default btn-sm dropdown-toggle cycle_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:50px; border-radius: 0">
-									1 <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu cycle_dropdown_menu" role="menu" style="width: 50px !important; min-width: 50px !important">
-									<li><a href="#" id="cycle_1">1</a></li>
-									<li><a href="#" id="cycle_2">2</a></li>
-								</ul>
-							</span>
 							<span class="input-group-btn">
 								<button class="btn btn-default btn-sm retention_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
 							</span>
@@ -134,11 +126,8 @@ $tab_name = "Retention";
 							<th colspan="6" style="border-left: 1px solid #dadada">Initial Cycle</th>
 						</tr>
 						<tr>
-							<th style="border-left: 1px solid #dadada">Gross Orders</th>
-							<th>Net Approved</th>
-							<th>Void/Full Refund</th>
-							<th>Partial Refund</th>
-							<th>Void/Refund Revenue</th>
+							<th style="border-left: 1px solid #dadada">Approved</th>
+							<th>Declined</th>
 							<th>Approval Rate</th>
 						</tr>
 					</thead>
@@ -146,7 +135,8 @@ $tab_name = "Retention";
 					</tbody>
 				</table>
 			</div>
- 		</div> 		 		
+ 		</div>
+        <div class="col-xs-1"></div>
 	</div>
 	<?php include('./common/body_down.php'); ?>
 </body>

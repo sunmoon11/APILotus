@@ -91,25 +91,25 @@ if (in_array(4, $features))
 												<li><a class="crm_tab_label small" href="./affiliate.php">Affiliate Report</a></li>
 											<?php } ?>
 											<?php if ($tab_name == "Retention" || $tab_name == "Export Retention") { ?>
-												<li><a class="crm_tab_label active small" href="./retention.php">Retention Report</a></li>
+												<li><a class="crm_tab_label active small" href="./retention.php">Initial's Report</a></li>
 											<?php } else { ?>
-												<li><a class="crm_tab_label small" href="./retention.php">Retention Report</a></li>
+												<li><a class="crm_tab_label small" href="./retention.php">Initial's Report</a></li>
 											<?php } ?>
                                             <?php if ($tab_name == "Rebill") { ?>
                                                 <li><a class="crm_tab_label active small" href="./rebill.php">Rebill Report</a></li>
                                             <?php } else { ?>
                                                 <li><a class="crm_tab_label small" href="./rebill.php">Rebill Report</a></li>
                                             <?php } ?>
-											<?php if ($tab_name == "Sales") { ?>
-												<li><a class="crm_tab_label active small" href="./sales.php">Sales Report</a></li>
-											<?php } else { ?>
-												<li><a class="crm_tab_label small" href="./sales.php">Sales Report</a></li>
-											<?php } ?>
-											<?php if ($tab_name == "Alerts") { ?>
-												<li><a class="crm_tab_label active small" href="./alerts.php">Alerts Report</a></li>
-											<?php } else { ?>
-												<li><a class="crm_tab_label small" href="./alerts.php">Alerts Report</a></li>
-											<?php } ?>
+<!--											--><?php //if ($tab_name == "Sales") { ?>
+<!--												<li><a class="crm_tab_label active small" href="./sales.php">Sales Report</a></li>-->
+<!--											--><?php //} else { ?>
+<!--												<li><a class="crm_tab_label small" href="./sales.php">Sales Report</a></li>-->
+<!--											--><?php //} ?>
+<!--											--><?php //if ($tab_name == "Alerts") { ?>
+<!--												<li><a class="crm_tab_label active small" href="./alerts.php">Alerts Report</a></li>-->
+<!--											--><?php //} else { ?>
+<!--												<li><a class="crm_tab_label small" href="./alerts.php">Alerts Report</a></li>-->
+<!--											--><?php //} ?>
 											<li role="presentation" class="divider"></li>
 											<?php if ($userRole != '0') { ?>
 												<?php if ($tab_name == "CRM Management") { ?>
@@ -131,13 +131,6 @@ if (in_array(4, $features))
 													<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_alert.php">Alert Percentage Levels Setting</a></li>
 												<?php } else { ?>
 													<li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_alert.php">Alert Percentage Levels Setting</a></li>
-												<?php } ?>
-											<?php } ?>
-											<?php if ($userRole == '9') { ?>
-												<?php if ($tab_name == "Payment Management") { ?>
-													<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_payment.php">Payment Management Setting</a></li>
-												<?php } else { ?>
-													<li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_payment.php">Payment Management Setting</a></li>
 												<?php } ?>
 											<?php } ?>
 											<?php if ($tab_name == "Accounts") { ?>
@@ -166,25 +159,25 @@ if (in_array(4, $features))
 											<li class="crm_tab_left"><a class="crm_tab_label small" href="./affiliate.php">Affiliate Report</a></li>
 										<?php } ?>
 										<?php if ($tab_name == "Retention" || $tab_name == "Export Retention") { ?>
-											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./retention.php">Retention Report</a></li>
+											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./retention.php">Initial's Report</a></li>
 										<?php } else { ?>
-											<li class="crm_tab_left"><a class="crm_tab_label small" href="./retention.php">Retention Report</a></li>
+											<li class="crm_tab_left"><a class="crm_tab_label small" href="./retention.php">Initial's Report</a></li>
 										<?php } ?>
                                         <?php if ($tab_name == "Rebill") { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./rebill.php">Rebill Report</a></li>
                                         <?php } else { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./rebill.php">Rebill Report</a></li>
                                         <?php } ?>
-										<?php if ($tab_name == "Sales") { ?>
-											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./sales.php">Sales Report</a></li>
-										<?php } else { ?>
-											<li class="crm_tab_left"><a class="crm_tab_label small" href="./sales.php">Sales Report</a></li>
-										<?php } ?>
-										<?php if ($tab_name == "Alerts") { ?>
-											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./alerts.php">Alerts Report</a></li>
-										<?php } else { ?>
-											<li class="crm_tab_left"><a class="crm_tab_label small" href="./alerts.php">Alerts Report</a></li>
-										<?php } ?>
+<!--										--><?php //if ($tab_name == "Sales") { ?>
+<!--											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./sales.php">Sales Report</a></li>-->
+<!--										--><?php //} else { ?>
+<!--											<li class="crm_tab_left"><a class="crm_tab_label small" href="./sales.php">Sales Report</a></li>-->
+<!--										--><?php //} ?>
+<!--										--><?php //if ($tab_name == "Alerts") { ?>
+<!--											<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./alerts.php">Alerts Report</a></li>-->
+<!--										--><?php //} else { ?>
+<!--											<li class="crm_tab_left"><a class="crm_tab_label small" href="./alerts.php">Alerts Report</a></li>-->
+<!--										--><?php //} ?>
 										</ul>
 									</li>
 								<?php if ($tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "CRM Management") { ?>
@@ -215,13 +208,6 @@ if (in_array(4, $features))
 													<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_alert.php">Alert Percentage Levels</a></li>
 												<?php } else { ?>
 													<li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_alert.php">Alert Percentage Levels</a></li>
-												<?php } ?>
-											<?php } ?>
-											<?php if ($userRole == '9') { ?>
-												<?php if ($tab_name == "Payment Management") { ?>
-													<li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_payment.php">Payment Management</a></li>
-												<?php } else { ?>
-													<li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_payment.php">Payment Management</a></li>
 												<?php } ?>
 											<?php } ?>
 											<?php if ($tab_name == "Accounts") { ?>
@@ -284,9 +270,9 @@ if (in_array(4, $features))
 			                                        <li class="crm_tab_left"><a class="crm_tab_label small" href="./konnektive_order_summary.php">Order Summary Report</a></li>
 			                                    <?php } ?>
 			                                    <?php if ($tab_name == "Konnektive Retention") { ?>
-			                                        <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./konnektive_retention.php">Retention Report</a></li>
+			                                        <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./konnektive_retention.php">Initial's Report</a></li>
 			                                    <?php } else { ?>
-			                                        <li class="crm_tab_left"><a class="crm_tab_label small" href="./konnektive_retention.php">Retention Report</a></li>
+			                                        <li class="crm_tab_left"><a class="crm_tab_label small" href="./konnektive_retention.php">Initial's Report</a></li>
 			                                    <?php } ?>
 											</ul>
 										</li>
@@ -341,6 +327,9 @@ if (in_array(4, $features))
 									<ul class="dropdown-menu dropdown-menu-right crm_setting_dropdown" role="menu">
 										<li class="crm_tab_left"><a class="crm_tab_label small" href="#" style="background: #f9f9f9 !important; color: #00b9ab !important"><b><?php echo $userEmail; ?></b><br/><?php echo $user_name; ?></a></li>
 										<li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_accounts.php">My Profile</a></li>
+                                        <?php if ($userRole == '9') { ?>
+                                        <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_payment.php">Payment Management</a></li>
+                                        <?php } ?>
 										<li class="crm_tab_left"><a class="crm_tab_label small" href="./logout.php">Logout</a></li>
 									</ul>
 								</li>

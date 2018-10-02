@@ -9062,7 +9062,7 @@ class DBApi
             return false;
 
         try {
-            $query = 'DELETE FROM ' . $this->subdomain . '_crm_trial_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $query = 'DELETE FROM ' . $this->subdomain . '_rebill_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
         } catch (Exception $e) {
             return false;
@@ -9070,7 +9070,7 @@ class DBApi
 
         $current_time = date('Y-m-d H:i:s');
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_crm_trial_result (id, crm_id, from_date, to_date, timestamp, result) VALUES (null,'
+            $query = 'INSERT INTO ' . $this->subdomain . '_rebill_result (id, crm_id, from_date, to_date, timestamp, result) VALUES (null,'
                 . $crmID . ',"'. $fromDate . '","' . $toDate . '","' . $current_time . '","' . str_replace('"', "'", $trial_result) . '")';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
@@ -9088,7 +9088,7 @@ class DBApi
             return false;
 
         try {
-            $query = 'SELECT result FROM ' . $this->subdomain . '_crm_trial_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
+            $query = 'SELECT result FROM ' . $this->subdomain . '_rebill_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $crm_count = mysqli_num_rows($result);
@@ -9109,7 +9109,7 @@ class DBApi
 
         $ret = array();
         try {
-            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_trial_result WHERE from_date="' . $fromDate . '" AND to_date="' . $toDate . '" ORDER BY crm_id';
+            $query = 'SELECT * FROM ' . $this->subdomain . '_rebill_result WHERE from_date="' . $fromDate . '" AND to_date="' . $toDate . '" ORDER BY crm_id';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $crm_count = mysqli_num_rows($result);
