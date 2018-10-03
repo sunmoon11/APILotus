@@ -72,6 +72,7 @@ $tab_name = "Rebill";
             </div>
             <div class="alert alert-warning rebill_alert" role="alert" style="display:none"></div>
             <div class="row crm_board_row">
+                <div class="col-xs-1"></div>
                 <div class="col-xs-7">
                     <div class="input-daterange input-group" id="datepicker">
                         <span class="input-group-btn">
@@ -114,7 +115,7 @@ $tab_name = "Rebill";
                         </span>
                     </div>
                 </div>
-                <div class="col-xs-5" style="text-align:right; height:30px; padding-right: 30px;">
+                <div class="col-xs-4" style="text-align:right; height:30px; padding-right: 30px;">
                     <button class="btn btn-default btn-sm btn_export_quick" type="button" style="width:120px;margin-right: 10px"><span class="glyphicon glyphicon-export" aria-hidden="true"></span>&nbsp;&nbsp;Quick Export</button>
                     <button class="btn btn-default btn-sm btn_export_full" type="button" style="width:120px;margin-right: 10px"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;Full Export</button>
                 </div>

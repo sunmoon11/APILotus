@@ -1890,9 +1890,9 @@ class LLCrmHook
             {
                 // cycle = 1                
                 if(strpos($sub, 'Sub-Affiliate ID'))
-                    $report[] = array($affiliateId, $affiliateLabel, $grossOrders, $netApproved, $voidFull, $partial, $voidRefund, $approvalRate, 'yes');
+                    $report[] = array($affiliateId, $affiliateLabel, $grossOrders, $netApproved, $voidFull, $partial, $voidRefund, $approvalRate, 'yes', $declined);
                 else
-                    $report[] = array($affiliateId, $affiliateLabel, $grossOrders, $netApproved, $voidFull, $partial, $voidRefund, $approvalRate, 'no');                
+                    $report[] = array($affiliateId, $affiliateLabel, $grossOrders, $netApproved, $voidFull, $partial, $voidRefund, $approvalRate, 'no', $declined);
                 
             }   
             else if($cycleCount == 2)

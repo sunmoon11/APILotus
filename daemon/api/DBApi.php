@@ -9647,4 +9647,71 @@ class DBApi
             return null;
         }
     }
+
+    public function addInitialReport($crmID, $fromDate, $toDate, $initial_result)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'DELETE FROM ' . $this->subdomain . '_initial_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+        } catch (Exception $e) {
+            return false;
+        }
+
+        $current_time = date('Y-m-d H:i:s');
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_initial_result (id, crm_id, from_date, to_date, timestamp, result) VALUES (null,'
+                . $crmID . ',"'. $fromDate . '","' . $toDate . '","' . $current_time . '","' . str_replace('"', "'", $initial_result) . '")';
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            if ($result === TRUE)
+                return true;
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+    public function getInitialReportById($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT result FROM ' . $this->subdomain . '_initial_result WHERE crm_id=' . $crmID . ' AND from_date="' . $fromDate . '" AND to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                return $row['result'];
+            }
+            return false;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function getInitialReports($fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        $ret = array();
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_initial_result WHERE from_date="' . $fromDate . '" AND to_date="' . $toDate . '" ORDER BY crm_id';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array($row['crm_id'], $row['result']);
+            }
+        } catch (Exception $e) {
+            return null;
+        }
+        return $ret;
+    }
 }

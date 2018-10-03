@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: zaza3
+ * Date: 10/2/2018
+ * Time: 1:44 PM
+ */
 
 require_once '../api/DBApi.php';
 require_once '../api/LLCrmHook.php';
@@ -15,11 +21,6 @@ $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
 {
     echo json_encode(array('no_cookie'));
-    return;
-}
-$result = $dbApi->getInitialReportById($crmID, $fromDate, $toDate);
-if (false != $result && null != $result) {
-    echo json_encode(array('success', $crmID, json_decode(str_replace("'", '"', $result))));
     return;
 }
 
@@ -66,6 +67,13 @@ if ($crmList != null)
             }
         }
 
+        $db_result = $dbApi->getInitialReportById($crmID, $fromDate, $toDate);
+        if (false != $db_result && null != $db_result) {
+            if (str_replace("'", '"', $db_result) == json_encode($initial_results)) {
+                echo json_encode(array('success', $crmID, 'same result'));
+                return;
+            }
+        }
         $dbApi->addInitialReport($crmID, $fromDate, $toDate, json_encode($initial_results));
         echo json_encode(array('success', $crmID, $initial_results));
         return;

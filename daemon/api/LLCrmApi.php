@@ -269,6 +269,23 @@ class LLCrmApi {
 
 		return $campaigns;
 	}
+
+    public function getSelectedCampaigns($crmId)
+    {
+        $ret = array();
+
+        $campaigns = $this->getAllCampaign($crmId);
+        $campaigns['labels'] = $this->getLabelsOfCampaigns($crmId, $campaigns['ids']);
+
+        foreach ($campaigns['labels'] as $index=>$campaign_label) {
+            if ($campaign_label) {
+                $ret[] = $campaigns['ids'][$index];
+            }
+        }
+
+        return $ret;
+    }
+
 	/*
 	*	A method to get the labels of campaigns
 	*	@return array of labels

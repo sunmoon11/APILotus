@@ -68,13 +68,13 @@ jQuery(document).ready(function(t) {
                     to_date: t("#to_date").val()
                 },
                 success: function(e) {
+                    show_status("list", "", false);
                     var data = jQuery.parseJSON(e);
                     if ("error" === data[0])
                         show_alert("Cannot load rebill information.");
                     else if ("no_cookie" === data[0])
                         return void (window.location.href = "../../admin/login.php");
                     else {
-                        show_status("list", "", false);
                         t("#id_head_sign").html("");
                         var total_length = data[2].length;
 

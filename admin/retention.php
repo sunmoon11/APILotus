@@ -120,7 +120,7 @@ $tab_name = "Retention";
 				<table class="table table-hover table_retention" style="margin-top:10px;">
 					<thead class="table_retention_head">
 						<tr>
-							<th rowspan="2" style="vertical-align:middle"><button type="button" class="btn btn-link btn-sm btn_campaign_head" id=""><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button></th>
+							<th rowspan="2" style="vertical-align:middle"></th>
 							<th rowspan="2" style="vertical-align:middle"></th>
 							<th rowspan="2" style="vertical-align:middle">Campaign (ID) Name</th>
 							<th colspan="6" style="border-left: 1px solid #dadada">Initial Cycle</th>
