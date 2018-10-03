@@ -189,8 +189,12 @@ jQuery(document).ready(function(t) {
         t(".date_toggle_button").html(r + ' <span class="caret"></span>');
         set_dates();
     });
-    t(".btn_export").click(function() {
-        var e = "./export_quick_retention.php?type=retention&user_token=" + cur_time + "&from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val() + "&crm_id=" + crm_id + "&crm_name=" + crm_name;
+    t(".btn_export_quick").click(function() {
+        var e = "./export_quick_initial.php?from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val() + "&crm_id=" + crm_id + "&crm_name=" + crm_name;
+        window.location.href = e
+    });
+    t(".btn_export_full").click(function() {
+        var e = "./export_full_initial.php?from_date=" + t("#from_date").val() + "&to_date=" + t("#to_date").val();
         window.location.href = e
     });
     t(".retention_search_button").click(function() {
