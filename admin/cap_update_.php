@@ -99,21 +99,10 @@ $tab_name = "CAP Update(Beta)";
                     </a>
                 </div>
             </div>
-            <table class="table table-hover table_cap_update" style="margin-top:10px;">
-                <thead>
-                <tr>
-                    <th>Affiliate</th>
-                    <th>AFIDs</th>
-                    <th>Offer</th>
-                    <th>Client</th>
-                    <th>Goal(%)</th>
-                    <th>Goal</th>
-                    <th>Last Updated(EST)</th>
-                </tr>
-                </thead>
-                <tbody class="table_cap_update_body">
-                </tbody>
-            </table>
+            <div class="c_top">
+                <div class="row div_cap_update_body">
+                </div>
+            </div>
         </div>
     </div>
 </div>

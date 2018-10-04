@@ -271,7 +271,7 @@ jQuery(document).ready(function(t) {
                             );
 
                             var est = new Date(goal[3]);
-                            est.setHours(est.getHours() - 5);
+                            est.setHours(est.getHours() - 4);
                             $("#updated_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
                                 format_date(est.getFullYear(), est.getMonth() + 1, est.getDate()) + ' ' +
                                 format_time(est.getHours(), est.getMinutes(), est.getSeconds())
