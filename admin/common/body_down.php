@@ -28,6 +28,7 @@
 <?php if ($tab_name == "Alert Percentage Levels") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_alert.min.js\"></script>"; ?>
 <?php if ($tab_name == "Payment Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_payment.min.js\"></script>"; ?>
 <?php if ($tab_name == "CAP Update") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update.js\"></script>"; ?>
+<?php if ($tab_name == "CAP Update(Beta)") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update_.js\"></script>"; ?>
 <?php if ($tab_name == "Offers") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_offer.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate Settings") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_affiliation.js\"></script>"; ?>
 <?php if ($tab_name == "Konnektive Order Summary") echo "<script type=\"text/javascript\" src=\"../js/admin/konnektive_order_summary.min.js\"></script>"; ?>
