@@ -1,14 +1,14 @@
-			</div> <!-- crm_content -->
-		</div>	<!-- container -->
-	</div>	<!-- content_wrap -->
-	<div id="footer">
-	    © <?php echo date("Y");?> API Lotus Inc. All Rights Reserved.
-	</div>
+</div> <!-- crm_content -->
+</div>	<!-- container -->
+</div>	<!-- content_wrap -->
+<div id="footer">
+    © <?php echo date("Y");?> API Lotus Inc. All Rights Reserved.
+</div>
 </div>	<!-- wrap_body -->
 
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <?php if ($tab_name == "Dashboard") { ?>
-<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
 <?php } ?>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../bootstrap/datepicker/js/bootstrap-datepicker.min.js"></script>
@@ -28,7 +28,6 @@
 <?php if ($tab_name == "Alert Percentage Levels") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_alert.min.js\"></script>"; ?>
 <?php if ($tab_name == "Payment Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_payment.min.js\"></script>"; ?>
 <?php if ($tab_name == "CAP Update") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update.js\"></script>"; ?>
-<?php if ($tab_name == "CAP Update(Beta)") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update_.js\"></script>"; ?>
 <?php if ($tab_name == "Offers") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_offer.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate Settings") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_affiliation.js\"></script>"; ?>
 <?php if ($tab_name == "Konnektive Order Summary") echo "<script type=\"text/javascript\" src=\"../js/admin/konnektive_order_summary.min.js\"></script>"; ?>

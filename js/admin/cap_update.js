@@ -153,49 +153,40 @@ jQuery(document).ready(function(t) {
                                             return void (window.location.href = "../../admin/login.php");
 
                                         cap_update_list = jQuery.parseJSON(e);
+
                                         var html = "";
+
                                         var affiliate_goal_id = -1;
                                         for (var i = 0; i < cap_update_list.length; i++) {
                                             var affiliate_goal = cap_update_list[i];
                                             // ["6", "2", "3", "200", "Full Zoom Media", "12,58", "Vital X", "Falcor CRM", "2500"]
                                             if (affiliate_goal_id != affiliate_goal[1]) {
+                                                if (-1 !== affiliate_goal_id)
+                                                    html += '</div></div></div>';
                                                 affiliate_goal_id = affiliate_goal[1];
-                                                html += '<tr>';
-                                                html += '<td><span class="payment_badge payment_badge_blue">' + affiliate_goal[4] + '</span></td>';
+
+                                                html += '<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 c_item"><div>';
+                                                html += '<h4 style="color: #6772e5;"><b>' + affiliate_goal[4] + '</b></h4>';
                                                 if (null == affiliate_goal[5])
-                                                    html += '<td></td>';
+                                                    html += '<p>AFIDS:</p>';
                                                 else
-                                                    html += '<td>' + affiliate_goal[5] + '</td>';
-                                                html += '<td></td>';
-                                                html += '<td></td>';
-                                                html += '<td></td>';
-                                                html += '<td></td>';
-                                                html += '<td></td>';
-                                                html += '</tr>';
-                                            }
-                                            html += '<tr>';
-                                            html += "<td></td>";
-                                            html += "<td></td>";
-                                            html += "<td>" + affiliate_goal[6] + "</td>";
+                                                    html += '<p>AFIDS: ' + affiliate_goal[5] + '</p>';
 
-                                            for (var j = 0; j < crm_sales_goal.length; j++) {
-                                                var crm = jQuery.parseJSON(crm_sales_goal[j]);
-                                                if (affiliate_goal[7] == crm[1]) {
-                                                    if ("no_result" == crm[0])
-                                                        html += "<td>" + affiliate_goal[8] + ' (0/' + affiliate_goal[9] + ')' + "</td>";
-                                                    else
-                                                        html += "<td>" + affiliate_goal[8] + ' (' + crm[3][0][3] + '/' + affiliate_goal[9] + ')' + "</td>";
-                                                    break;
-                                                }
+                                                html += '<h4 style="color: #6772e5">Sales Progress</h4>';
+                                                html += '<div class="row c_cnt_header">';
+                                                html += '<div style="color: #6772e5" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">OFFER</div>';
+                                                html += '<div style="color: #6772e5" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">PROGRESS</div>';
+                                                html += '<div style="color: #6772e5" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">LAST UPDATED</div>';
+                                                html += '</div>';
+                                                html += '<div class="c_cnt_list">';
                                             }
-
-                                            html += '<td><div class="bar-main-container"><div id="bar_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '" class="bar-percentage">0%</div><div class="bar-container"><div class="bar"></div></div></div></td>';
-                                            html += '<td id="capgoal_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '">' + '0/' + affiliate_goal[3] + '&nbsp;&nbsp;';
-                                            html += '<span>' + loading_gif + '</span></td>';
-                                            html += '<td id="updated_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '"></td>';
-                                            html += '</tr>';
+                                            html += '<div class="row">';
+                                            html += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">' + affiliate_goal[6] + '</div>';
+                                            html += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="capgoal_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '">0/' + affiliate_goal[3] + '</div>';
+                                            html += '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" id="updated_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '"></div>';
+                                            html += '</div>';
                                         }
-                                        t(".table_cap_update_body").html(html);
+                                        t(".div_cap_update_body").html(html);
 
                                         for (i = 0; i < crm_list.length; i++) {
                                             get_cap_update_goal_list(crm_list[i][0]);
@@ -267,7 +258,7 @@ jQuery(document).ready(function(t) {
                                 }
                             }
                             $("#capgoal_" + affiliate_goal[1] + '_' + affiliate_goal[2]).html(
-                                count.toString() + '/' + affiliate_goal[3]
+                                '[' + count.toString() + '/' + affiliate_goal[3] + ']'
                             );
 
                             var est = new Date(goal[3]);
@@ -276,21 +267,6 @@ jQuery(document).ready(function(t) {
                                 format_date(est.getFullYear(), est.getMonth() + 1, est.getDate()) + ' ' +
                                 format_time(est.getHours(), est.getMinutes(), est.getSeconds())
                             );
-
-                            var percent = 0 != affiliate_goal[3] ? Math.round(100 * count / affiliate_goal[3]) : 0;
-                            var C = t("#bar_" + affiliate_goal[1] + '_' + affiliate_goal[2]);
-                            t({
-                                countNum: percent
-                            }).animate({
-                                countNum: percent
-                            }, {
-                                duration: 2e3,
-                                easing: "linear",
-                                step: function () {
-                                    var t = this.countNum + "%";
-                                    C.text(t) && C.siblings().children().css("width", t)
-                                }
-                            });
                         }
                     }
                 }
