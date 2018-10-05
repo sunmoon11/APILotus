@@ -40,8 +40,6 @@ if ($crmList != null)
             $minus_day = '-' . ($weekday) . ' day';
             $last_week_end = date('m/d/Y', strtotime($minus_day));
         }
-        $month_start = date('m/01/Y');
-        $year_start = date('01/01/Y');
 
         $date_today = $llcrmHook->getCrmSalesBreakDown($token, $today, $today, $crmID);
         $dbApi->addCrmResults($crmID, $crmGoal, $date_today, $today, $today);
@@ -61,5 +59,3 @@ if ($crmList != null)
         return true;
     }
 }
-
-?>

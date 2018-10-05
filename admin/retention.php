@@ -98,7 +98,7 @@ $tab_name = "Retention";
 									<li><a href="#" id="date_yesterday">Yesterday</a></li>
 									<li><a href="#" id="date_thisweek">Week To Date</a></li>
 									<li><a href="#" id="date_thismonth">Month To Date</a></li>
-									<li><a href="#" id="date_thisyear">Year To Date</a></li>
+<!--									<li><a href="#" id="date_thisyear">Year To Date</a></li>-->
 									<li><a href="#" id="date_lastweek">Last Week</a></li>
 									<li><a href="#" id="date_custom">Custom</a></li>
 								</ul>

@@ -9714,4 +9714,27 @@ class DBApi
         }
         return $ret;
     }
+
+    public function checkInitialReport($crmID, $fromDate, $toDate)
+    {
+        if (!$this->checkConnection())
+            return 'error';
+
+        try {
+            $query = 'SELECT COUNT(crm_id) FROM ' . $this->subdomain . '_initial_result WHERE crm_id=' . $crmID . ' and from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $count = $row['COUNT(crm_id)'];
+                if ((int)$count > 0)
+                    return true;
+            }
+
+            return false;
+        } catch (Exception $e) {
+            return 'error';
+        }
+    }
 }

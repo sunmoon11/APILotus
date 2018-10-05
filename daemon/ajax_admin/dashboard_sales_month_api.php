@@ -31,7 +31,6 @@ if ($crmList != null)
     if (($token = $llcrmHook->login($crmID, $crmUrl, $userName, $password)) != null)
     {
         $today = date('m/d/Y');
-        $yesterday = date('m/d/Y', strtotime('-1 day'));
         $month_start = date('m/01/Y');
 
         $date_thismonth = $llcrmHook->getCrmSalesBreakDown($token, $month_start, $today, $crmID);
@@ -39,5 +38,3 @@ if ($crmList != null)
         return true;
     }
 }
-
-?>
