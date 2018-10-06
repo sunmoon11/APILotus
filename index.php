@@ -3,6 +3,13 @@ require_once './daemon/api/DBApi.php';
 
 // get subdomain from request
 //$subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+
+$domain = $_SERVER['HTTP_HOST'];
+if ('www.apilotus.com' == $domain) {
+    header("Location: https://dash.apilotus.com/");
+    return;
+}
+
 $subdomain = 'primary';
 
 // check if subdomain registered

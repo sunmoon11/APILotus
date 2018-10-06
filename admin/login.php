@@ -4,6 +4,13 @@ session_start();
 
 include_once '../daemon/api/DBApi.php';
 //$subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+
+$domain = $_SERVER['HTTP_HOST'];
+if ('www.apilotus.com' == $domain or 'primary.apilotus.com' == $domain) {
+    header("Location: https://dash.apilotus.com/admin/login.php");
+    return;
+}
+
 $subdomain = 'primary';
 
 
