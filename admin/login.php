@@ -6,8 +6,8 @@ include_once '../daemon/api/DBApi.php';
 //$subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
 
 $domain = $_SERVER['HTTP_HOST'];
-if ('www.apilotus.com' == $domain or 'primary.apilotus.com' == $domain) {
-    header("Location: https://dash.apilotus.com/admin/login.php");
+if ('apilotus.com' == $domain or 'www.apilotus.com' == $domain or 'primary.apilotus.com' == $domain) {
+    header("Location: https://www.google.com");
     return;
 }
 

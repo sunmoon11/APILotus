@@ -2,6 +2,11 @@
 
 include_once '../daemon/api/DBApi.php';
 
+$domain = $_SERVER['HTTP_HOST'];
+if ('apilotus.com' == $domain or 'www.apilotus.com' == $domain or 'primary.apilotus.com' == $domain) {
+    header("Location: https://www.google.com");
+    return;
+}
 
 if (isset($_POST['signin']))
 {
