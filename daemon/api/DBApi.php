@@ -9328,7 +9328,7 @@ class DBApi
         }
     }
 
-    public function getCapUpdate($fromDate, $toDate)
+    public function getCapUpdate()
     {
         if (!$this->checkConnection())
             return null;
@@ -9342,8 +9342,6 @@ class DBApi
                           primary_affiliate_goal pag
                       LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
                       LEFT JOIN (SELECT po.*, pca.crm_name, pca.sales_goal FROM primary_offer po LEFT JOIN primary_crm_account pca ON po.crm_id=pca.id) po ON pag.offer_id = po.id
-                      WHERE
-                          from_date = "' . $fromDate . '" AND to_date = "' . $toDate . '"
                       ORDER BY 2, 3';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
@@ -9382,14 +9380,14 @@ class DBApi
         }
     }
 
-    public function getAffiliationGoal($fromDate, $toDate)
+    public function getAffiliationGoal()
     {
         if (!$this->checkConnection())
             return null;
 
         $ret = array();
         try {
-            $query = 'SELECT * FROM ' . $this->subdomain . '_affiliate_goal WHERE from_date="' . $fromDate . '" and to_date="' . $toDate . '"';
+            $query = 'SELECT * FROM ' . $this->subdomain . '_affiliate_goal';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $count = mysqli_num_rows($result);
@@ -9461,13 +9459,13 @@ class DBApi
         }
     }
 
-    public function addAffiliationGoal($affiliate_id, $offer_id, $goal, $from_date, $to_date)
+    public function addAffiliationGoal($affiliate_id, $offer_id, $goal)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ', ' . $offer_id . ', "' . $from_date . '", "' . $to_date . '", '. $goal . ')';
+            $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $goal . ')';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             if ($result === TRUE) {
@@ -9480,33 +9478,14 @@ class DBApi
         }
     }
 
-    public function editAffiliationGoal($affiliate_goal_id, $goal)
-    {
-        if (!$this->checkConnection())
-            return false;
-
-        try {
-            $query = 'UPDATE ' . $this->subdomain . '_affiliate_goal SET goal=' . $goal . ' WHERE id=' . $affiliate_goal_id;
-
-            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-            if ($result === TRUE) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    public function editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals, $from_date, $to_date)
+    public function editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals)
     {
         if (!$this->checkConnection())
             return false;
 
         foreach ($offer_ids as $index=>$offer_id) {
             try {
-                $query = 'SELECT id FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id . ' AND offer_id=' . $offer_id . ' AND from_date="' . $from_date . '" AND to_date="' . $to_date . '"';
+                $query = 'SELECT id FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id . ' AND offer_id=' . $offer_id;
                 $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
                 $count = mysqli_num_rows($result);
@@ -9518,7 +9497,7 @@ class DBApi
                     $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
                 }
                 else {
-                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ', ' . $offer_id . ', "' . $from_date . '", "' . $to_date . '", '. $offer_goals[$index] . ')';
+                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ')';
                     $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
                 }
             } catch (Exception $e) {

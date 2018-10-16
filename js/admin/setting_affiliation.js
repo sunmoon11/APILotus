@@ -97,58 +97,47 @@ jQuery(document).ready(function (t) {
     function get_affiliation_list() {
         show_waiting("main", true);
         t(".table_affiliation_body").html("");
-        if ("" == t("#from_date").val()) {
-            show_alert("main", "Please select FROM DATE.");
-        }
-        else if ("" == t("#to_date").val()) {
-            show_alert("main", "Please select TO DATE.");
-        }
-        else {
-            t.ajax({
-                type: "GET",
-                url: "../daemon/ajax_admin/setting_affiliation_list.php",
-                data: {
-                    from_date: t("#from_date").val(),
-                    to_date: t("#to_date").val()
-                },
-                success: function (e) {
-                    show_waiting("main", false);
-                    if ("no_cookie" === e)
-                        return void (window.location.href = "../../admin/login.php");
+        t.ajax({
+            type: "GET",
+            url: "../daemon/ajax_admin/setting_affiliation_list.php",
+            data: {},
+            success: function (e) {
+                show_waiting("main", false);
+                if ("no_cookie" === e)
+                    return void (window.location.href = "../../admin/login.php");
 
-                    results = jQuery.parseJSON(e);
-                    var html = "";
-                    for (var i = 0; i < results.length; i++) {
-                        var affiliate = results[i];
+                results = jQuery.parseJSON(e);
+                var html = "";
+                for (var i = 0; i < results.length; i++) {
+                    var affiliate = results[i];
+                    html += '<tr>';
+                    html += '<td><button type="button" class="btn btn-link btn-sm btn_affiliation_edit payment_badge_blue" id="aedit_' + i + '" data-toggle="modal" data-target="#affiliation_edit_modal" style="font-size: inherit">' + affiliate[0][1] + '</div></button>';
+                    if (null == affiliate[0][2])
+                        html += '<td></td>';
+                    else
+                        html += '<td style="vertical-align: middle">' + affiliate[0][2] + '</td>';
+                    html += '<td></td>';
+                    html += '<td></td>';
+                    html += '<td><button type="button" class="btn btn-link btn-sm btn_affiliation_goal_edit" id="gedit_' + i + '" data-toggle="modal" data-target="#affiliation_goal_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button></td>';
+                    html += '</tr>';
+                    for (var j = 0; j < affiliate[1].length; j++) {
+                        var offer = affiliate[1][j];
                         html += '<tr>';
-                        html += '<td><button type="button" class="btn btn-link btn-sm btn_affiliation_edit payment_badge_blue" id="aedit_' + i + '" data-toggle="modal" data-target="#affiliation_edit_modal" style="font-size: inherit">' + affiliate[0][1] + '</div></button>';
-                        if (null == affiliate[0][2])
-                            html += '<td></td>';
-                        else
-                            html += '<td style="vertical-align: middle">' + affiliate[0][2] + '</td>';
-                        html += '<td></td>';
-                        html += '<td></td>';
-                        html += '<td><button type="button" class="btn btn-link btn-sm btn_affiliation_goal_edit" id="gedit_' + i + '" data-toggle="modal" data-target="#affiliation_goal_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button></td>';
+                        html += "<td></td>";
+                        html += "<td></td>";
+                        html += "<td>" + offer[3] + "</td>";
+                        html += "<td>" + offer[4] + "</td>";
+                        html += "<td>" + offer[1] + "</td>";
                         html += '</tr>';
-                        for (var j = 0; j < affiliate[1].length; j++) {
-                            var offer = affiliate[1][j];
-                            html += '<tr>';
-                            html += "<td></td>";
-                            html += "<td></td>";
-                            html += "<td>" + offer[3] + "</td>";
-                            html += "<td>" + offer[4] + "</td>";
-                            html += "<td>" + offer[1] + "</td>";
-                            html += '</tr>';
-                        }
                     }
-                    t(".table_affiliation_body").html(html);
-                },
-                failure: function (t) {
-                    show_waiting("main", false);
-                    show_alert("main", "Cannot load affiliate goal information.");
                 }
-            })
-        }
+                t(".table_affiliation_body").html(html);
+            },
+            failure: function (t) {
+                show_waiting("main", false);
+                show_alert("main", "Cannot load affiliate goal information.");
+            }
+        })
     }
 
     function add_affiliate() {
@@ -234,9 +223,7 @@ jQuery(document).ready(function (t) {
             data: {
                 affiliate_id: affiliation_goal_id,
                 offer_ids: offer_ids,
-                offer_goals: offer_goals,
-                from_date: $("#from_date").val(),
-                to_date: $("#to_date").val()
+                offer_goals: offer_goals
             },
             success: function (status) {
                 show_waiting("main", false);
@@ -334,21 +321,21 @@ jQuery(document).ready(function (t) {
     }
 
 
-    t("#from_date").datepicker({});
-    t("#to_date").datepicker({});
-    t("#affiliation_date").datepicker({});
-    t("#affiliation_date").change(function () {
-        var cur_date = new Date($(this).val());
-        var r = cur_date.getDate() + 1;
-        0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
-        cur_date.setDate(r);
-        from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-        r = cur_date.getDate() + 6;
-        cur_date.setDate(r);
-        to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-        t("#from_date").val(from_date);
-        t("#to_date").val(to_date);
-    });
+    // t("#from_date").datepicker({});
+    // t("#to_date").datepicker({});
+    // t("#affiliation_date").datepicker({});
+    // t("#affiliation_date").change(function () {
+    //     var cur_date = new Date($(this).val());
+    //     var r = cur_date.getDate() + 1;
+    //     0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
+    //     cur_date.setDate(r);
+    //     from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
+    //     r = cur_date.getDate() + 6;
+    //     cur_date.setDate(r);
+    //     to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
+    //     t("#from_date").val(from_date);
+    //     t("#to_date").val(to_date);
+    // });
     t(".affiliation_search_button").click(function () {
         get_affiliation_list();
     });
@@ -495,7 +482,7 @@ jQuery(document).ready(function (t) {
     var affiliate_offer_id = -1;
     var selected_offer_id = -1;
 
-    set_dates();
+    // set_dates();
     get_offer_list();
     get_affiliation_list();
     get_affiliate_offer_id();

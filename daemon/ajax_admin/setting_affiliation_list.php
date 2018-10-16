@@ -9,9 +9,6 @@
 require_once '../api/DBApi.php';
 
 
-$fromDate = $_GET['from_date'];
-$toDate = $_GET['to_date'];
-
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
 {
@@ -22,7 +19,7 @@ if ($dbApi->getSubDomain() == '')
 $affiliates = $dbApi->getAllAffiliations();
 $offers = $dbApi->getAllOffersWithCRMGoal();
 $all_offers = $dbApi->getAllOffersOfAffiliates();
-$affiliates_goal = $dbApi->getAffiliationGoal($fromDate, $toDate);
+$affiliates_goal = $dbApi->getAffiliationGoal();
 
 $result = array();
 
@@ -48,5 +45,3 @@ foreach ($affiliates as $affiliate) {
 }
 
 echo json_encode($result);
-
-?>

@@ -72,33 +72,6 @@ jQuery(document).ready(function(t) {
         t("#to_date").val(to_date);
     }
 
-    function get_dates() {
-        var cur_date = new Date;
-        var from_date = '';
-        var to_date = '';
-        if ("date_today" == date_type || "date_yesterday" == date_type) {
-            var r = cur_date.getDate() + 1;
-            0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
-            cur_date.setDate(r);
-            from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-            r = cur_date.getDate() + 6;
-            cur_date.setDate(r);
-            to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-        }
-        else if ("date_thisweek" == date_type) {
-            var r = cur_date.getDate() + 7;
-            0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
-            cur_date.setDate(r);
-            to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
-            from_date = t("#from_date").val();
-        }
-        else if ("date_lastweek" == date_type || "date_custom" == date_type) {
-            from_date = t("#from_date").val();
-            to_date = t("#to_date").val();
-        }
-        return [from_date, to_date];
-    }
-
     function get_cap_update_list() {
         show_waiting(true);
         t.ajax({
@@ -139,14 +112,10 @@ jQuery(document).ready(function(t) {
 
                                 show_waiting(true);
                                 t(".table_affiliation_body").html("");
-                                var from_to_date = get_dates();
                                 t.ajax({
                                     type: "GET",
                                     url: "../daemon/ajax_admin/cap_update_list.php",
-                                    data: {
-                                        from_date: from_to_date[0],
-                                        to_date : from_to_date[1]
-                                    },
+                                    data: {},
                                     success: function(e) {
                                         show_waiting(false);
                                         if ("no_cookie" === e)

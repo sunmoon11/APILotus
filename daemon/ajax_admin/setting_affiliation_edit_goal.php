@@ -11,8 +11,6 @@ require_once '../api/DBApi.php';
 $affiliate_id = $_GET['affiliate_id'];
 $offer_ids = explode(',', $_GET['offer_ids']);
 $offer_goals = explode(',', $_GET['offer_goals']);
-$from_date = $_GET['from_date'];
-$to_date = $_GET['to_date'];
 
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
@@ -21,7 +19,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret1 = $dbApi->editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals, $from_date, $to_date);
+$ret1 = $dbApi->editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals);
 $ret2 = $dbApi->setOffersOfAffiliateID($affiliate_id, $offer_ids);
 
 if ($ret1 && $ret2)

@@ -9,9 +9,6 @@
 require_once '../api/DBApi.php';
 
 
-$fromDate = $_GET['from_date'];
-$toDate = $_GET['to_date'];
-
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
 {
@@ -19,7 +16,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$affiliates_goal = $dbApi->getCapUpdate($fromDate, $toDate);
+$affiliates_goal = $dbApi->getCapUpdate();
 
 echo json_encode($affiliates_goal);
 

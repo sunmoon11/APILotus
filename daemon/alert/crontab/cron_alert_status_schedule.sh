@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /var/www/html/APILotusCommercials/daemon/alert
+cd /var/www/html/daemon/alert
 php ./schedule.php

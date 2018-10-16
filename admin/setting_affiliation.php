@@ -81,18 +81,18 @@ $tab_name = "Affiliate Settings";
                 <div class="col-xs-1">
                 </div>
                 <div class="col-xs-7">
-                    <div class="input-daterange input-group" id="datepicker">
-                        <span class="input-group-addon calendar_label" style="border-left: 1px solid #ccc;">Date</span>
-                        <input id="affiliation_date" type="text" class="input-sm form-control"/>
-                        <span class="input-group-addon calendar_label">From</span>
-                        <input id="from_date" type="text" class="input-sm form-control" name="start"/>
-                        <span class="input-group-addon calendar_label">To</span>
-                        <input id="to_date" type="text" class="input-sm form-control" name="end"/>
-
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-sm affiliation_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
-                        </span>
-                    </div>
+<!--                    <div class="input-daterange input-group" id="datepicker">-->
+<!--                        <span class="input-group-addon calendar_label" style="border-left: 1px solid #ccc;">Date</span>-->
+<!--                        <input id="affiliation_date" type="text" class="input-sm form-control"/>-->
+<!--                        <span class="input-group-addon calendar_label">From</span>-->
+<!--                        <input id="from_date" type="text" class="input-sm form-control" name="start"/>-->
+<!--                        <span class="input-group-addon calendar_label">To</span>-->
+<!--                        <input id="to_date" type="text" class="input-sm form-control" name="end"/>-->
+<!---->
+<!--                        <span class="input-group-btn">-->
+<!--                            <button class="btn btn-default btn-sm affiliation_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>-->
+<!--                        </span>-->
+<!--                    </div>-->
                 </div>
                 <div class="col-xs-4" style="text-align:right; padding-right: 30px">
                     <button type="button" class="btn btn-default btn-sm btn_affiliation_add" data-toggle="modal" data-target="#affiliation_add_modal">
