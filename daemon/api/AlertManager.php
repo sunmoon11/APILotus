@@ -366,14 +366,16 @@ class AlertManager {
                         $subject = 'APILotus.com Initial Approvals Alert';
                     if($type == 5 || $type == 6)
                         $subject = 'APILotus.com Decline Percentage Alert';
-                    if($type == 7 || $type == 8)
+                    if($type == 7 || $type == 14 || $type == 15)
                         $subject = 'APILotus.com Step1 Sales Away From Cap Alert';
+                    if($type == 8 || $type == 16 || $type == 17 || $type == 18 || $type == 19 || $type == 20 || $type == 21 || $type == 22)
+                        $subject = 'APILotus.com Step1 Sales Over Cap Alert';
                     if($type == 9)
                         $subject = 'APILotus.com Take Rate Alert';
                     if($type == 10)
                         $subject = 'APILotus.com Tablet Take Rate Alert';
                     if($type == 11)
-                        $subject = 'APILotus.com Over Step1 CRM Cap Alert';
+                        $subject = 'APILotus.com Step1 CRM Capped Alert';
                     if($type == 12)
                         $subject = 'APILotus.com CRM Password Update Alert';
                     if($type == 13)
@@ -450,14 +452,16 @@ class AlertManager {
                         $subject = 'APILotus.com Initial Approvals Alert';
                     if($type == 5 || $type == 6)
                         $subject = 'APILotus.com Decline Percentage Alert';
-                    if($type == 7 || $type == 8)
+                    if($type == 7 || $type == 14 || $type == 15)
                         $subject = 'APILotus.com Step1 Sales Away From Cap Alert';
+                    if($type == 8 || $type == 16 || $type == 17 || $type == 18 || $type == 19 || $type == 20 || $type == 21 || $type == 22)
+                        $subject = 'APILotus.com Step1 Sales Over Cap Alert';
                     if($type == 9)
                         $subject = 'APILotus.com Take Rate Alert';
                     if($type == 10)
                         $subject = 'APILotus.com Tablet Take Rate Alert';
                     if($type == 11)
-                        $subject = 'APILotus.com Over Step1 CRM Cap Alert';
+                        $subject = 'APILotus.com Step1 CRM Capped Alert';
                     if($type == 12)
                         $subject = 'APILotus.com CRM Password Update Alert';
                     if($type == 13)
@@ -516,14 +520,16 @@ class AlertManager {
                     $subject = 'APILotus.com Initial Approvals Alert';
                 if($type == 5 || $type == 6)
                     $subject = 'APILotus.com Decline Percentage Alert';
-                if($type == 7 || $type == 8)
+                if($type == 7 || $type == 14 || $type == 15)
                     $subject = 'APILotus.com Step1 Sales Away From Cap Alert';
+                if($type == 8 || $type == 16 || $type == 17 || $type == 18 || $type == 19 || $type == 20 || $type == 21 || $type == 22)
+                    $subject = 'APILotus.com Step1 Sales Over Cap Alert';
                 if($type == 9)
                     $subject = 'APILotus.com Take Rate Alert';
                 if($type == 10)
                     $subject = 'APILotus.com Tablet Take Rate Alert';
                 if($type == 11)
-                    $subject = 'APILotus.com Over Step1 CRM Cap Alert';
+                    $subject = 'APILotus.com Step1 CRM Capped Alert';
                 if($type == 12)
                     $subject = 'APILotus.com CRM Password Update Alert';
                 if($type == 13)
@@ -645,8 +651,10 @@ class AlertManager {
             $title = 'Initial Approvals Alert';
         if($type == 5 || $type == 6)
             $title = 'Decline Percentage Alert';
-        if($type == 7 || $type == 8)
+        if($type == 7 || $type == 14 || $type == 15)
             $title = 'Step1 Sales Away From Cap Alert';
+        if($type == 8 || $type == 16 || $type == 17 || $type == 18 || $type == 19 || $type == 20 || $type == 21 || $type == 22 || $type == 23)
+            $title = 'Step1 Sales Over Cap Alert';
         if($type == 9)
             $title = 'Take Rate Alert';
         if($type == 10)
@@ -716,8 +724,10 @@ class AlertManager {
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( <= '.$data[2].')'."\r\n";
                 if($data[3] == 5 || $data[3] == 6)
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."\r\n";
-                if($data[3] == 7 || $data[3] == 8)
+                if($data[3] == 7 || $data[3] == 14 || $data[3] == 15)
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Away )'."\r\n";
+                if($data[3] == 8 || $data[3] == 16 || $data[3] == 17 || $data[3] == 18 || $data[3] == 19 || $data[3] == 20 || $data[3] == 21 || $data[3] == 22 || $data[3] == 23)
+                    $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Over )'."\r\n";
                 if($data[3] == 9)
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."\r\n";
                 if($data[3] == 10)
@@ -885,8 +895,10 @@ class AlertManager {
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( <= '.$data[2].')'."<br />";
                 if($data[3] == 5 || $data[3] == 6)
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."<br />";
-                if($data[3] == 7 || $data[3] == 8)
+                if($data[3] == 7 || $data[3] == 14 || $data[3] == 15)
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Away )'."<br />";
+                if($data[3] == 8 || $data[3] == 16 || $data[3] == 17 || $data[3] == 18 || $data[3] == 19 || $data[3] == 20 || $data[3] == 21 || $data[3] == 22 || $data[3] == 23)
+                    $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Over )'."<br />";
                 if($data[3] == 9)
                     $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."<br />";
                 if($data[3] == 10)

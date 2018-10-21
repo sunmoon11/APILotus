@@ -114,7 +114,9 @@ class AlertMethodApi {
             else if($data[3] == 2)
                 $htmlText = $htmlText.'['.$data[0].'] Step2 :'.$data[1].' ('.$data[2].')'.'<br />';
 
-            if($data[3] == 7 || $data[3] == 8)
+            if($data[3] == 7 || $data[3] == 14 || $data[3] == 15)
+                $htmlText = $htmlText.'['.$data[0].'] '.$data[2].' Step1 Sales :'.$data[1].' ('.$data[4].')'.'<br />';
+            if($data[3] == 8 || $data[3] == 16 || $data[3] == 17 || $data[3] == 18 || $data[3] == 19 || $data[3] == 20 || $data[3] == 21 || $data[3] == 22 || $data[3] == 23)
                 $htmlText = $htmlText.'['.$data[0].'] '.$data[2].' Step1 Sales :'.$data[1].' ('.$data[4].')'.'<br />';
 
         }
@@ -128,8 +130,10 @@ class AlertMethodApi {
 
         if($type == 1 || $type == 2)
             $text = 'Rebill Report'."\r\n";
-        if($type == 7 || $type == 8)
+        if($type == 7 || $type == 14 || $type == 15)
             $text = 'Step1 Sales Away From Cap Alert'."\r\n";
+        if($type == 8 || $type == 16 || $type == 17 || $type == 18 || $type == 19 || $type == 20 || $type == 21 || $type == 22)
+            $text = 'Step1 Sales Over Cap Alert'."\r\n";
         if($type == 9)
             $text = 'Take Rate Alert'."\r\n";
         if($type == 10)
@@ -147,7 +151,9 @@ class AlertMethodApi {
             else if($data[3] == 2)
                 $text = $text.'['.$data[0].'] Step2 :'.$data[1].' ('.$data[2].')'."\r\n";
 
-            if($data[3] == 7 || $data[3] == 8)
+            if($type == 7 || $type == 14 || $type == 15)
+                $text = $text.'['.$data[0].'] '.$data[2].' Step1 Sales :'.$data[1].' ('.$data[4].')'."\r\n";
+            if($type == 8 || $type == 16 || $type == 17 || $type == 18 || $type == 19 || $type == 20 || $type == 21 || $type == 22)
                 $text = $text.'['.$data[0].'] '.$data[2].' Step1 Sales :'.$data[1].' ('.$data[4].')'."\r\n";
             if($data[3] == 9)
                 $text = $text.'['.$data[0].'] Take Rate :'.$data[1].' ('.$data[2].')'."\r\n";
