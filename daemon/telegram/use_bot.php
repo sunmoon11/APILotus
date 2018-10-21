@@ -23,5 +23,5 @@ $returnBool = $tg->setData($value['sendText'], chatID);
 
 $bot = new TelegramBot();
 //$bot->sendMessage('Alert Message');
-$bot->sendMessageByID('Alert Message', '365077906');
+$bot->sendMessageByID('Alert Message', '558667560');
 

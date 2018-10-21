@@ -25,7 +25,7 @@
 <?php if ($tab_name == "CRM Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_crm.min.js\"></script>"; ?>
 <?php if ($tab_name == "Accounts") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_accounts.min.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_affiliate.min.js\"></script>"; ?>
-<?php if ($tab_name == "Alert Percentage Levels") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_alert.min.js\"></script>"; ?>
+<?php if ($tab_name == "Alert Percentage Levels") echo '<script type="text/javascript" src="../js/admin/setting_alert.js"></script>'; ?>
 <?php if ($tab_name == "Payment Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_payment.min.js\"></script>"; ?>
 <?php if ($tab_name == "CAP Update") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update.js\"></script>"; ?>
 <?php if ($tab_name == "Offers") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_offer.js\"></script>"; ?>

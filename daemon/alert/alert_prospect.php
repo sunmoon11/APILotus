@@ -85,11 +85,13 @@ function getProspectReportAndSendAlerts($name){
             $to = date('Y-m-d', strtotime($toDate));
             $timestamp = date('Y-m-d H:i:s');
             $minSales = 100;
-            $type = 11; // over crm Goal
-            $status = 0;
-            $Step1GoalTriggered = false;
+
+
             if($salesStep1 >= $minSales)
             {
+                $type = 11; // Step 1 CRM Capped
+                $status = 0;
+                $Step1GoalTriggered = false;
                 if($salesStep1 >= ($goal))
                 {
                     $status = 1;
@@ -123,93 +125,91 @@ function getProspectReportAndSendAlerts($name){
                     }
                 }
                 $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $goal, $status, $from, $to, $timestamp);
-            }
 
-            $settings = $dbApi->getAlertLevelListByCrm($crmID);
-            foreach ($settings as $setting)
-            {
-                if($salesStep1 >= $minSales)
-                {
-                    $type = 8;
-                    if($setting[2] == $type)
+                // 100, 50, 10 Step1 Sales Away From Cap
+                $types = [7, 14, 15];
+                foreach ($types as $type) {
+                    $status = 0;
+                    $Step1100Triggered = false;
+                    $setting = $dbApi->getAlertTypeByType($type);
+                    $level = explode(' ', $setting[2])[0];
+
+                    if($salesStep1 >= ($goal - $level) && ($goal > $salesStep1))
                     {
-                        // 30 Step1 Sales Away From Cap Alert
-                        $status = 0;
-                        $over30Sales = false;
-                        $Step130Triggered = false;
-                        if($salesStep1 >= ($goal - $setting[4]) && ($goal > $salesStep1))
+                        $status = 1;
+                        $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
+                        if($over30Sales == false)
                         {
-                            $status = 1;
-                            $over30Sales = true;
-                            $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
                             if($alertStatus != array())
                             {
                                 $data = $alertStatus[0];
                                 if($data[5] == 0)
                                 {
-                                    $Step130Triggered = true;
+                                    $Step1100Triggered = true;
                                 }
                             }
                             else
                             {
-                                $Step130Triggered = true;
+                                $Step1100Triggered = true;
                             }
 
-                            if($Step130Triggered)
+                            if($Step1100Triggered)
                             {
-                                $alertOf30AwaySales['fromDate'] = $from;
-                                $alertOf30AwaySales['toDate'] = $to;
-                                $dataOf30AwaySales[] = array($crmName, $salesStep1, $setting[4], $type, 1, $crmID);
+                                $alertOf100AwaySales['fromDate'] = $from;
+                                $alertOf100AwaySales['toDate'] = $to;
+                                $dataOf100AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
                             }
                         }
-                        $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $setting[4], $status, $from, $to, $timestamp);
                     }
-                    $type = 7;
-                    if($setting[2] == $type)
-                    {
-                        // 100 Step1 Sales Away From Cap Alert
-                        $status = 0;
-                        $Step1100Triggered = false;
-                        if($salesStep1 >= ($goal - $setting[4]) && ($goal > $salesStep1))
-                        {
-                            $status = 1;
-                            $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
-                            if($over30Sales == false)
-                            {
-                                if($alertStatus != array())
-                                {
-                                    $data = $alertStatus[0];
-                                    if($data[5] == 0)
-                                    {
-                                        $Step1100Triggered = true;
-                                    }
-                                }
-                                else
-                                {
-                                    $Step1100Triggered = true;
-                                }
-
-                                if($Step1100Triggered)
-                                {
-                                    $alertOf100AwaySales['fromDate'] = $from;
-                                    $alertOf100AwaySales['toDate'] = $to;
-                                    $dataOf100AwaySales[] = array($crmName, $salesStep1, $setting[4], $type, 1, $crmID);
-                                }
-                            }
-                        }
-                        $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $setting[4], $status, $from, $to, $timestamp);
-                    }
+                    $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
                 }
 
+                // 10, 25, 50, 75, 100, 125, 150, 200, 250 Step1 Sales Over Cap
+                $types = [8, 16, 17, 18, 19, 20, 21, 22, 23];
+                foreach ($types as $type) {
+                    $status = 0;
+                    $over30Sales = false;
+                    $Step130Triggered = false;
+                    $setting = $dbApi->getAlertTypeByType($type);
+                    $level = explode(' ', $setting[2])[0];
+
+                    if($salesStep1 >= ($goal + $level) && ($goal < $salesStep1))
+                    {
+                        $status = 1;
+                        $over30Sales = true;
+                        $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
+                        if($alertStatus != array())
+                        {
+                            $data = $alertStatus[0];
+                            if($data[5] == 0)
+                            {
+                                $Step130Triggered = true;
+                            }
+                        }
+                        else
+                        {
+                            $Step130Triggered = true;
+                        }
+
+                        if($Step130Triggered)
+                        {
+                            $alertOf30AwaySales['fromDate'] = $from;
+                            $alertOf30AwaySales['toDate'] = $to;
+                            $dataOf30AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                        }
+                    }
+                    $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
+                }
+            }
+
+            $settings = $dbApi->getAlertLevelListByCrm($crmID);
+            foreach ($settings as $setting)
+            {
                 $type = 9;
                 if($setting[2] == $type)
                 {
                     // Take Rate Alert
-                    $status = 0;
-                    if($takeRate < $setting[4])
-                    {
-                        $status = 1;
-                    }
+                    $status = $takeRate < $setting[4] ? 1 : 0;
                     $ret = $dbApi->updateAlertStatus($crmID, $type, $takeRate, $setting[4], $status, $from, $to, $timestamp);
                 }
 
@@ -217,11 +217,7 @@ function getProspectReportAndSendAlerts($name){
                 if($setting[2] == $type)
                 {
                     // Tablet Take Rate Alert
-                    $status = 0;
-                    if($tabletTakeRate <= $setting[4])
-                    {
-                        $status = 1;
-                    }
+                    $status = $tabletTakeRate <= $setting[4] ? 1 : 0;
                     $ret = $dbApi->updateAlertStatus($crmID, $type, $tabletTakeRate, $setting[4], $status, $from, $to, $timestamp);
                 }
             }

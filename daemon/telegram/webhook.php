@@ -58,21 +58,25 @@ $subDomain = $dbApi->getSubDomainByBotID($chatID);
 
 // check command list
 $text = '';
-$unregText = 'Hi, How are you? '."\r\n".'Unfortunately, this chat id is not registered on API Lotus site. Please register this one on it.'."\r\n\r\n".'You can confirm the CHAT ID on this /check_this_chat_info command.';
-$normalText = 'Hi, How are you? '."\r\n".'Please select the command for API Lotus.';
+$unregText = 'Hi, How are you?'."\r\n".'Unfortunately, this chat id is not registered on API Lotus site.'."\r\n".'Please register this one on it.'."\r\n\r\n".'You can confirm the CHAT ID with below command.';
+$normalText = 'Hi, How are you?'."\r\n".'Please select the command for API Lotus.';
 
 if ($command == '/check_this_chat_info' || $command == '/check_this_chat_info@apilotus_bot')
 {
     $text = 'This Chat Information'."\r\n\r\n";
     $text .= 'Chat ID : '.$chatID."\r\n";
-    $text .= 'Chat Name : '.$chatName."\r\n";
-    $text .= 'Chat Type : '.$type."\r\n\r\n";
-    if ($subDomain == '')
-        $text .= 'Sub Domain : Not Registered'."\r\n";
+//    $text .= 'Chat Name : '.$chatName."\r\n";
+//    $text .= 'Chat Type : '.$type."\r\n\r\n";
+    if ($subDomain == '') {
+        $text .= 'Sub Domain : Not Registered' . "\r\n\r\n";
+        $text .= 'Please register your CHAT ID on site'."\r\n";
+        $text .= 'and start the bot again with "/start"';
+        $bot->sendPureMessageByID($text, $chatID);
+        return;
+    }
     else
         $text .= 'Sub Domain : '.$subDomain."\r\n";
 }
-
 else if ($command == '/dashboard_takerate' || $command == '/dashboard_takerate@apilotus_bot')
 {
     if ($subDomain == '')
@@ -214,28 +218,6 @@ else if ($command == '/dashboard_goal' || $command == '/dashboard_goal@apilotus_
             $text .= '/dashboard_tablet'."\r\n";
         }
 
-    }
-}
-else if ($command == '/alert_password_validdays' || $command == '/alert_password_validdays@apilotus_bot')
-{
-    if ($subDomain == '')
-        $text = $unregText;
-    else
-    {
-        $dbApi->setSubDomain($subDomain);
-        $ret = $dbApi->getAllCrm();
-
-        $text = 'CRM Name    [Password Valid Days]'."\r\n\r\n";
-        
-        for ($i = 0; $i < sizeof($ret); $i ++)
-        {
-            if ($ret[$i][9] == '' || $ret[$i][9] == null || $ret[$i][9] == '0000-00-00')
-                $text .= ($i + 1).'. '.$ret[$i][1].'    [No set password date]'."\r\n";
-            else
-                $text .= ($i + 1).'. '.$ret[$i][1].'    ['.(30 - date_diff(date_create($ret[$i][9]), date_create($ret[$i][10]))->days).' days]'."\r\n";
-        }
-        
-        $text .= getRelatedCommands($command);
     }
 }
 else if ($command == '/alert_step1_rebill_report' || $command == '/alert_step1_rebill_report@apilotus_bot')
@@ -414,6 +396,28 @@ else if ($command == '/alert_step1_crm_capped' || $command == '/alert_step1_crm_
         $text .= getRelatedCommands($command);
     }
 }
+else if ($command == '/alert_password_validdays' || $command == '/alert_password_validdays@apilotus_bot')
+{
+    if ($subDomain == '')
+        $text = $unregText;
+    else
+    {
+        $dbApi->setSubDomain($subDomain);
+        $ret = $dbApi->getAllCrm();
+
+        $text = 'CRM Name    [Password Valid Days]'."\r\n\r\n";
+
+        for ($i = 0; $i < sizeof($ret); $i ++)
+        {
+            if ($ret[$i][9] == '' || $ret[$i][9] == null || $ret[$i][9] == '0000-00-00')
+                $text .= ($i + 1).'. '.$ret[$i][1].'    [No set password date]'."\r\n";
+            else
+                $text .= ($i + 1).'. '.$ret[$i][1].'    ['.(30 - date_diff(date_create($ret[$i][9]), date_create($ret[$i][10]))->days).' days]'."\r\n";
+        }
+
+        $text .= getRelatedCommands($command);
+    }
+}
 else
 {
     if ($subDomain == '')
@@ -422,11 +426,10 @@ else
         $text = $normalText;
 }
 
-//$bot->sendPureMessageByID(json_encode($data), '365077906');
-//$bot->sendPureMessageByID($text, $fromID);
-//$bot->sendPureMessageByID($text, '-1001077336651');
-
-$bot->sendPureMessageByID($text, $chatID);
+if ($subDomain == '')
+    $bot->sendRegisterMessage($text, $chatID);
+else
+    $bot->sendNormalMessage($text, $chatID);
 
 
 function getRelatedCommands($cmd)

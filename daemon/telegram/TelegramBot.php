@@ -5,7 +5,8 @@ require_once '../api/DBApi.php';
  
 class TelegramBot
 {
-    private $tokenKey = '374410536:AAEDQKvvJWr14eNqYXtASkCM7xwcofK4_Bg';
+//    private $tokenKey = '374410536:AAEDQKvvJWr14eNqYXtASkCM7xwcofK4_Bg';
+    private $tokenKey = '675022460:AAHB6q5tqZdPd0cyXxVzE-XBm_IolohXYm0';
     private $baseUrl = 'https://api.telegram.org/bot';
 
     private $chatIDList = array();
@@ -42,7 +43,7 @@ class TelegramBot
         return json_decode($response, true);
     }
       
-      
+
     /**
      * @brief   
      *
@@ -114,6 +115,43 @@ class TelegramBot
         $sendStatus = $this->GetCurl($url);
     }
 
+    public function sendRegisterMessage($msg='', $userID)
+    {
+        $url = $this->baseUrl.'/sendMessage?chat_id=';
+        $url .= $userID;
+        $url .= '&text='.urlencode($msg);
+
+        $keyboard = array(array('/check_this_chat_info'));
+        $resp = array('keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true);
+        $reply = json_encode($resp);
+
+        $url .= '&reply_markup='.$reply;
+
+        $sendStatus = $this->GetCurl($url);
+    }
+
+    public function sendNormalMessage($msg='', $userID)
+    {
+        $url = $this->baseUrl.'/sendMessage?chat_id=';
+        $url .= $userID;
+        $url .= '&text='.urlencode($msg);
+
+        $keyboard = array(
+            array('/dashboard_takerate', '/dashboard_tablet', '/dashboard_goal'),
+            array('/alert_step1_rebill_report', '/alert_step2_rebill_report'),
+            array('/alert_initial_approval_day', '/alert_initial_approval_week'),
+            array('/alert_decline_percentage_day', '/alert_decline_percentage_week'),
+            array('/alert_100step1_sales', '/alert_30step1_sales', '/alert_take_rate', '/alert_table_take_rate'),
+            array('/alert_step1_crm_capped', '/alert_password_validdays'),
+        );
+        $resp = array('keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true);
+        $reply = json_encode($resp);
+
+        $url .= '&reply_markup='.$reply;
+
+        $sendStatus = $this->GetCurl($url);
+    }
+
     public function sendMessageByID($msg='', $userID)
     {
         $url = $this->baseUrl.'/sendMessage?chat_id=';
@@ -131,9 +169,9 @@ class TelegramBot
         /*
         $resp = array('remove_keyboard' => true);
         $reply = json_encode($resp);
-        */
 
         $url .= '&reply_markup='.$reply;
+        */
 
         $sendStatus = $this->GetCurl($url);
     }
