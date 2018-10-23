@@ -9,11 +9,11 @@
                 <div class="container-fluid">
                     <div class="alert alert-warning crm_add_alert" role="alert" style="display:none"></div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-4 modal_input_label">CRM Name</div>
+                        <div class="col-xs-4 modal_input_label">Client Name</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm add_crm_name"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-4 modal_input_label">CRM Site URL</div>
+                        <div class="col-xs-4 modal_input_label">Client URL</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm add_crm_url"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
@@ -40,9 +40,17 @@
                         <div class="col-xs-4 modal_input_label">Re API Password</div>
                         <div class="col-xs-8"><input type="password" class="form-control input-sm add_api_repassword"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">Sales Goal</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm add_sales_goal"></div>
+                    </div>
+                    <div class="row" style="margin-bottom:5px;">
+                        <div class="col-xs-4 modal_input_label">Rebill Length</div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm add_rebill_length"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 modal_input_label">Test CC</div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm add_test_cc"></div>
                     </div>
                     <div class="row" style="margin-top:10px">
                         <div class="col-xs-8 col-xs-offset-4" style="height:30px;"><input type="checkbox" class="input-sm add_crm_paused" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Pause CRM</input></div>
@@ -67,11 +75,11 @@
                 <div class="container-fluid">
                     <div class="alert alert-warning crm_edit_alert" role="alert" style="display:none"></div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-4 modal_input_label">CRM Name</div>
+                        <div class="col-xs-4 modal_input_label">Client Name</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_crm_name"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-4 modal_input_label">CRM Site URL</div>
+                        <div class="col-xs-4 modal_input_label">Client URL</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_crm_url"></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
@@ -94,9 +102,17 @@
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_api_password"></div>
                     </div>
                     -->
-                    <div class="row">
+                    <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">Sales Goal</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_sales_goal"></div>
+                    </div>
+                    <div class="row" style="margin-bottom:5px;">
+                        <div class="col-xs-4 modal_input_label">Rebill Length</div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_rebill_length"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 modal_input_label">Test CC</div>
+                        <div class="col-xs-8"><input type="text" class="form-control input-sm edit_test_cc"></div>
                     </div>
                     <div class="row" style="margin-top:10px">
                         <div class="col-xs-8 col-xs-offset-4" style="height:30px;"><input type="checkbox" class="input-sm edit_crm_paused" style="vertical-align:middle;margin:0;padding:0;">&nbsp;&nbsp;Pause CRM</input></div>

@@ -10,7 +10,7 @@ if (!isset($userID) || $userID == '')
     return;
 }
 
-$tab_name = "CRM Management";
+$tab_name = "Client Setup";
 
 ?>
 

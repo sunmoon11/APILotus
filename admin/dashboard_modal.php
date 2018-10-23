@@ -9,7 +9,7 @@
                 <div class="container-fluid">
                     <div class="alert alert-warning setting_edit_alert" role="alert" style="display:none"></div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-xs-6 modal_input_label"><label>CRM Management</label></div>                        
+                        <div class="col-xs-6 modal_input_label"><label>Client Setup</label></div>
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-6 modal_input_label">CRM Name</div>

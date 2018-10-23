@@ -26,10 +26,10 @@ session_write_close();
 				<?php } else { ?>
 					<li><a class="ap_sidebar_list" style="font-weight:none" href="./accounts.php"><span class="glyphicon glyphicon-user ap_icon" aria-hidden="true"></span>Accounts</a></li>
 				<?php } ?>
-				<?php if ($tab_name == "CRM Management") { ?>
-					<li><a class="ap_sidebar_list" style="font-weight:bold;color:#6772e5 !important" href="./crms.php"><span class="glyphicon glyphicon-th-large ap_icon ap_active" aria-hidden="true"></span>CRM Management</a></li>
+				<?php if ($tab_name == "Client Setup") { ?>
+					<li><a class="ap_sidebar_list" style="font-weight:bold;color:#6772e5 !important" href="./crms.php"><span class="glyphicon glyphicon-th-large ap_icon ap_active" aria-hidden="true"></span>Client Setup</a></li>
 				<?php } else { ?>
-					<li><a class="ap_sidebar_list" style="font-weight:none" href="./crms.php"><span class="glyphicon glyphicon-th-large ap_icon" aria-hidden="true"></span>CRM Management</a></li>
+					<li><a class="ap_sidebar_list" style="font-weight:none" href="./crms.php"><span class="glyphicon glyphicon-th-large ap_icon" aria-hidden="true"></span>Client Setup</a></li>
 				<?php } ?>
 				<?php if ($tab_name == "Payments") { ?>
 					<li><a class="ap_sidebar_list" style="font-weight:bold;color:#6772e5 !important" href="./payments.php"><span class="glyphicon glyphicon-credit-card ap_icon ap_active" aria-hidden="true"></span>Payments</a></li>

@@ -66,7 +66,7 @@ if (in_array(4, $features))
                         </div>
                         <div class="collapse navbar-collapse bs-navbar-collapse" style="padding-top:22px; padding-right: 20px">
                             <ul class="nav navbar-nav navbar-right">
-                                <?php if ($tab_name == "Dashboard" || $tab_name == "Affiliate" || $tab_name == "Retention" || $tab_name == "Sales" || $tab_name == "Alerts" || $tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "CRM Management") { ?>
+                                <?php if ($tab_name == "Dashboard" || $tab_name == "Affiliate" || $tab_name == "Retention" || $tab_name == "Sales" || $tab_name == "Alerts" || $tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "Client Setup") { ?>
                             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
                             <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">LIMELIGHT CRM <span class="caret"></span></a>
                             <?php } else { ?>
@@ -107,10 +107,10 @@ if (in_array(4, $features))
 <!--                                        --><?php //} ?>
                                         <li role="presentation" class="divider"></li>
                                         <?php if ($userRole != '0') { ?>
-                                            <?php if ($tab_name == "CRM Management") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">CRM Management Setting</a></li>
+                                            <?php if ($tab_name == "Client Setup") { ?>
+                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">Client Setup</a></li>
                                             <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">CRM Management Setting</a></li>
+                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">Client Setup</a></li>
                                             <?php } ?>
                                             <?php if ($tab_name == "Campaign Management") { ?>
                                                 <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_campaign.php">Campaign Management Setting</a></li>
@@ -175,7 +175,7 @@ if (in_array(4, $features))
 <!--										--><?php //} ?>
                                     </ul>
                                 </li>
-                                <?php if ($tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "CRM Management") { ?>
+                                <?php if ($tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "Client Setup") { ?>
                             <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
                             <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">SETTINGS <span class="caret"></span></a>
                             <?php } else { ?>
@@ -184,10 +184,10 @@ if (in_array(4, $features))
                                     <?php } ?>
                                     <ul class="dropdown-menu crm_setting_dropdown" role="menu">
                                         <?php if ($userRole != '0') { ?>
-                                            <?php if ($tab_name == "CRM Management") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">CRM Management</a></li>
+                                            <?php if ($tab_name == "Client Setup") { ?>
+                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">Client Setup</a></li>
                                             <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">CRM Management</a></li>
+                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">Client Setup</a></li>
                                             <?php } ?>
                                             <?php if ($tab_name == "Campaign Management") { ?>
                                                 <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_campaign.php">Campaign Management</a></li>

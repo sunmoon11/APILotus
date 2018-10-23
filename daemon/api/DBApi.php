@@ -151,7 +151,7 @@ class DBApi
             $crm_count = mysqli_num_rows($result);
             if ($crm_count > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $arrayCrm[] = array($row['id'], $row['crm_name'], $row['crm_url'], $row['user_name'], $row['password'], $row['api_user_name'], $row['api_password'], $row['sales_goal'], $row['paused'], $row['password_updated'], $currentDay);
+                    $arrayCrm[] = array($row['id'], $row['crm_name'], $row['crm_url'], $row['user_name'], $row['password'], $row['api_user_name'], $row['api_password'], $row['sales_goal'], $row['paused'], $row['password_updated'], $currentDay, $row['rebill_length'], $row['test_cc']);
                 }
             }
 
@@ -524,7 +524,7 @@ class DBApi
 	*@ret
 	*	Boolean
 	*/
-    public function addCrm($crmName, $crmUrl, $crmUserName, $crmPassword, $apiUserName, $apiPassword, $salesGoal, $paused, $userId)
+    public function addCrm($crmName, $crmUrl, $crmUserName, $crmPassword, $apiUserName, $apiPassword, $salesGoal, $paused, $userId, $rebill_length, $test_cc)
     {
         if (!$this->checkConnection())
             return false;
@@ -532,8 +532,8 @@ class DBApi
         try {
 
             $currentDay = date('Y-m-d');
-            $query = 'INSERT INTO ' . $this->subdomain . '_crm_account (id, crm_name, crm_url, user_name, password, api_user_name, api_password, sales_goal, paused, password_updated) VALUES (null,"'
-                . $crmName . '","' . $crmUrl . '","' . $crmUserName . '","' . $crmPassword . '","' . $apiUserName . '","' . $apiPassword . '",' . $salesGoal . ',' . $paused . ',"' . $currentDay . '")';
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_account (id, crm_name, crm_url, user_name, password, api_user_name, api_password, sales_goal, paused, password_updated, rebill_length, test_cc) VALUES (null,"'
+                . $crmName . '","' . $crmUrl . '","' . $crmUserName . '","' . $crmPassword . '","' . $apiUserName . '","' . $apiPassword . '",' . $salesGoal . ',' . $paused . ',"' . $currentDay . '",' . $rebill_length . ',"' . $test_cc . '")';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
@@ -655,14 +655,14 @@ class DBApi
 	*@ret
 	*	Boolean
 	*/
-    public function updateCrm($crmId, $crmName, $crmUrl, $crmUserName, $apiUserName, $salesGoal, $paused)
+    public function updateCrm($crmId, $crmName, $crmUrl, $crmUserName, $apiUserName, $salesGoal, $paused, $rebill_length, $test_cc)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
 
-            $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",api_user_name="' . $apiUserName . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ' WHERE id=' . $crmId;
+            $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",api_user_name="' . $apiUserName . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ',rebill_length=' . $rebill_length . ',test_cc="' . $test_cc . '" WHERE id=' . $crmId;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 

@@ -20,6 +20,8 @@ $crmPassword = $_GET['crm_password'];
 $apiUsername = $_GET['api_username'];
 $apiPassword = $_GET['api_password'];
 $salesGoal = $_GET['sales_goal'];
+$rebill_length = $_GET['rebill_length'];
+$test_cc = $_GET['test_cc'];
 $paused = $_GET['crm_paused'];
 
 // add insert table here
@@ -30,7 +32,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret = $dbApi->addCrm($crmName, $crmUrl, $crmUsername, $crmPassword, $apiUsername, $apiPassword, $salesGoal, $paused, $user_id);
+$ret = $dbApi->addCrm($crmName, $crmUrl, $crmUsername, $crmPassword, $apiUsername, $apiPassword, $salesGoal, $paused, $user_id, $rebill_length, $test_cc);
 if ($ret)
 	echo 'success';
 else

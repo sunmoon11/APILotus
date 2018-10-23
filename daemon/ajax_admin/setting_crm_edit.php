@@ -11,6 +11,8 @@ $crmUsername = $_GET['crm_username'];
 $apiUsername = $_GET['api_username'];
 //$apiPassword = $_GET['api_password'];
 $salesGoal = $_GET['sales_goal'];
+$rebill_length = $_GET['rebill_length'];
+$test_cc = $_GET['test_cc'];
 $paused = $_GET['crm_paused'];
 
 $dbApi = DBApi::getInstance();
@@ -20,7 +22,7 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$ret = $dbApi->updateCrm($crmID, $crmName, $crmUrl, $crmUsername, $apiUsername, $salesGoal, $paused);
+$ret = $dbApi->updateCrm($crmID, $crmName, $crmUrl, $crmUsername, $apiUsername, $salesGoal, $paused, $rebill_length, $test_cc);
 if ($ret)
 	echo 'success';
 else

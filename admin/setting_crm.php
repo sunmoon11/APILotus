@@ -37,15 +37,15 @@ session_write_close();
 $dbApi = DBApi::getInstance();
 if(!$dbApi->checkClientIp())
 {
-    header("Location: ./blockip_alert.php");
-    return;
+header("Location: ./blockip_alert.php");
+return;
 }
 
 // check subscription for payment
 include ('./common/check_payment.php');
 
 $user_name = $user;
-$tab_name = "CRM Management";
+$tab_name = "Client Setup";
 
 ?>
 
@@ -60,7 +60,7 @@ $tab_name = "CRM Management";
 	 	<div class="col-xs-12">
 	 		<div class="crm_board">
 				<div class="row crm_board_title">
-					<div class="col-xs-10" style="padding-left: 0">CRM Account Report</div>
+					<div class="col-xs-10" style="padding-left: 0">Client Setup</div>
 					<div class="col-xs-2 setting_crm_waiting" style="text-align:right"></div>
 				</div>
 				<div class="alert alert-warning setting_crm_alert" role="alert" style="display:none"></div>
@@ -73,8 +73,8 @@ $tab_name = "CRM Management";
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>CRM Name</th>
-							<th>CRM Site URL</th>
+							<th>Client Name</th>
+							<th>Client URL</th>
 							<th>CRM User Name</th>
 							<th>CRM Password</th>
 	                        <th>API User Name</th>
@@ -82,6 +82,8 @@ $tab_name = "CRM Management";
 	                        <th>Sales Goal</th>
 	                        <th>Status*</th>
 	                        <th>Password Valid Days</th>
+	                        <th>Rebill Length</th>
+	                        <th>Test CC</th>
 							<th>CRM Action</th>
 						</tr>
 					</thead>

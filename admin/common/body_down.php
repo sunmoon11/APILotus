@@ -22,7 +22,7 @@
 <?php if ($tab_name == "Alerts") echo "<script type=\"text/javascript\" src=\"../js/admin/alert.min.js\"></script>"; ?>
 <?php if ($tab_name == "Export Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention_export.min.js\"></script>"; ?>
 <?php if ($tab_name == "Campaign Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_campaign.js\"></script>"; ?>
-<?php if ($tab_name == "CRM Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_crm.min.js\"></script>"; ?>
+<?php if ($tab_name == "Client Setup") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_crm.js\"></script>"; ?>
 <?php if ($tab_name == "Accounts") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_accounts.min.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate Management") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_affiliate.min.js\"></script>"; ?>
 <?php if ($tab_name == "Alert Percentage Levels") echo '<script type="text/javascript" src="../js/admin/setting_alert.js"></script>'; ?>
