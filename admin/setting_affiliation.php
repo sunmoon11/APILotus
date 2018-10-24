@@ -73,7 +73,7 @@ $tab_name = "Affiliate Settings";
     <div class="col-xs-8">
         <div class="crm_board">
             <div class="row crm_board_title">
-                <div class="col-xs-10" style="padding-left: 0">Affiliate Source Settings</div>
+                <div class="col-xs-10" style="padding-left: 0">Affiliates</div>
                 <div class="col-xs-2 affiliation_waiting" style="text-align:right"></div>
             </div>
             <div class="alert alert-warning affiliation_alert" role="alert" style="display:none"></div>

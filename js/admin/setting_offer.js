@@ -151,13 +151,13 @@ jQuery(document).ready(function($) {
                                 offer_table_html += "<td>" + offer[0] + "</td>";
                                 offer_table_html += "<td>" + offer[2] + "</td>";
                                 offer_table_html += "<td>" + offer[1] + "</td>";
-                                var campaigns = offer[4] == null ? '' : offer[4];
-                                if (campaigns.length > 80) {
-                                    campaigns = campaigns.substr(0, 80);
-                                    campaigns = campaigns.substr(0, campaigns.lastIndexOf(',') + 1);
-                                    campaigns = campaigns + '...'
-                                }
-                                offer_table_html += "<td>" + campaigns + "</td>";
+                                // var campaigns = offer[4] == null ? '' : offer[4];
+                                // if (campaigns.length > 80) {
+                                //     campaigns = campaigns.substr(0, 80);
+                                //     campaigns = campaigns.substr(0, campaigns.lastIndexOf(',') + 1);
+                                //     campaigns = campaigns + '...'
+                                // }
+                                // offer_table_html += "<td>" + campaigns + "</td>";
                                 offer_table_html += "<td>" + offer[6] + "</td>";
                                 offer_table_html += '<td><button type="button" class="btn btn-link btn-sm setting_offer_edit" id="oedit_' + offer[0] + '" data-toggle="modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button>';
                                 offer_table_html += '<button type="button" class="btn btn-link btn-sm setting_offer_delete" id="odelete_' + offer[0] + '" data-toggle="modal" data-target="#offer_delete_modal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>&nbsp;Delete</button></td>';
@@ -362,6 +362,7 @@ jQuery(document).ready(function($) {
         $("#label_add_offer").html('Add Offer&nbsp;<span class="setting_campaign_waiting" style="text-align:right"></span>');
         $(".modal_btn_offer_add").html('Add Offer');
         reset_offer_modal();
+        $(".crm_toggle_button").removeAttr('disabled');
         $("#offer_add_modal").modal("toggle");
     });
     $(document).on("click", ".modal_btn_offer_add", function () {
@@ -403,6 +404,7 @@ jQuery(document).ready(function($) {
                 $(".add_offer_name").val(offer[1]);
                 crm_id = offer[7];
                 $(".crm_toggle_button").html(offer[2] + ' <span class="caret"></span>');
+                $(".crm_toggle_button").attr('disabled', true);
                 get_campaign_list(true);
             }
         }

@@ -68,28 +68,26 @@ $tab_name = "Offers";
 <?php include('./setting_offer_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
         <div class="crm_board">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">Offers</div>
-                <div class="col-xs-2 setting_offer_waiting" style="text-align:right"></div>
-            </div>
-            <div class="alert alert-warning setting_offer_alert" role="alert" style="display:none"></div>
-            <div class="row crm_board_row">
-                <div class="col-xs-8"></div>
-                <div class="col-xs-4" style="text-align:right; padding-right: 30px">
-                    <button type="button" class="btn btn-default btn-sm btn_offer_add">
+                <div class="col-xs-1 setting_offer_waiting"></div>
+                <div class="col-xs-2" style="text-align:right;">
+                    <button type="button" class="btn btn-default btn-sm btn_offer_add" style="font-family: 'Varela Round', sans-serif;">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Offer
                     </button>
                 </div>
             </div>
+            <div class="alert alert-warning setting_offer_alert" role="alert" style="display:none"></div>
             <table class="table table-hover" style="margin-top:10px;">
                 <thead>
                 <tr>
                     <th>Offer ID</th>
                     <th>Client</th>
                     <th>Offer Name</th>
-                    <th>Campaigns of Offer</th>
+<!--                    <th>Campaigns of Offer</th>-->
                     <th>Vertical Labels of Offer</th>
                     <th>Action</th>
                 </tr>
@@ -99,6 +97,7 @@ $tab_name = "Offers";
             </table>
         </div>
     </div>
+    <div class="col-xs-2"></div>
 </div>
 <?php include('./common/body_down.php'); ?>
 </body>
