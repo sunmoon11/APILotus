@@ -409,6 +409,34 @@ class AlertManager {
             }
         }
     }
+
+    public function sendCapAlerts($data, $subDomain) {
+        $telegramBot = new TelegramBot();
+        $dbApi = DBApi::getInstance();
+
+        $dbApi->setSubDomain($subDomain);
+        $accounts = $dbApi->getAllUsers();
+        // filter alert data by user and send
+        foreach ($accounts as $account) {
+            $activeAccount = $account[5];
+            if (!$activeAccount)
+                continue;
+//            $crmPermission = $account[6];
+//            if ($crmPermission == null)
+//                continue;
+
+            $botId = $account[9];
+            $enableBot = $account[12];
+            if ($enableBot == 1 && $botId != null) {
+                $texts = $this->dataToText($data, 24);
+                foreach ($texts as $text){
+                    if ($text != "")
+                        $telegramBot->sendMessageByID($text, $botId);
+                }
+            }
+        }
+    }
+
     public function sendKKCrmAlerts($sms, $email, $bot, $data, $type, $subDomain) {
         $sender = AlertMethodApi::getInstance();
         $telegramBot = new TelegramBot();
@@ -665,6 +693,8 @@ class AlertManager {
             $title = '*CRM Password Update*';
         if($type == 13)
             $title = '*CRM Goal Progress*';
+        if($type == 24)
+            $title = 'Cap Update Level Alert';
 
         if($type == 12)
         {
@@ -714,45 +744,49 @@ class AlertManager {
         // body
         foreach ($content['status'] as $data)
         {
-            if($data[4] == 1)
-            {
-                if($data[3] == 1)
-                    $alertText = $alertText.'['.$data[0].'] Step1 :'.$data[1].'% ( <= '.$data[2].')'."\r\n";
-                if($data[3] == 2)
-                    $alertText = $alertText.'['.$data[0].'] Step2 :'.$data[1].'% ( <= '.$data[2].')'."\r\n";
-                if($data[3] == 3 || $data[3] == 4)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( <= '.$data[2].')'."\r\n";
-                if($data[3] == 5 || $data[3] == 6)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."\r\n";
-                if($data[3] == 7 || $data[3] == 14 || $data[3] == 15)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Away )'."\r\n";
-                if($data[3] == 8 || $data[3] == 16 || $data[3] == 17 || $data[3] == 18 || $data[3] == 19 || $data[3] == 20 || $data[3] == 21 || $data[3] == 22 || $data[3] == 23)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Over )'."\r\n";
-                if($data[3] == 9)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."\r\n";
-                if($data[3] == 10)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( <= '.$data[2].')'."\r\n";
-                if($data[3] == 11)
-                    $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].')'."\r\n";
+            if ($type == 24) {
+                $alertText = $alertText.$data[0].' is '.$data[4].' Away From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
-            else
-            {
-                if($data[3] == 1)
-                    $statusText = $statusText.'['.$data[0].'] Step1 :'.$data[1].'% ( > '.$data[2].')'."\r\n";
-                if($data[3] == 2)
-                    $statusText = $statusText.'['.$data[0].'] Step2 :'.$data[1].'% ( > '.$data[2].')'."\r\n";
-                if($data[3] == 3 || $data[3] == 4)
-                    $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( > '.$data[2].')'."\r\n";
-                if($data[3] == 5 || $data[3] == 6)
-                    $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( < '.$data[2].')'."\r\n";
-                // if($data[3] == 7 || $data[3] == 8)
-                //   $statusText = $statusText.'['.$data[0].'] '.$data[1].' ( < '.$data[2].' Away )'."\r\n";
-                if($data[3] == 9)
-                    $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( < '.$data[2].')'."\r\n";
-                if($data[3] == 10)
-                    $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( > '.$data[2].')'."\r\n";
+            else {
+                if($data[4] == 1)
+                {
+                    if($data[3] == 1)
+                        $alertText = $alertText.'['.$data[0].'] Step1 :'.$data[1].'% ( <= '.$data[2].')'."\r\n";
+                    if($data[3] == 2)
+                        $alertText = $alertText.'['.$data[0].'] Step2 :'.$data[1].'% ( <= '.$data[2].')'."\r\n";
+                    if($data[3] == 3 || $data[3] == 4)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( <= '.$data[2].')'."\r\n";
+                    if($data[3] == 5 || $data[3] == 6)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."\r\n";
+                    if($data[3] == 7 || $data[3] == 14 || $data[3] == 15)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Away )'."\r\n";
+                    if($data[3] == 8 || $data[3] == 16 || $data[3] == 17 || $data[3] == 18 || $data[3] == 19 || $data[3] == 20 || $data[3] == 21 || $data[3] == 22 || $data[3] == 23)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].' Over )'."\r\n";
+                    if($data[3] == 9)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( >= '.$data[2].')'."\r\n";
+                    if($data[3] == 10)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].'% ( <= '.$data[2].')'."\r\n";
+                    if($data[3] == 11)
+                        $alertText = $alertText.'['.$data[0].'] '.$data[1].' ( >= '.$data[2].')'."\r\n";
+                }
+                else
+                {
+                    if($data[3] == 1)
+                        $statusText = $statusText.'['.$data[0].'] Step1 :'.$data[1].'% ( > '.$data[2].')'."\r\n";
+                    if($data[3] == 2)
+                        $statusText = $statusText.'['.$data[0].'] Step2 :'.$data[1].'% ( > '.$data[2].')'."\r\n";
+                    if($data[3] == 3 || $data[3] == 4)
+                        $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( > '.$data[2].')'."\r\n";
+                    if($data[3] == 5 || $data[3] == 6)
+                        $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( < '.$data[2].')'."\r\n";
+                    // if($data[3] == 7 || $data[3] == 8)
+                    //   $statusText = $statusText.'['.$data[0].'] '.$data[1].' ( < '.$data[2].' Away )'."\r\n";
+                    if($data[3] == 9)
+                        $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( < '.$data[2].')'."\r\n";
+                    if($data[3] == 10)
+                        $statusText = $statusText.'['.$data[0].'] '.$data[1].'% ( > '.$data[2].')'."\r\n";
+                }
             }
-
         }
         $text = $title."\r\n\r\n".$dateText;
         if($alertText != '')

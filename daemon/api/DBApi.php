@@ -1596,12 +1596,14 @@ class DBApi
     {
         $allLabel = $this->getAllLabels();
         $tabletLabel = $this->getLabelIdByName('Tablet', $allLabel);
+        $step1Label = $this->getLabelIdByName('Step1', $allLabel);
+        $step2Label = $this->getLabelIdByName('Step2', $allLabel);
 
         if (!$this->checkConnection())
             return null;
 
         try {
-            $query = 'SELECT * FROM ' . $this->subdomain . '_label_campaign WHERE label_ids LIKE ",' . $tabletLabel . ',%" AND crm_id=' . $crmId;
+            $query = 'SELECT * FROM ' . $this->subdomain . '_label_campaign WHERE label_ids LIKE ",' . $tabletLabel . ',' . $step1Label . ',%" AND crm_id=' . $crmId;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             $ret = array();
@@ -8892,6 +8894,22 @@ class DBApi
     public function addCrmResults($crmID, $crmGoal, $response, $fromDate, $toDate)
     {
         if (!$this->checkConnection())
+            return 'error';
+
+        $valid = false;
+        foreach ($response as $crm_result) {
+            foreach ($crm_result as $index => $value) {
+                if ($index < 3) continue;
+                if (0 != $value) {
+                    $valid = true;
+                    break;
+                }
+            }
+            if ($valid)
+                break;
+        }
+
+        if (false == $valid)
             return 'error';
 
         try {
