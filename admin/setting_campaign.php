@@ -47,7 +47,6 @@ include ('./common/check_payment.php');
 
 $user_name = $user;
 
-$dbApi = DBApi::getInstance();
 $crmList = $dbApi->getAllActiveCrmsByAccountId($userId);
 
 $tab_name = "Campaign Management";

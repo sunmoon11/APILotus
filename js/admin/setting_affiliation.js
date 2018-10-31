@@ -483,7 +483,7 @@ jQuery(document).ready(function (t) {
     var selected_offer_id = -1;
 
     // set_dates();
+    get_affiliate_offer_id();
     get_offer_list();
     get_affiliation_list();
-    get_affiliate_offer_id();
 });
