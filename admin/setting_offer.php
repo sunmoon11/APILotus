@@ -54,6 +54,7 @@ include ('./common/check_payment.php');
 $user_name = $user;
 
 $crmList = $dbApi->getAllActiveCrmsByAccountId($userId);
+$verticalList = $dbApi->getOfferLabels();
 
 $tab_name = "Offers";
 
@@ -72,23 +73,73 @@ $tab_name = "Offers";
     <div class="col-xs-8">
         <div class="crm_board">
             <div class="row crm_board_title">
-                <div class="col-xs-10" style="padding-left: 0">Offers</div>
-                <div class="col-xs-1 setting_offer_waiting"></div>
-                <div class="col-xs-2" style="text-align:right;">
+                <div class="col-xs-3" style="padding-left: 0">Offers</div>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control input-sm search_offers" placeholder="Search by Client, Offer ID, Offer name, Vertical" style="margin-left: 20px;">
+                </div>
+                <div class="col-xs-3" style="text-align:right;">
+                    <div class="setting_offer_waiting" style="display: inline;"></div>
                     <button type="button" class="btn btn-default btn-sm btn_offer_add" style="font-family: 'Varela Round', sans-serif;">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Offer
                     </button>
                 </div>
             </div>
             <div class="alert alert-warning setting_offer_alert" role="alert" style="display:none"></div>
+            <div class="row crm_board_row">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-4">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle crm_main_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:200px">
+                                <?php
+                                if ($crmList != null && count($crmList) > 0)
+                                    echo 'All Clients ';
+                                else
+                                    echo 'None Client ';
+                                ?>
+                                <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu crm_main_dropdown_menu" role="menu">
+                                <?php
+                                if ($crmList != null) {
+                                    echo '<li><a href="#" id="0" class="crm_main_dropdown_list">All Clients</a></li>';
+                                    for ($i = 0; $i < count($crmList); $i++)
+                                        echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_main_dropdown_list">'.$crmList[$i][1].'</a></li>';
+                                }
+                                ?>
+                            </ul>
+                        </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle vertical_main_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:200px; margin-left: 10px;">
+                                <?php
+                                if ($verticalList != null && count($verticalList) > 0)
+                                    echo 'All Vertical Labels ';
+                                else
+                                    echo 'None Vertical Label ';
+                                ?>
+                                <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu vertical_main_dropdown_menu" role="menu">
+                                <?php
+                                if ($verticalList != null) {
+                                    echo '<li><a href="#" id="0" class="vertical_main_dropdown_list">All Vertical Labels</a></li>';
+                                    for ($i = 0; $i < count($verticalList); $i++)
+                                        echo '<li><a href="#" id="'.$verticalList[$i][0].'" class="vertical_main_dropdown_list">'.$verticalList[$i][1].'</a></li>';
+                                }
+                                ?>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <table class="table table-hover" style="margin-top:10px;">
                 <thead>
                 <tr>
                     <th>Offer ID</th>
                     <th>Client</th>
                     <th>Offer Name</th>
-<!--                    <th>Campaigns of Offer</th>-->
-                    <th>Vertical Labels of Offer</th>
+                    <th>Vertical Labels</th>
                     <th>Action</th>
                 </tr>
                 </thead>

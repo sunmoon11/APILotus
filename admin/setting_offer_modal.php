@@ -18,48 +18,77 @@
                     <div class="alert alert-warning setting_campaign_alert" role="alert" style="display:none"></div>
                     <div class="row crm_board_row">
                         <div style="text-align:right; padding-right: 15px">
-                            <div class="col-xs-2 modal_input_label">Name</div>
-                            <div class="col-xs-10"><input type="text" class="form-control input-sm add_offer_name"></div>
+                            <div class="col-xs-4 modal_input_label">Name:</div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm add_offer_name"></div>
                         </div>
-                    </div>
-                    <div class="row crm_board_row">
-                        <label style="margin-top: 10px;">Vertical Label</label>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th style="width:100px">#</th>
-                                <th>Label Name</th>
-                            </tr>
-                            </thead>
-                            <tbody class="modal_offer_vlabel_body">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row crm_board_row">
-                        <div style="text-align:right; padding-right: 30px">
-                            <div class="input-group">
+                        <div style="text-align:right; padding-right: 15px;">
+                            <div class="col-xs-4 modal_input_label" style="margin-top: 10px;">Client Select:</div>
+                            <div class="col-xs-8" style="margin-top: 10px;">
                                 <span class="input-group-btn">
-									<button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:160px">
-										<?php
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle crm_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width: 100%;">
+                                        <?php
                                         if ($crmList != null && count($crmList) > 0)
                                             echo $crmList[0][1].' ';
                                         else
                                             echo 'None CRM ';
                                         ?>
                                         <span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu crm_dropdown_menu" role="menu">
-										<?php
+                                    </button>
+                                    <ul class="dropdown-menu crm_dropdown_menu" role="menu">
+                                        <?php
                                         if ($crmList != null) {
                                             for ($i = 0; $i < count($crmList); $i++)
                                                 echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_dropdown_list">'.$crmList[$i][1].'</a></li>';
                                         }
                                         ?>
-									</ul>
-								</span>
-                                <input type="text" class="form-control input-sm search_campaign_ids" placeholder="Search by Campaign Id">
+                                    </ul>
+                                </span>
+                            </div>
+                        </div>
+                        <div style="text-align:right; padding-right: 15px;">
+                            <div class="col-xs-4 modal_input_label" style="margin-top: 10px;">Offer Type:</div>
+                            <div class="col-xs-8" style="margin-top: 10px;">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default btn-sm campaign_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle offer_type_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width: 100%;">
+                                        Single Step
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu offer_type_dropdown_menu" role="menu">
+                                        <li><a href="#" id="1" class="offer_type_dropdown_list">Single Step</a></li>
+                                        <li><a href="#" id="2" class="offer_type_dropdown_list">2 Step</a></li>
+                                    </ul>
+                                </span>
+                            </div>
+                        </div>
+                        <div style="text-align:right; padding-right: 15px" id="div_default_s1_payout">
+                            <div class="col-xs-4 modal_input_label" style="margin-top: 10px;">Default S1 Payout:</div>
+                            <div class="col-xs-8" style="margin-top: 10px;"><input type="text" class="form-control input-sm" id="input_default_s1_payout"></div>
+                        </div>
+                        <div style="text-align:right; padding-right: 15px" id="div_default_s2_payout">
+                            <div class="col-xs-4 modal_input_label" style="margin-top: 10px;">Default S2 Payout:</div>
+                            <div class="col-xs-8" style="margin-top: 10px;"><input type="text" class="form-control input-sm" id="input_default_s2_payout"></div>
+                        </div>
+                        <div style="text-align:right; padding-right: 15px;">
+                            <div class="col-xs-4 modal_input_label" style="margin-top: 10px;">Vertical:</div>
+                            <div class="col-xs-8" style="margin-top: 10px;">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle vertical_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width: 100%;">
+                                        <?php
+                                        if ($verticalList != null && count($verticalList) > 0)
+                                            echo $verticalList[0][1].' ';
+                                        else
+                                            echo 'None Vertical Labels ';
+                                        ?>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu vertical_dropdown_menu" role="menu">
+                                        <?php
+                                        if ($verticalList != null) {
+                                            for ($i = 0; $i < count($verticalList); $i++)
+                                                echo '<li><a href="#" id="'.$verticalList[$i][0].'" class="vertical_dropdown_list">'.$verticalList[$i][1].'</a></li>';
+                                        }
+                                        ?>
+                                    </ul>
                                 </span>
                             </div>
                         </div>

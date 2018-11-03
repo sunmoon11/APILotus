@@ -9237,7 +9237,7 @@ class DBApi
                             }
                         }
                     }
-                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids'], $row['label_ids'], $labels, $row['crm_id']);
+                    $ret[] = array($row['id'], $row['name'], $row['crm_name'], $row['sales_goal'], $row['campaign_ids'], $row['label_ids'], $labels, $row['crm_id'], $row['offer_type'], $row['s1_payout'], $row['s2_payout']);
                 }
             }
 
@@ -9269,13 +9269,16 @@ class DBApi
         }
     }
 
-    public function addOffer($crmID, $name, $campaignIDs, $labelIDs)
+    public function addOffer($crmID, $name, $campaignIDs, $labelIDs, $offer_type, $s1_payout, $s2_payout)
     {
         if (!$this->checkConnection())
             return false;
 
+        if (!$s1_payout)    $s1_payout = 0;
+        if (!$s2_payout)    $s2_payout = 0;
+
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_offer (id, name, crm_id, campaign_ids, label_ids) VALUES (null,"' . $name . '", ' . $crmID . ',"' . $campaignIDs . '","' . $labelIDs . '")';
+            $query = 'INSERT INTO ' . $this->subdomain . '_offer (id, name, crm_id, campaign_ids, label_ids, offer_type, s1_payout, s2_payout) VALUES (null,"' . $name . '", ' . $crmID . ',"' . $campaignIDs . '","' . $labelIDs . '",' . $offer_type . ','. $s1_payout . ',' . $s2_payout . ')';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             if ($result === TRUE) {
@@ -9288,13 +9291,13 @@ class DBApi
         }
     }
 
-    public function editOffer($offerID, $name, $campaignIDs, $labelIDs)
+    public function editOffer($offerID, $name, $campaignIDs, $labelIDs, $offer_type, $s1_payout, $s2_payout)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
-            $query = 'UPDATE ' . $this->subdomain . '_offer SET name="' . $name . '", campaign_ids="' . $campaignIDs . '", label_ids="'. $labelIDs . '" WHERE id=' . $offerID;
+            $query = 'UPDATE ' . $this->subdomain . '_offer SET name="' . $name . '", campaign_ids="' . $campaignIDs . '", label_ids="'. $labelIDs . '", offer_type=' . $offer_type . ', s1_payout=' . $s1_payout . ', s2_payout='. $s2_payout . ' WHERE id=' . $offerID;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 

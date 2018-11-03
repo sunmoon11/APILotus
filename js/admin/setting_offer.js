@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
                 url : "../daemon/ajax_admin/setting_campaign_list.php",
                 data : {
                     crm_id : crm_id,
-                    campaign_ids : $(".search_campaign_ids").val(),
+                    campaign_ids : '',
                     page_number : 1,
                     items_page : 1000
                 },
@@ -105,13 +105,6 @@ jQuery(document).ready(function($) {
                                             $("#campaign_" + campaign_id).prop("checked", true);
                                         }
                                     }
-
-                                    if (offer[5] != null) {
-                                        var label_ids = offer[5].split(',');
-                                        for (j = 0; j < label_ids.length; j++) {
-                                            $("#vlabel_" + label_ids[j]).prop("checked", true);
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -125,8 +118,43 @@ jQuery(document).ready(function($) {
         }
     }
 
+    function show_offer_list() {
+        let data = offer_list;
+        if (0 != crm_main_id)
+            data = data.filter(item => item[7] === crm_main_id);
+        if (0 != vertical_main_id)
+            data = data.filter(item => item[5] === vertical_main_id);
+        if (search_keyword)
+            data = data.filter(item => item[0].indexOf(search_keyword) !== -1 ||
+                item[2].toLowerCase().indexOf(search_keyword.toLowerCase()) !== -1 ||
+                item[1].toLowerCase().indexOf(search_keyword.toLowerCase()) !== -1 ||
+                item[6].toLowerCase().indexOf(search_keyword.toLowerCase()) !== -1
+            );
+
+        let offer_table_html = "";
+        for (let i = 0; i < data.length; i++) {
+            let offer = data[i];
+            offer_table_html += '<tr>';
+            offer_table_html += "<td>" + offer[0] + "</td>";
+            offer_table_html += "<td>" + offer[2] + "</td>";
+            offer_table_html += "<td>" + offer[1] + "</td>";
+            // var campaigns = offer[4] == null ? '' : offer[4];
+            // if (campaigns.length > 80) {
+            //     campaigns = campaigns.substr(0, 80);
+            //     campaigns = campaigns.substr(0, campaigns.lastIndexOf(',') + 1);
+            //     campaigns = campaigns + '...'
+            // }
+            // offer_table_html += "<td>" + campaigns + "</td>";
+            offer_table_html += "<td>" + offer[6] + "</td>";
+            offer_table_html += '<td><button type="button" class="btn btn-link btn-sm setting_offer_edit" id="oedit_' + offer[0] + '" data-toggle="modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button>';
+            offer_table_html += '<button type="button" class="btn btn-link btn-sm setting_offer_delete" id="odelete_' + offer[0] + '" data-toggle="modal" data-target="#offer_delete_modal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>&nbsp;Delete</button></td>';
+            offer_table_html += '</tr>';
+        }
+        $(".table_offer_body").html(offer_table_html);
+    }
+
     function get_offer_list() {
-        if (!(offer_waiting || -1 == crm_id)) {
+        if (!offer_waiting) {
             show_waiting("offer", true);
             $.ajax({
                 type : "GET",
@@ -143,69 +171,15 @@ jQuery(document).ready(function($) {
                     }
                     else {
                         offer_list = jQuery.parseJSON(data);
-                        var offer_table_html = "";
-                        if (offer_list.length > 0) {
-                            for (var i = 0; i < offer_list.length; i++) {
-                                var offer = offer_list[i];
-                                offer_table_html += '<tr>';
-                                offer_table_html += "<td>" + offer[0] + "</td>";
-                                offer_table_html += "<td>" + offer[2] + "</td>";
-                                offer_table_html += "<td>" + offer[1] + "</td>";
-                                // var campaigns = offer[4] == null ? '' : offer[4];
-                                // if (campaigns.length > 80) {
-                                //     campaigns = campaigns.substr(0, 80);
-                                //     campaigns = campaigns.substr(0, campaigns.lastIndexOf(',') + 1);
-                                //     campaigns = campaigns + '...'
-                                // }
-                                // offer_table_html += "<td>" + campaigns + "</td>";
-                                offer_table_html += "<td>" + offer[6] + "</td>";
-                                offer_table_html += '<td><button type="button" class="btn btn-link btn-sm setting_offer_edit" id="oedit_' + offer[0] + '" data-toggle="modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;Edit</button>';
-                                offer_table_html += '<button type="button" class="btn btn-link btn-sm setting_offer_delete" id="odelete_' + offer[0] + '" data-toggle="modal" data-target="#offer_delete_modal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>&nbsp;Delete</button></td>';
-                                offer_table_html += '</tr>';
-                            }
-                        } else {
-                            show_alert("offer", "There is no any offer data.");
-                        }
-                        $(".table_offer_body").html(offer_table_html);
+                        show_offer_list(offer_list);
                     }
                 },
-                failure : function(e) {
+                failure : function() {
                     show_waiting("offer", false);
                     show_alert("offer", "Cannot load offer list.");
                 }
             });
         }
-    }
-
-    function get_label_list() {
-        show_waiting("offer", true);
-        $.ajax({
-            type : "GET",
-            url : "../daemon/ajax_admin/setting_offer_label_list.php",
-            data : {},
-            success : function(data) {
-                show_waiting("offer", false);
-                if ("error" == data) {
-                    show_alert("label", "Cannot load label list.");
-                }
-                else if ("no_cookie" == data) {
-                    window.location.href = "../../admin/login.php";
-                }
-                else {
-                    label_list = jQuery.parseJSON(data);
-                    var modal_table_html = "";
-                    for (var i = 0; i < label_list.length; i++) {
-                        modal_table_html += '<tr><td><input type="checkbox" id="vlabel_' + label_list[i][0] + '" class="modal_vlabel_item" name="vertical"></td>';
-                        modal_table_html += "<td>" + label_list[i][1] + "</td></tr>";
-                    }
-                    $(".modal_offer_vlabel_body").html(modal_table_html);
-                }
-            },
-            failure : function(e) {
-                show_waiting("label", false);
-                show_alert("label", "Cannot load label list.");
-            }
-        });
     }
 
     function add_offer() {
@@ -217,7 +191,10 @@ jQuery(document).ready(function($) {
                 name: $(".add_offer_name").val(),
                 crm_id : crm_id,
                 campaign_ids : selected_campaigns,
-                label_ids : selected_labels
+                label_ids : vertical_id,
+                offer_type: offer_type,
+                s1_payout: $("#input_default_s1_payout").val(),
+                s2_payout: $("#input_default_s2_payout").val()
             },
             success : function(status) {
                 show_waiting("offer", false);
@@ -244,7 +221,10 @@ jQuery(document).ready(function($) {
                 offer_id: offer_id,
                 name: $(".add_offer_name").val(),
                 campaign_ids : selected_campaigns,
-                label_ids : selected_labels
+                label_ids : vertical_id,
+                offer_type: offer_type,
+                s1_payout: $("#input_default_s1_payout").val(),
+                s2_payout: $("#input_default_s2_payout").val()
             },
             success : function(status) {
                 show_waiting("offer", false);
@@ -288,24 +268,13 @@ jQuery(document).ready(function($) {
 
     function get_checked_campaigns() {
         var campaigns = "";
-        $(".campaign_item").each(function(e) {
+        $(".campaign_item").each(function() {
             if ($(this).prop("checked")) {
                 "" !== campaigns && (campaigns += ",");
                 campaigns += $(this).prop("id").substring(9);
             }
         });
         return campaigns;
-    }
-
-    function get_checked_labels() {
-        var labels = "";
-        $(".modal_vlabel_item").each(function() {
-            if ($(this).prop('checked')) {
-                "" !== labels && (labels += ",");
-                labels += $(this).prop("id").substring(7);
-            }
-        });
-        return labels;
     }
 
     function reset_offer_modal() {
@@ -320,29 +289,59 @@ jQuery(document).ready(function($) {
                 $(this).html('<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>');
             }
         });
-        $(".modal_vlabel_item").each(function () {
-            $(this).removeAttr('checked');
-        });
     }
 
     var offer_list;
+    var crm_main_id = 0;
+    var vertical_main_id = 0;
+    var search_keyword = "";
+
     var crm_id = -1;
+    var offer_type = -1;
+    var vertical_id = -1;
     var offer_id = -1;
+    var s1_payout = 0;
+    var s2_payout = 0;
+
     var campaign_waiting = false;
     var offer_waiting = false;
     var selected_campaigns = "";
-    var selected_labels = "";
     var loading_icon = '<img src="../images/loading.gif" style="width:22px; height:22px;">';
-    var label_list = null;
-    get_crm_id();
+
     get_offer_list();
-    get_label_list();
+    get_crm_id();
     get_campaign_list();
+
+    $(".crm_main_dropdown_menu li").on("click", function() {
+        crm_main_id = $(this).find("a").attr("id");
+        $(".crm_main_toggle_button").html($(this).text() + ' <span class="caret"></span>');
+        show_offer_list();
+    });
+    $(".vertical_main_dropdown_menu li").on("click", function() {
+        vertical_main_id = $(this).find("a").attr("id");
+        $(".vertical_main_toggle_button").html($(this).text() + ' <span class="caret"></span>');
+        show_offer_list();
+    });
+    $(".search_offers").on("input", function () {
+        search_keyword = $(this).val();
+        show_offer_list();
+    });
 
     $(".crm_dropdown_menu li").on("click", function() {
         crm_id = $(this).find("a").attr("id");
         $(".crm_toggle_button").html($(this).text() + ' <span class="caret"></span>');
+        get_campaign_list();
     });
+    $(".offer_type_dropdown_menu li").on("click", function() {
+        offer_type = $(this).find("a").attr("id");
+        $(".offer_type_toggle_button").html($(this).text() + ' <span class="caret"></span>');
+        1 == offer_type ? $("#div_default_s2_payout").css("display", "none") : $("#div_default_s2_payout").css("display", "block");
+    });
+    $(".vertical_dropdown_menu li").on("click", function() {
+        vertical_id = $(this).find("a").attr("id");
+        $(".vertical_toggle_button").html($(this).text() + ' <span class="caret"></span>');
+    });
+
     $(document).on("click", ".campaign_select_all", function () {
         var check = $(this);
         var id = $(this).prop("id").substring(11);
@@ -364,6 +363,14 @@ jQuery(document).ready(function($) {
         reset_offer_modal();
         $(".crm_toggle_button").removeAttr('disabled');
         $("#offer_add_modal").modal("toggle");
+
+        offer_type = 1;
+        s1_payout = 0;
+        s2_payout = 0;
+        $(".offer_type_toggle_button").html('Single Step <span class="caret"></span>');
+        $("#div_default_s2_payout").css("display", "none");
+        $("#input_default_s1_payout").val('');
+        $("#input_default_s2_payout").val('');
     });
     $(document).on("click", ".modal_btn_offer_add", function () {
         if ("" === $(".add_offer_name").val()) {
@@ -372,7 +379,6 @@ jQuery(document).ready(function($) {
             return;
         }
         selected_campaigns = get_checked_campaigns();
-        selected_labels = get_checked_labels();
 
         $("#offer_add_modal").modal("toggle");
         if ('Add Offer' === $(".modal_btn_offer_add").html())
@@ -405,6 +411,22 @@ jQuery(document).ready(function($) {
                 crm_id = offer[7];
                 $(".crm_toggle_button").html(offer[2] + ' <span class="caret"></span>');
                 $(".crm_toggle_button").attr('disabled', true);
+                vertical_id = offer[5];
+                $(".vertical_toggle_button").html(offer[6] + ' <span class="caret"></span>');
+                offer_type = offer[8];
+                s1_payout = offer[9];
+                s2_payout = offer[10];
+                if (1 == offer_type) {
+                    $(".offer_type_toggle_button").html('Single Step <span class="caret"></span>');
+                    $("#div_default_s2_payout").css("display", "none");
+                }
+                else {
+                    $(".offer_type_toggle_button").html('2 Step <span class="caret"></span>');
+                    $("#div_default_s2_payout").css("display", "block");
+                }
+                $("#input_default_s1_payout").val(s1_payout);
+                $("#input_default_s2_payout").val(s2_payout);
+
                 get_campaign_list(true);
             }
         }

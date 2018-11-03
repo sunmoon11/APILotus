@@ -339,7 +339,7 @@ jQuery(document).ready(function(t) {
                             }
                             var step1 = parseFloat(a[3][d][3]);
                             var step2 = parseFloat(a[3][d][4]);
-                            var tablet = parseFloat(a[3][d][5]);
+                            var tablet_step1 = parseFloat(a[3][d][5]);
                             var prepaid = parseFloat(a[3][d][6]);
                             var step1_nonpp = parseFloat(a[3][d][7]);
                             var step2_nonpp = parseFloat(a[3][d][8]);
@@ -363,9 +363,9 @@ jQuery(document).ready(function(t) {
                             } else
                                 t("#crm3_" + a[1] + "_" + label_type).html("0");
 
-                            t("#crm4_" + a[1] + "_" + label_type).html(tablet);
-                            if (tablet + step2_nonpp != 0) {
-                                var F = 100 * tablet / (tablet + step2_nonpp);
+                            t("#crm4_" + a[1] + "_" + label_type).html(tablet_step1);
+                            if (tablet_step1 + step1 != 0) {
+                                var F = 100 * tablet_step1 / (tablet_step1 + step1);
                                 t("#crm5_" + a[1] + "_" + label_type).html(F.toFixed(2));
                             } else
                                 t("#crm5_" + a[1] + "_" + label_type).html("0");
