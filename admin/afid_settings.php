@@ -68,34 +68,17 @@ $tab_name = "Affiliate Settings";
 <?php include('./setting_affiliation_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
-    <div class="col-xs-2">
-    </div>
+    <div class="col-xs-2"></div>
     <div class="col-xs-8">
         <div class="crm_board">
             <div class="row crm_board_title">
-                <div class="col-xs-10" style="padding-left: 0">Affiliates</div>
-                <div class="col-xs-2 affiliation_waiting" style="text-align:right"></div>
-            </div>
-            <div class="alert alert-warning affiliation_alert" role="alert" style="display:none"></div>
-            <div class="row crm_board_row">
-                <div class="col-xs-1">
+                <div class="col-xs-3" style="padding-left: 0">Affiliates</div>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control input-sm search_affiliates" placeholder="Search by Affiliate name, AFID(s), Offer name, Cap" style="margin-left: 20px;">
                 </div>
-                <div class="col-xs-7">
-<!--                    <div class="input-daterange input-group" id="datepicker">-->
-<!--                        <span class="input-group-addon calendar_label" style="border-left: 1px solid #ccc;">Date</span>-->
-<!--                        <input id="affiliation_date" type="text" class="input-sm form-control"/>-->
-<!--                        <span class="input-group-addon calendar_label">From</span>-->
-<!--                        <input id="from_date" type="text" class="input-sm form-control" name="start"/>-->
-<!--                        <span class="input-group-addon calendar_label">To</span>-->
-<!--                        <input id="to_date" type="text" class="input-sm form-control" name="end"/>-->
-<!---->
-<!--                        <span class="input-group-btn">-->
-<!--                            <button class="btn btn-default btn-sm affiliation_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>-->
-<!--                        </span>-->
-<!--                    </div>-->
-                </div>
-                <div class="col-xs-4" style="text-align:right; padding-right: 30px">
-                    <button type="button" class="btn btn-default btn-sm btn_affiliation_add" data-toggle="modal" data-target="#affiliation_add_modal">
+                <div class="col-xs-3" style="text-align:right;">
+                    <div class="affiliation_waiting" style="display: inline;"></div>
+                    <button type="button" class="btn btn-default btn-sm btn_affiliation_add" style="font-family: 'Varela Round', sans-serif;" data-toggle="modal" data-target="#affiliation_add_modal">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Affiliate
                     </button>
                     <button type="button" class="btn btn-default btn-sm btn_affiliation_offer_add" data-toggle="modal" data-target="#affiliation_offer_add_modal">
@@ -103,6 +86,8 @@ $tab_name = "Affiliate Settings";
                     </button>
                 </div>
             </div>
+            <div class="alert alert-warning affiliation_alert" role="alert" style="display:none"></div>
+
             <table class="table table-hover" style="margin-top:10px;">
                 <thead>
                 <tr>

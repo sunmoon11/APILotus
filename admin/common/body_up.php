@@ -232,9 +232,9 @@ if (in_array(4, $features))
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_offer.php">Offers</a></li>
                                         <?php } ?>
                                         <?php if ($tab_name == "Affiliate Settings") { ?>
-                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_affiliation.php">Affiliate Settings</a></li>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./afid_settings.php">Affiliate Settings</a></li>
                                         <?php } else { ?>
-                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_affiliation.php">Affiliate Settings</a></li>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./afid_settings.php">Affiliate Settings</a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>

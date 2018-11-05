@@ -68,6 +68,7 @@
                         <div class="col-xs-3 modal_input_label">AFID(s):</div>
                         <div class="col-xs-9"><input type="text" class="form-control input-sm edit_affiliation_afid"></div>
                     </div>
+                    <div class="row affiliation_goal_edit_body"></div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -125,10 +125,10 @@ jQuery(document).ready(function($) {
         if (0 != vertical_main_id)
             data = data.filter(item => item[5] === vertical_main_id);
         if (search_keyword)
-            data = data.filter(item => item[0].indexOf(search_keyword) !== -1 ||
-                item[2].toLowerCase().indexOf(search_keyword.toLowerCase()) !== -1 ||
-                item[1].toLowerCase().indexOf(search_keyword.toLowerCase()) !== -1 ||
-                item[6].toLowerCase().indexOf(search_keyword.toLowerCase()) !== -1
+            data = data.filter(item => item[0].includes(search_keyword) ||
+                item[2].toLowerCase().includes(search_keyword.toLowerCase()) ||
+                item[1].toLowerCase().includes(search_keyword.toLowerCase()) ||
+                item[6].toLowerCase().includes(search_keyword.toLowerCase())
             );
 
         let offer_table_html = "";
@@ -171,7 +171,7 @@ jQuery(document).ready(function($) {
                     }
                     else {
                         offer_list = jQuery.parseJSON(data);
-                        show_offer_list(offer_list);
+                        show_offer_list();
                     }
                 },
                 failure : function() {
@@ -353,17 +353,12 @@ jQuery(document).ready(function($) {
             }
         });
     });
-    $(".campaign_search_button").click(function() {
-        get_campaign_list();
-    });
 
     $(".btn_offer_add").click(function() {
         $("#label_add_offer").html('Add Offer&nbsp;<span class="setting_campaign_waiting" style="text-align:right"></span>');
         $(".modal_btn_offer_add").html('Add Offer');
         reset_offer_modal();
         $(".crm_toggle_button").removeAttr('disabled');
-        $("#offer_add_modal").modal("toggle");
-
         offer_type = 1;
         s1_payout = 0;
         s2_payout = 0;
@@ -371,6 +366,8 @@ jQuery(document).ready(function($) {
         $("#div_default_s2_payout").css("display", "none");
         $("#input_default_s1_payout").val('');
         $("#input_default_s2_payout").val('');
+
+        $("#offer_add_modal").modal("toggle");
     });
     $(document).on("click", ".modal_btn_offer_add", function () {
         if ("" === $(".add_offer_name").val()) {
