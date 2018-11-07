@@ -86,22 +86,18 @@
                         <div class="col-xs-4 modal_input_label">CRM User Name</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_crm_username"></div>
                     </div>
-                    <!--
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">CRM Password</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_crm_password"></div>
                     </div>
-                    -->
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">API User Name</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_api_username"></div>
                     </div>
-                    <!--
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">API Password</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_api_password"></div>
                     </div>
-                    -->
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-4 modal_input_label">Sales Goal</div>
                         <div class="col-xs-8"><input type="text" class="form-control input-sm edit_sales_goal"></div>

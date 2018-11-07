@@ -56,29 +56,29 @@ jQuery(document).ready(function($) {
                         window.location.href = "../../admin/login.php";
                     }
                     else {
-                        var crm_list = jQuery.parseJSON(data);
-                        var html = "";
+                        crm_list = jQuery.parseJSON(data);
+                        let html = "";
                         if (crm_list.length > 0) {
-                            for (var j = 0; j < crm_list.length; j++) {
-                                html += "<tr><td>" + (j + 1) + "</td>";
-                                html += '<td id="name_' + crm_list[j][0] + '">' + crm_list[j][1] + "</td>";
-                                html += '<td id="url_' + crm_list[j][0] + '">' + crm_list[j][2] + "</td>";
-                                html += '<td id="id1_' + crm_list[j][0] + '">' + crm_list[j][3] + "</td>";
-                                html += '<td id="pass1_' + crm_list[j][0] + '">' + crm_list[j][4] + "</td>";
-                                html += '<td id="id2_' + crm_list[j][0] + '">' + crm_list[j][5] + "</td>";
-                                html += '<td id="pass2_' + crm_list[j][0] + '">' + crm_list[j][6] + "</td>";
-                                html += '<td id="goal_' + crm_list[j][0] + '">' + crm_list[j][7] + "</td>";
-                                if ("1" == crm_list[j][8]) {
-                                    html += '<td id="paused_' + crm_list[j][0] + '"><span class="payment_badge payment_badge_red">Paused</span></td>';
+                            for (let i = 0; i < crm_list.length; i++) {
+                                html += "<tr><td>" + (i + 1) + "</td>";
+                                html += '<td id="name_' + crm_list[i][0] + '">' + crm_list[i][1] + "</td>";
+                                html += '<td id="url_' + crm_list[i][0] + '">' + crm_list[i][2] + "</td>";
+                                // html += '<td id="id1_' + crm_list[i][0] + '">' + crm_list[i][3] + "</td>";
+                                // html += '<td id="pass1_' + crm_list[i][0] + '">' + crm_list[i][4] + "</td>";
+                                // html += '<td id="id2_' + crm_list[i][0] + '">' + crm_list[i][5] + "</td>";
+                                // html += '<td id="pass2_' + crm_list[i][0] + '">' + crm_list[i][6] + "</td>";
+                                html += '<td id="goal_' + crm_list[i][0] + '">' + crm_list[i][7] + "</td>";
+                                if ("1" == crm_list[i][8]) {
+                                    html += '<td id="paused_' + crm_list[i][0] + '"><span class="payment_badge payment_badge_red">Paused</span></td>';
                                 }
                                 else {
-                                    html += '<td id="paused_' + crm_list[j][0] + '"></td>'
+                                    html += '<td id="paused_' + crm_list[i][0] + '"></td>'
                                 }
-                                if ("0000-00-00" == crm_list[j][9] || null == crm_list[j][9]) {
-                                    html += '<td id="valid_' + crm_list[j][0] + '"><span class="payment_badge payment_badge_red">No set password date</span></td>';
+                                if ("0000-00-00" == crm_list[i][9] || null == crm_list[i][9]) {
+                                    html += '<td id="valid_' + crm_list[i][0] + '"><span class="payment_badge payment_badge_red">No set password date</span></td>';
                                 } else {
-                                    var updated_date = crm_list[j][9].split("-");
-                                    var cur_date = crm_list[j][10].split("-");
+                                    var updated_date = crm_list[i][9].split("-");
+                                    var cur_date = crm_list[i][10].split("-");
 
                                     var updated = Date.UTC(updated_date[0], updated_date[1] - 1, updated_date[2]);
                                     var cur = Date.UTC(cur_date[0], cur_date[1] - 1, cur_date[2]);
@@ -87,18 +87,18 @@ jQuery(document).ready(function($) {
                                     if (m < 0) {
                                         m = 0;
                                     }
-                                    html += m < 5 ? '<td id="valid_' + crm_list[j][0] + '"><span class="payment_badge payment_badge_red">' + m + "</span></td>" : '<td id="valid_' + crm_list[j][0] + '">' + m + "</td>";
+                                    html += m < 5 ? '<td id="valid_' + crm_list[i][0] + '"><span class="payment_badge payment_badge_red">' + m + "</span></td>" : '<td id="valid_' + crm_list[i][0] + '">' + m + "</td>";
                                 }
-                                html += '<td id="rebill_' + crm_list[j][0] + '">' + crm_list[j][11] + "</td>";
-                                if (null == crm_list[j][12])
-                                    html += '<td id="test_' + crm_list[j][0] + '"></td>';
-                                else
-                                    html += '<td id="test_' + crm_list[j][0] + '">' + crm_list[j][12] + '</td>';
+                                html += '<td id="rebill_' + crm_list[i][0] + '">' + crm_list[i][11] + "</td>";
+                                // if (null == crm_list[j][12])
+                                //     html += '<td id="test_' + crm_list[j][0] + '"></td>';
+                                // else
+                                //     html += '<td id="test_' + crm_list[j][0] + '">' + crm_list[j][12] + '</td>';
                                 html += "<td>";
-                                html += '<button type="button" class="btn btn-link btn-sm setting_crm_edit" id="' + crm_list[j][0] + '" data-toggle="modal" data-target="#crm_edit_modal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Edit</button>';
-                                html += '<button type="button" class="btn btn-link btn-sm setting_crm_password" id="' + crm_list[j][0] + '" data-toggle="modal" data-target="#crm_password_modal"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>&nbsp;CRM Password</button>';
-                                html += '<button type="button" class="btn btn-link btn-sm setting_api_password" id="' + crm_list[j][0] + '" data-toggle="modal" data-target="#api_password_modal"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>&nbsp;API Password</button>';
-                                html += '<button type="button" class="btn btn-link btn-sm setting_crm_delete" id="' + crm_list[j][0] + '" data-toggle="modal" data-target="#crm_delete_modal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>&nbsp;Delete</button>';
+                                html += '<button type="button" class="btn btn-link btn-sm setting_crm_edit" id="' + crm_list[i][0] + '" data-toggle="modal" data-target="#crm_edit_modal"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;Edit</button>';
+                                // html += '<button type="button" class="btn btn-link btn-sm setting_crm_password" id="' + crm_list[i][0] + '" data-toggle="modal" data-target="#crm_password_modal"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>&nbsp;CRM Password</button>';
+                                // html += '<button type="button" class="btn btn-link btn-sm setting_api_password" id="' + crm_list[i][0] + '" data-toggle="modal" data-target="#api_password_modal"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>&nbsp;API Password</button>';
+                                html += '<button type="button" class="btn btn-link btn-sm setting_crm_delete" id="' + crm_list[i][0] + '" data-toggle="modal" data-target="#crm_delete_modal"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>&nbsp;Delete</button>';
                                 html += "</td></tr>";
                             }
                         } else {
@@ -117,9 +117,9 @@ jQuery(document).ready(function($) {
 
     function setting_crm_add() {
         show_waiting(true);
-        var d = 0;
+        let pause_crm = 0;
         if ($(".add_crm_paused").prop("checked")) {
-            d = 1;
+            pause_crm = 1;
         }
         $.ajax({
             type : "GET",
@@ -134,7 +134,7 @@ jQuery(document).ready(function($) {
                 sales_goal : $(".add_sales_goal").val(),
                 rebill_length : $(".add_rebill_length").val(),
                 test_cc : $(".add_test_cc").val(),
-                crm_paused : d
+                crm_paused : pause_crm
             },
             success : function(data) {
                 show_waiting(false);
@@ -157,9 +157,9 @@ jQuery(document).ready(function($) {
 
     function setting_crm_edit() {
         show_waiting(true);
-        var d = 0;
+        let pause_crm = 0;
         if ($(".edit_crm_paused").prop("checked")) {
-            d = 1;
+            pause_crm = 1;
         }
         $.ajax({
             type : "GET",
@@ -169,11 +169,13 @@ jQuery(document).ready(function($) {
                 crm_name : $(".edit_crm_name").val(),
                 crm_url : $(".edit_crm_url").val(),
                 crm_username : $(".edit_crm_username").val(),
+                crm_password : $(".edit_crm_password").val(),
                 api_username : $(".edit_api_username").val(),
+                api_password : $(".edit_api_password").val(),
                 sales_goal : $(".edit_sales_goal").val(),
                 rebill_length : $(".edit_rebill_length").val(),
                 test_cc : $(".edit_test_cc").val(),
-                crm_paused : d
+                crm_paused : pause_crm
             },
             success : function(data) {
                 show_waiting(false);
@@ -277,9 +279,10 @@ jQuery(document).ready(function($) {
         });
     }
 
-    var crm_id = -1;
-    var is_waiting = false;
-    var loading_icon = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
+    let crm_id = -1;
+    let crm_list = null;
+    let is_waiting = false;
+    let loading_icon = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
     get_all_crm_list();
 
     $(".btn_crm_add").click(function() {
@@ -364,14 +367,17 @@ jQuery(document).ready(function($) {
     });
     $(".table_crm_body").on("click", ".setting_crm_edit", function() {
         crm_id = $(this).prop("id");
-        $(".edit_crm_name").val($("#name_" + crm_id).text());
-        $(".edit_crm_url").val($("#url_" + crm_id).text());
-        $(".edit_crm_username").val($("#id1_" + crm_id).text());
-        $(".edit_api_username").val($("#id2_" + crm_id).text());
-        $(".edit_sales_goal").val($("#goal_" + crm_id).text());
-        $(".edit_rebill_length").val($("#rebill_" + crm_id).text());
-        $(".edit_test_cc").val($("#test_" + crm_id).text());
-        if ("Paused" == $("#paused_" + crm_id).text()) {
+        let crm = crm_list.filter(item => item[0] == crm_id)[0];
+        $(".edit_crm_name").val(crm[1]);
+        $(".edit_crm_url").val(crm[2]);
+        $(".edit_crm_username").val(crm[3]);
+        $(".edit_crm_password").val(crm[4]);
+        $(".edit_api_username").val(crm[5]);
+        $(".edit_api_password").val(crm[6]);
+        $(".edit_sales_goal").val(crm[7]);
+        $(".edit_rebill_length").val(crm[11]);
+        $(".edit_test_cc").val(crm[12]);
+        if (1 == crm[8]) {
             $(".edit_crm_paused").prop("checked", true);
         } else {
             $(".edit_crm_paused").prop("checked", false);
@@ -393,9 +399,19 @@ jQuery(document).ready(function($) {
             $(".edit_crm_username").focus();
             return;
         }
+        else if ("" == $(".edit_crm_password").val()) {
+            show_alert("edit", "Please input CRM Password.");
+            $(".edit_crm_password").focus();
+            return;
+        }
         else if ("" == $(".edit_api_username").val()) {
             show_alert("edit", "Please input API User Name.");
             $(".edit_api_username").focus();
+            return;
+        }
+        else if ("" == $(".edit_api_password").val()) {
+            show_alert("edit", "Please input API Password.");
+            $(".edit_api_password").focus();
             return;
         }
         else if ("" == $(".edit_sales_goal").val()) {

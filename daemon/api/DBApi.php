@@ -655,14 +655,14 @@ class DBApi
 	*@ret
 	*	Boolean
 	*/
-    public function updateCrm($crmId, $crmName, $crmUrl, $crmUserName, $apiUserName, $salesGoal, $paused, $rebill_length, $test_cc)
+    public function updateCrm($crmId, $crmName, $crmUrl, $crmUserName, $crmPassword, $apiUserName, $apiPassword, $salesGoal, $paused, $rebill_length, $test_cc)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
 
-            $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",api_user_name="' . $apiUserName . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ',rebill_length=' . $rebill_length . ',test_cc="' . $test_cc . '" WHERE id=' . $crmId;
+            $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",password="' . $crmPassword . '",api_user_name="' . $apiUserName . '",api_password="' . $apiPassword . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ',rebill_length=' . $rebill_length . ',test_cc="' . $test_cc . '" WHERE id=' . $crmId;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
