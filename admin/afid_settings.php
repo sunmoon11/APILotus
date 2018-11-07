@@ -51,9 +51,8 @@ if(!$dbApi->checkClientIp())
 // check subscription for payment
 include ('./common/check_payment.php');
 
-$user_name = $user;
-
-$affiliationList = $dbApi->getAllAffiliations();
+$crmList = $dbApi->getAllActiveCrmsByAccountId($userId);
+$verticalList = $dbApi->getOfferLabels();
 
 $tab_name = "Affiliate Settings";
 
@@ -81,12 +80,57 @@ $tab_name = "Affiliate Settings";
                     <button type="button" class="btn btn-default btn-sm btn_affiliation_add" style="font-family: 'Varela Round', sans-serif;" data-toggle="modal" data-target="#affiliation_add_modal">
                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Affiliate
                     </button>
-                    <button type="button" class="btn btn-default btn-sm btn_affiliation_offer_add" data-toggle="modal" data-target="#affiliation_offer_add_modal">
-                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Offer
-                    </button>
                 </div>
             </div>
             <div class="alert alert-warning affiliation_alert" role="alert" style="display:none"></div>
+
+            <div class="row crm_board_row">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-4">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle crm_main_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:200px">
+                                <?php
+                                if ($crmList != null && count($crmList) > 0)
+                                    echo 'All Clients ';
+                                else
+                                    echo 'None Client ';
+                                ?>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu crm_main_dropdown_menu" role="menu">
+                                <?php
+                                if ($crmList != null) {
+                                    echo '<li><a href="#" id="0" class="crm_main_dropdown_list">All Clients</a></li>';
+                                    for ($i = 0; $i < count($crmList); $i++)
+                                        echo '<li><a href="#" id="'.$crmList[$i][0].'" class="crm_main_dropdown_list">'.$crmList[$i][1].'</a></li>';
+                                }
+                                ?>
+                            </ul>
+                        </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle vertical_main_toggle_button" data-toggle="dropdown" aria-expanded="false" style="min-width:200px; margin-left: 10px;">
+                                <?php
+                                if ($verticalList != null && count($verticalList) > 0)
+                                    echo 'All Vertical Labels ';
+                                else
+                                    echo 'None Vertical Label ';
+                                ?>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu vertical_main_dropdown_menu" role="menu">
+                                <?php
+                                if ($verticalList != null) {
+                                    echo '<li><a href="#" id="0" class="vertical_main_dropdown_list">All Vertical Labels</a></li>';
+                                    for ($i = 0; $i < count($verticalList); $i++)
+                                        echo '<li><a href="#" id="'.$verticalList[$i][0].'" class="vertical_main_dropdown_list">'.$verticalList[$i][1].'</a></li>';
+                                }
+                                ?>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
             <table class="table table-hover" style="margin-top:10px;">
                 <thead>

@@ -75,15 +75,15 @@ $tab_name = "Client Setup";
 							<th>#</th>
 							<th>Client Name</th>
 							<th>Client URL</th>
-							<th>CRM User Name</th>
-							<th>CRM Password</th>
-	                        <th>API User Name</th>
-	                        <th>API Password</th>
+<!--							<th>CRM User Name</th>-->
+<!--							<th>CRM Password</th>-->
+<!--	                        <th>API User Name</th>-->
+<!--	                        <th>API Password</th>-->
 	                        <th>Sales Goal</th>
 	                        <th>Status*</th>
 	                        <th>Password Valid Days</th>
 	                        <th>Rebill Length</th>
-	                        <th>Test CC</th>
+<!--	                        <th>Test CC</th>-->
 							<th>CRM Action</th>
 						</tr>
 					</thead>

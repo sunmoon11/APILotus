@@ -18,8 +18,6 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$offers = $dbApi->getOffersOfAffiliateID($affiliate_id);
+$offers = $dbApi->getOffersByAffiliateID($affiliate_id);
 
 echo json_encode($offers);
-
-?>

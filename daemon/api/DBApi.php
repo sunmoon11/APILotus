@@ -9163,7 +9163,7 @@ class DBApi
         }
     }
 
-    public function getOffersOfAffiliateID($affiliate_id)
+    public function getOffersByAffiliateID($affiliate_id)
     {
         if (!$this->checkConnection())
             return null;
@@ -9176,40 +9176,12 @@ class DBApi
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['affiliate_id'], $row['offer_id']);
+                    $ret[] = $row['offer_id'];
             }
             return $ret;
         } catch (Exception $e) {
             return null;
         }
-    }
-
-    public function setOffersOfAffiliateID($affiliate_id, $offer_ids)
-    {
-        if (!$this->checkConnection())
-            return false;
-
-        try {
-            $query = 'DELETE FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id;
-            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-            if ($result === TRUE) {
-                foreach ($offer_ids as $offer_id) {
-                    if ($offer_id) {
-                        $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal (id, affiliate_id, offer_id, goal) VALUES (null,' . $affiliate_id . ',' . $offer_id . ', 0)';
-                        $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-                        if ($result !== TRUE) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-        return false;
     }
 
     public function getAllOffersWithCRMGoal()
@@ -9403,16 +9375,23 @@ class DBApi
         }
     }
 
-    public function addAffiliation($name, $afid)
+    public function addAffiliation($name, $afid, $offer_ids, $offer_goals)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
             $query = 'INSERT INTO ' . $this->subdomain . '_affiliate (id, name, afid) VALUES (null,"' . $name . '", "' . $afid . '")';
-
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-            if ($result === TRUE) {
+            if ($result === true) {
+                $affiliate_id = $this->conn->insert_id;
+                foreach ($offer_ids as $index=>$offer_id) {
+                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ')';
+                    $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                    if ($result !== true) {
+                        return false;
+                    }
+                }
                 return true;
             } else {
                 return false;
@@ -9422,18 +9401,30 @@ class DBApi
         }
     }
 
-    public function editAffiliation($affiliate_id, $name, $afid)
+    public function editAffiliation($affiliate_id, $name, $afid, $offer_ids, $offer_goals)
     {
         if (!$this->checkConnection())
             return false;
 
         try {
             $query = 'UPDATE ' . $this->subdomain . '_affiliate SET name="' . $name . '", afid="' . $afid . '" WHERE id=' . $affiliate_id;
-
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-
-            if ($result === TRUE) {
-                return true;
+            if ($result === true) {
+                $query = 'DELETE FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id;
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                if ($result === true) {
+                    foreach ($offer_ids as $index=>$offer_id) {
+                        $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ')';
+                        $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                        if ($result !== true) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -9451,62 +9442,21 @@ class DBApi
             $query = 'DELETE FROM ' . $this->subdomain . '_affiliate WHERE id=' . $affiliate_id;
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
-            if ($result === TRUE) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    public function addAffiliationGoal($affiliate_id, $offer_id, $goal)
-    {
-        if (!$this->checkConnection())
-            return false;
-
-        try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $goal . ')';
-
-            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-            if ($result === TRUE) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    public function editAffiliationGoals($affiliate_id, $offer_ids, $offer_goals)
-    {
-        if (!$this->checkConnection())
-            return false;
-
-        foreach ($offer_ids as $index=>$offer_id) {
-            try {
-                $query = 'SELECT id FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id . ' AND offer_id=' . $offer_id;
+            if ($result === true) {
+                $query = 'DELETE FROM ' . $this->subdomain . '_affiliate_goal WHERE affiliate_id=' . $affiliate_id;
                 $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
-
-                $count = mysqli_num_rows($result);
-                if ($count > 0) {
-                    $row = mysqli_fetch_assoc($result);
-                    $id = $row['id'];
-
-                    $query = 'UPDATE ' . $this->subdomain . '_affiliate_goal SET goal=' . $offer_goals[$index] . ' WHERE id=' . $id;
-                    $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                if ($result === true) {
+                    return true;
                 }
                 else {
-                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ')';
-                    $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                    return false;
                 }
-            } catch (Exception $e) {
+            } else {
                 return false;
             }
+        } catch (Exception $e) {
+            return false;
         }
-        return true;
     }
 
     public function getDashboardRefresh($date_type)

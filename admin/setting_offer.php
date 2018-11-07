@@ -51,8 +51,6 @@ if(!$dbApi->checkClientIp())
 // check subscription for payment
 include ('./common/check_payment.php');
 
-$user_name = $user;
-
 $crmList = $dbApi->getAllActiveCrmsByAccountId($userId);
 $verticalList = $dbApi->getOfferLabels();
 
@@ -98,8 +96,8 @@ $tab_name = "Offers";
                                     echo 'None Client ';
                                 ?>
                                 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu crm_main_dropdown_menu" role="menu">
+                            </button>
+                            <ul class="dropdown-menu crm_main_dropdown_menu" role="menu">
                                 <?php
                                 if ($crmList != null) {
                                     echo '<li><a href="#" id="0" class="crm_main_dropdown_list">All Clients</a></li>';
@@ -118,8 +116,8 @@ $tab_name = "Offers";
                                     echo 'None Vertical Label ';
                                 ?>
                                 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu vertical_main_dropdown_menu" role="menu">
+                            </button>
+                            <ul class="dropdown-menu vertical_main_dropdown_menu" role="menu">
                                 <?php
                                 if ($verticalList != null) {
                                     echo '<li><a href="#" id="0" class="vertical_main_dropdown_list">All Vertical Labels</a></li>';

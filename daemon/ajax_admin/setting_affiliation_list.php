@@ -27,7 +27,7 @@ foreach ($affiliates as $affiliate) {
     foreach ($offers as $offer) {
         foreach ($affiliates_goal as $affiliate_goal) {
             if ($affiliate[0] == $affiliate_goal[1] and $offer[0] == $affiliate_goal[2]) {
-                $sub_result[] = array($affiliate_goal[0], $affiliate_goal[3], $offer[0], $offer[1], $offer[2] . '(' . $offer[3] . ')');
+                $sub_result[] = array($affiliate_goal[0], $affiliate_goal[3], $offer[0], $offer[1], $offer[2] . '(' . $offer[3] . ')', $offer[7], $offer[5], $offer[8], $offer[9], $offer[10]);
                 break;
             }
         }
