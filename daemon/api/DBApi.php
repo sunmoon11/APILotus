@@ -662,7 +662,10 @@ class DBApi
 
         try {
 
-            $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",password="' . $crmPassword . '",api_user_name="' . $apiUserName . '",api_password="' . $apiPassword . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ',rebill_length=' . $rebill_length . ',test_cc="' . $test_cc . '" WHERE id=' . $crmId;
+            if (null == $crmPassword and null == $apiPassword and null == $rebill_length and null == $test_cc)
+                $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",api_user_name="' . $apiUserName . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ' WHERE id=' . $crmId;
+            else
+                $query = 'UPDATE ' . $this->subdomain . '_crm_account SET crm_name="' . $crmName . '",crm_url="' . $crmUrl . '",user_name="' . $crmUserName . '",password="' . $crmPassword . '",api_user_name="' . $apiUserName . '",api_password="' . $apiPassword . '",sales_goal=' . $salesGoal . ',paused=' . $paused . ',rebill_length=' . $rebill_length . ',test_cc="' . $test_cc . '" WHERE id=' . $crmId;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
@@ -9367,7 +9370,7 @@ class DBApi
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['affiliate_id'], $row['offer_id'], $row['goal']);
+                    $ret[] = array($row['id'], $row['affiliate_id'], $row['offer_id'], $row['goal'], $row['s1_payout'], $row['s2_payout']);
             }
             return $ret;
         } catch (Exception $e) {
@@ -9375,7 +9378,7 @@ class DBApi
         }
     }
 
-    public function addAffiliation($name, $afid, $offer_ids, $offer_goals)
+    public function addAffiliation($name, $afid, $offer_ids, $offer_goals, $s1_payouts, $s2_ids, $s2_payouts)
     {
         if (!$this->checkConnection())
             return false;
@@ -9386,7 +9389,13 @@ class DBApi
             if ($result === true) {
                 $affiliate_id = $this->conn->insert_id;
                 foreach ($offer_ids as $index=>$offer_id) {
-                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ')';
+                    $s2_payout = 0;
+                    foreach ($s2_ids as $s2_index=>$s2_id) {
+                        if ($offer_id == $s2_id) {
+                            $s2_payout = $s2_payouts[$s2_index];
+                        }
+                    }
+                    $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ','. $s1_payouts[$index] . ','. $s2_payout . ')';
                     $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
                     if ($result !== true) {
                         return false;
@@ -9401,7 +9410,7 @@ class DBApi
         }
     }
 
-    public function editAffiliation($affiliate_id, $name, $afid, $offer_ids, $offer_goals)
+    public function editAffiliation($affiliate_id, $name, $afid, $offer_ids, $offer_goals, $s1_payouts, $s2_ids, $s2_payouts)
     {
         if (!$this->checkConnection())
             return false;
@@ -9414,7 +9423,13 @@ class DBApi
                 $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
                 if ($result === true) {
                     foreach ($offer_ids as $index=>$offer_id) {
-                        $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ')';
+                        $s2_payout = 0;
+                        foreach ($s2_ids as $s2_index=>$s2_id) {
+                            if ($offer_id == $s2_id) {
+                                $s2_payout = $s2_payouts[$s2_index];
+                            }
+                        }
+                        $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_goal VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $offer_goals[$index] . ','. $s1_payouts[$index] . ','. $s2_payout . ')';
                         $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
                         if ($result !== true) {
                             return false;

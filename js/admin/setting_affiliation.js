@@ -73,7 +73,7 @@ jQuery(document).ready(function (t) {
         })
     }
 
-    function add_affiliate(offer_ids, offer_goals) {
+    function add_affiliate(offer_ids, offer_goals, s1_payouts, s2_ids, s2_payouts) {
         show_waiting("main", true);
         $.ajax({
             type: "GET",
@@ -82,7 +82,10 @@ jQuery(document).ready(function (t) {
                 name: $(".add_affiliation_name").val(),
                 afid: $(".add_affiliation_afid").val(),
                 offer_ids: offer_ids,
-                offer_goals: offer_goals
+                offer_goals: offer_goals,
+                s1_payouts: s1_payouts,
+                s2_ids: s2_ids,
+                s2_payouts: s2_payouts
             },
             success: function (status) {
                 show_waiting("main", false);
@@ -100,7 +103,7 @@ jQuery(document).ready(function (t) {
         });
     }
 
-    function edit_affiliate(offer_ids, offer_goals) {
+    function edit_affiliate(offer_ids, offer_goals, s1_payouts, s2_ids, s2_payouts) {
         show_waiting("main", true);
         $.ajax({
             type: "GET",
@@ -110,7 +113,10 @@ jQuery(document).ready(function (t) {
                 name: $(".edit_affiliation_name").val(),
                 afid: $(".edit_affiliation_afid").val(),
                 offer_ids: offer_ids,
-                offer_goals: offer_goals
+                offer_goals: offer_goals,
+                s1_payouts: s1_payouts,
+                s2_ids: s2_ids,
+                s2_payouts: s2_payouts
             },
             success: function (status) {
                 show_waiting("main", false);
@@ -247,6 +253,38 @@ jQuery(document).ready(function (t) {
         return true;
     }
 
+    function make_html(offers) {
+        let html = '<table id="id_affiliation_offer_caps_table" class="table table-hover"' + (0 === offers.length ? ' style="display:none"' : "") + '>';
+        html += '<thead id="id_affiliation_offer_caps_header"><tr>' +
+            '<th>Offer Name</th>' +
+            '<th>Offer Cap</th>' +
+            '<th>Step1 CPA</th>';
+        for (let i = 0; i < offers.length; i++) {
+            let offer = offers[i];
+            let offer_type = all_offers.filter(item => item[0] == offer[2])[0][5];
+            if (2 == offer_type) {
+                html += '<th>Step2 CPA</th>';
+                break;
+            }
+        }
+        html += '</tr></thead>';
+        html += '<tbody id="id_affiliation_offer_caps_body">';
+
+        for (let i = 0; i < offers.length; i++) {
+            let offer = offers[i];
+            let offer_type = all_offers.filter(item => item[0] == offer[2])[0];
+            html += '<tr>';
+            html += '<td>' + offer[3] + '</td>';
+            html += '<td><input type="text" id="editgoal_' + offer[2] + '" class="form-control input-sm edit_goals" value="' + offer[1] + '"></td>';
+            html += '<td><input type="text" id="s1payout_' + offer[2] + '" class="form-control input-sm s1_edit_payouts" value="' + (null == offer[7] ? "": offer[7]) + '" placeholder="' + offer_type[6] + '"/></td>';
+            if (2 == offer_type[5])
+                html += '<td><input type="text" id="s2payout_' + offer[2] + '" class="form-control input-sm s2_edit_payouts" value="' + (null == offer[8] ? "": offer[8]) + '" placeholder="' + offer_type[7] + '"/></td>';
+            html += '</tr>';
+        }
+        html += '</tbody></table>';
+        return html;
+    }
+
     $(".crm_main_dropdown_menu li").on("click", function() {
         crm_main_id = $(this).find("a").attr("id");
         $(".crm_main_toggle_button").html($(this).text() + ' <span class="caret"></span>');
@@ -272,7 +310,8 @@ jQuery(document).ready(function (t) {
             $(".left_options").html(all_options);
             $(".right_options").html("");
         }
-        $(".affiliation_add_offer_caps").html("");
+        $("#id_add_affiliation_offer_caps_table").css("display", "none");
+        $("#id_add_affiliation_offer_caps_body").html("");
     });
     $(".modal_btn_affiliation_add").click(function () {
         if ("" == $(".add_affiliation_name").val()) {
@@ -295,12 +334,22 @@ jQuery(document).ready(function (t) {
 
         let ids = [];
         let goals = [];
+        let s1_payouts = [];
+        let s2_ids = [];
+        let s2_payouts = [];
         $(".add_goals").each(function () {
             ids.push($(this).prop("id").substring(8));
             goals.push("" == $(this).val() ? "0" : $(this).val());
         });
+        $(".s1_add_payouts").each(function () {
+            s1_payouts.push("" == $(this).val() ? "0" : $(this).val());
+        });
+        $(".s2_add_payouts").each(function () {
+            s2_ids.push($(this).prop("id").substring(9));
+            s2_payouts.push("" == $(this).val() ? "0" : $(this).val());
+        });
 
-        add_affiliate(ids.join(','), goals.join(','));
+        add_affiliate(ids.join(','), goals.join(','), s1_payouts.join(','), s2_ids.join(','), s2_payouts.join(','));
     });
 
 
@@ -313,24 +362,12 @@ jQuery(document).ready(function (t) {
         }
         $(".affiliation_offer_caps").html("");
 
-        let id = $(this).prop("id").substring(6);
-        affiliate_id = results[id][0][0];
-        $(".edit_affiliation_name").val(results[id][0][1]);
-        $(".edit_affiliation_afid").val(results[id][0][2]);
+        selected_id = $(this).prop("id").substring(6);
+        affiliate_id = results[selected_id][0][0];
+        $(".edit_affiliation_name").val(results[selected_id][0][1]);
+        $(".edit_affiliation_afid").val(results[selected_id][0][2]);
 
-        let html = "";
-        let offers = results[id][1];
-        for (let i = 0; i < offers.length; i++) {
-            let offer = offers[i];
-            html += '<div class="row" style="margin-bottom: 5px;">';
-            html += '<div class="col-xs-4 modal_input_label">' + offer[3] + "</div>";
-            html += '<div class="col-xs-2"><input type="text" id="editgoal_' + offer[2] + '" class="form-control input-sm edit_goals" value="' + offer[1] + '"></div>';
-            html += '<div class="col-xs-3 modal_input_label">Payout</div>';
-            html += '<div class="col-xs-2"><input type="text" id="s1payout_' + offer[2] + '" class="form-control input-sm s1_edit_payouts" value="' + offer[8] + '"></div>';
-            html += '<div class="col-xs-1"></div>';
-            html += '</div>';
-        }
-        $(".affiliation_offer_caps").html(html);
+        $(".affiliation_offer_caps").html(make_html(results[selected_id][1]));
 
         get_affiliate_offers();
     });
@@ -354,12 +391,22 @@ jQuery(document).ready(function (t) {
         $("#affiliation_edit_modal").modal("toggle");
         let ids = [];
         let goals = [];
+        let s1_payouts = [];
+        let s2_ids = [];
+        let s2_payouts = [];
         $(".edit_goals").each(function () {
             ids.push($(this).prop("id").substring(9));
             goals.push("" == $(this).val() ? "0" : $(this).val());
         });
+        $(".s1_edit_payouts").each(function () {
+            s1_payouts.push("" == $(this).val() ? "0" : $(this).val());
+        });
+        $(".s2_edit_payouts").each(function () {
+            s2_ids.push($(this).prop("id").substring(9));
+            s2_payouts.push("" == $(this).val() ? "0" : $(this).val());
+        });
 
-        edit_affiliate(ids.join(','), goals.join(','));
+        edit_affiliate(ids.join(','), goals.join(','), s1_payouts.join(','), s2_ids.join(','), s2_payouts.join(','));
     });
 
     $(".modal_btn_affiliation_delete").click(function () {
@@ -369,21 +416,53 @@ jQuery(document).ready(function (t) {
     });
 
 
+    function refresh_table(add="") {
+        let chosen_options = null;
+        if ("" === add)
+            chosen_options = $('.chosen_options option');
+        else
+            chosen_options = $('.right_options option');
+
+        if (chosen_options.length > 0)
+            $("#id_" + add + "affiliation_offer_caps_table").css("display", "table");
+        else
+            $("#id_" + add + "affiliation_offer_caps_table").css("display", "none");
+
+        let html = '<tr>' +
+            '<th>Offer Name</th>' +
+            '<th>Offer Cap</th>' +
+            '<th>Step1 CPA</th>';
+        for (let i = 0; i < chosen_options.length; i++) {
+            let offer = all_offers.filter(item => item[0] == chosen_options[i].value)[0];
+            if (2 == offer[5]) {
+                html += '<th>Step2 CPA</th>';
+                break;
+            }
+        }
+        html += '</tr>';
+        $("#id_" + add + "affiliation_offer_caps_header").html(html);
+    }
     $('.go_in').click(function() {
         let selected_options = $('.all_options option:selected');
         selected_options.remove().appendTo('.chosen_options');
 
-        let html = "";
+        let body = document.getElementById('id_affiliation_offer_caps_body');
+
         for (let i = 0; i < selected_options.length; i++) {
-            html += '<div class="row" style="margin-bottom: 5px;">';
-            html += '<div class="col-xs-4 modal_input_label">' + selected_options[i].text + "</div>";
-            html += '<div class="col-xs-2"><input type="text" id="editgoal_' + selected_options[i].value + '" class="form-control input-sm edit_goals"></div>';
-            html += '<div class="col-xs-3 modal_input_label">Payout</div>';
-            html += '<div class="col-xs-2"><input type="text" id="s1payout_' + selected_options[i].value + '" class="form-control input-sm s1_edit_payouts"></div>';
-            html += '<div class="col-xs-1"></div>';
-            html += '</div>';
+            let offer = all_offers.filter(item => item[0] == selected_options[i].value)[0];
+            let new_offer = document.createElement('tr');
+            let html = '<tr>';
+            html += '<td>' + offer[1] + '</td>';
+            html += '<td><input type="text" id="editgoal_' + offer[0] + '" class="form-control input-sm edit_goals" value=""></td>';
+            html += '<td><input type="text" id="s1payout_' + offer[0] + '" class="form-control input-sm s1_edit_payouts" value="" placeholder="' + offer[6] + '"/></td>';
+            if (2 == offer[5]) {
+                html += '<td><input type="text" id="s2payout_' + offer[0] + '" class="form-control input-sm s2_edit_payouts" value="" placeholder="' + offer[7] + '"/></td>';
+            }
+            html += '</tr>';
+            new_offer.innerHTML = html;
+            body.appendChild(new_offer);
         }
-        $(".affiliation_offer_caps").html($(".affiliation_offer_caps").html() + html);
+        refresh_table();
     });
     $('.go_out').click(function() {
         let selected_options = $('.chosen_options option:selected');
@@ -392,23 +471,30 @@ jQuery(document).ready(function (t) {
         for (let i = 0; i < selected_options.length; i++) {
             $("#editgoal_" + selected_options[i].value).parent().parent().remove();
         }
+        refresh_table();
     });
 
     $('.add_to_right').click(function() {
         let selected_options = $('.left_options option:selected');
         selected_options.remove().appendTo('.right_options');
 
-        let html = "";
+        let body = document.getElementById('id_add_affiliation_offer_caps_body');
+
         for (let i = 0; i < selected_options.length; i++) {
-            html += '<div class="row" style="margin-bottom: 5px;">';
-            html += '<div class="col-xs-4 modal_input_label">' + selected_options[i].text + "</div>";
-            html += '<div class="col-xs-2" style="display: flex"><input type="text" id="addgoal_' + selected_options[i].value + '" class="form-control input-sm add_goals"></div>';
-            html += '<div class="col-xs-3 modal_input_label">Payout</div>';
-            html += '<div class="col-xs-2"><input type="text" id="s1payout_' + selected_options[i].value + '" class="form-control input-sm s1_add_payouts"></div>';
-            html += '<div class="col-xs-1"></div>';
-            html += '</div>';
+            let offer = all_offers.filter(item => item[0] == selected_options[i].value)[0];
+            let new_offer = document.createElement('tr');
+            let html = '<tr>';
+            html += '<td>' + offer[1] + '</td>';
+            html += '<td><input type="text" id="addgoal_' + offer[0] + '" class="form-control input-sm add_goals" value=""></td>';
+            html += '<td><input type="text" id="s1payout_' + offer[0] + '" class="form-control input-sm s1_add_payouts" value="" placeholder="' + offer[6] + '"/></td>';
+            if (2 == offer[5]) {
+                html += '<td><input type="text" id="s2payout_' + offer[0] + '" class="form-control input-sm s2_add_payouts" value="" placeholder="' + offer[7] + '"/></td>';
+            }
+            html += '</tr>';
+            new_offer.innerHTML = html;
+            body.appendChild(new_offer);
         }
-        $(".affiliation_add_offer_caps").html($(".affiliation_add_offer_caps").html() + html);
+        refresh_table("add_");
     });
     $('.remove_to_left').click(function() {
         let selected_options = $('.right_options option:selected');
@@ -417,12 +503,14 @@ jQuery(document).ready(function (t) {
         for (let i = 0; i < selected_options.length; i++) {
             $("#addgoal_" + selected_options[i].value).parent().parent().remove();
         }
+        refresh_table("add_");
     });
 
     let loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
     let results = null;
     let all_offers = null;
     let affiliate_id = -1;
+    let selected_id = -1;
     let search_keyword = '';
     let crm_main_id = 0;
     let vertical_main_id = 0;

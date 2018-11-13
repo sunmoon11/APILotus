@@ -23,7 +23,19 @@
                         <div class="col-xs-3 modal_input_label">AFID(s):</div>
                         <div class="col-xs-9"><input type="text" class="form-control input-sm add_affiliation_afid"></div>
                     </div>
-                    <div class="row affiliation_add_offer_caps"></div>
+                    <div class="row">
+                        <table id="id_add_affiliation_offer_caps_table" class="table table-hover" style="display:none">
+                            <thead id="id_add_affiliation_offer_caps_header">
+                                <tr>
+                                    <th>Offer Name</th>
+                                    <th>Offer Cap</th>
+                                    <th>Step1 CPA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="id_add_affiliation_offer_caps_body">
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-xs-5">
                             <select multiple="multiple" name="left_options" class="left_options" style="width: 200px; height: 300px;">
