@@ -99,78 +99,58 @@ jQuery(document).ready(function(t) {
                         show_waiting(true);
                         t.ajax({
                             type: "GET",
-                            url: "../daemon/ajax_admin/dashboard_sales_all.php",
-                            data: {
-                                crm_list: crm_list,
-                                from_date: t("#from_date").val(),
-                                to_date: t("#to_date").val()
-                            },
-                            success: function(data) {
+                            url: "../daemon/ajax_admin/cap_update_list.php",
+                            data: {},
+                            success: function(e) {
                                 show_waiting(false);
+                                if ("no_cookie" === e)
+                                    return void (window.location.href = "../../admin/login.php");
 
-                                crm_sales_goal = jQuery.parseJSON(data);
+                                cap_update_list = jQuery.parseJSON(e);
 
-                                show_waiting(true);
-                                t(".table_affiliation_body").html("");
-                                t.ajax({
-                                    type: "GET",
-                                    url: "../daemon/ajax_admin/cap_update_list.php",
-                                    data: {},
-                                    success: function(e) {
-                                        show_waiting(false);
-                                        if ("no_cookie" === e)
-                                            return void (window.location.href = "../../admin/login.php");
+                                var html = "";
 
-                                        cap_update_list = jQuery.parseJSON(e);
+                                var affiliate_goal_id = -1;
+                                for (var i = 0; i < cap_update_list.length; i++) {
+                                    var affiliate_goal = cap_update_list[i];
+                                    // ["6", "2", "3", "200", "Full Zoom Media", "12,58", "Vital X", "Falcor CRM", "2500"]
+                                    if (affiliate_goal_id != affiliate_goal[1]) {
+                                        if (-1 !== affiliate_goal_id)
+                                            html += '</div></div></div>';
+                                        affiliate_goal_id = affiliate_goal[1];
 
-                                        var html = "";
+                                        html += '<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 c_item"><div>';
+                                        html += '<h4 style="color: #6772e5;"><b>' + affiliate_goal[4] + '</b></h4>';
+                                        if (null == affiliate_goal[5])
+                                            html += '<p>AFIDS:</p>';
+                                        else
+                                            html += '<p>AFIDS: ' + affiliate_goal[5] + '</p>';
 
-                                        var affiliate_goal_id = -1;
-                                        for (var i = 0; i < cap_update_list.length; i++) {
-                                            var affiliate_goal = cap_update_list[i];
-                                            // ["6", "2", "3", "200", "Full Zoom Media", "12,58", "Vital X", "Falcor CRM", "2500"]
-                                            if (affiliate_goal_id != affiliate_goal[1]) {
-                                                if (-1 !== affiliate_goal_id)
-                                                    html += '</div></div></div>';
-                                                affiliate_goal_id = affiliate_goal[1];
-
-                                                html += '<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 c_item"><div>';
-                                                html += '<h4 style="color: #6772e5;"><b>' + affiliate_goal[4] + '</b></h4>';
-                                                if (null == affiliate_goal[5])
-                                                    html += '<p>AFIDS:</p>';
-                                                else
-                                                    html += '<p>AFIDS: ' + affiliate_goal[5] + '</p>';
-
-                                                html += '<h4 style="color: #6772e5">Sales Progress</h4>';
-                                                html += '<div class="row c_cnt_header">';
-                                                html += '<div style="color: #6772e5" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">OFFER</div>';
-                                                html += '<div style="color: #6772e5" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">PROGRESS</div>';
-                                                html += '<div style="color: #6772e5" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">LAST UPDATED</div>';
-                                                html += '</div>';
-                                                html += '<div class="c_cnt_list">';
-                                            }
-                                            html += '<div class="row">';
-                                            html += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">' + affiliate_goal[6] + '</div>';
-                                            html += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="capgoal_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '">0/' + affiliate_goal[3] + '</div>';
-                                            html += '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" id="updated_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '"></div>';
-                                            html += '</div>';
-                                        }
-                                        t(".div_cap_update_body").html(html);
-
-                                        for (i = 0; i < crm_list.length; i++) {
-                                            get_cap_update_goal_list(crm_list[i][0]);
-                                        }
-                                    },
-                                    failure: function(t) {
-                                        show_waiting(false);
-                                        show_alert("Cannot load Affiliate Sales Goal information.")
+                                        html += '<h4 style="color: #6772e5">Sales Progress</h4>';
+                                        html += '<div class="row c_cnt_header">';
+                                        html += '<div style="color: #6772e5" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">OFFER</div>';
+                                        html += '<div style="color: #6772e5" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">PROGRESS</div>';
+                                        html += '<div style="color: #6772e5" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">LAST UPDATED</div>';
+                                        html += '</div>';
+                                        html += '<div class="c_cnt_list">';
                                     }
-                                });
+                                    html += '<div class="row">';
+                                    html += '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">' + affiliate_goal[6] + '</div>';
+                                    html += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="capgoal_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '">0/' + affiliate_goal[3] + '</div>';
+                                    html += '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" id="updated_' + affiliate_goal[1] + '_' + affiliate_goal[2] + '"></div>';
+                                    html += '</div>';
+                                }
+                                t(".div_cap_update_body").html(html);
+
+                                for (i = 0; i < crm_list.length; i++) {
+                                    get_cap_update_goal_list(crm_list[i][0]);
+                                }
                             },
-                            failure: function() {
-                                show_alert("Cannot load sales information.")
+                            failure: function(t) {
+                                show_waiting(false);
+                                show_alert("Cannot load Affiliate Sales Goal information.")
                             }
-                        })
+                        });
                     }
                 }
             },
@@ -315,7 +295,6 @@ jQuery(document).ready(function(t) {
     var from_date = "";
     var to_date = "";
     var cap_update_list = null;
-    var crm_sales_goal = null;
     var goals = [];
     var date_type = "date_thisweek";
 

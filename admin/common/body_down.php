@@ -30,6 +30,7 @@
 <?php if ($tab_name == "CAP Update") echo "<script type=\"text/javascript\" src=\"../js/admin/cap_update.js\"></script>"; ?>
 <?php if ($tab_name == "Offers") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_offer.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate Settings") echo "<script type=\"text/javascript\" src=\"../js/admin/setting_affiliation.js\"></script>"; ?>
+<?php if ($tab_name == "Billing") echo "<script type=\"text/javascript\" src=\"../js/admin/billing.js\"></script>"; ?>
 <?php if ($tab_name == "Konnektive Order Summary") echo "<script type=\"text/javascript\" src=\"../js/admin/konnektive_order_summary.min.js\"></script>"; ?>
 <?php if ($tab_name == "Konnektive Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/konnektive_retention.min.js\"></script>"; ?>
 <?php if ($tab_name == "Konnektive Account Management") echo "<script type=\"text/javascript\" src=\"../js/admin/konnektive_accounts.min.js\"></script>"; ?>

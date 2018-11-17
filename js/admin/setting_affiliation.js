@@ -276,9 +276,9 @@ jQuery(document).ready(function (t) {
             html += '<tr>';
             html += '<td>' + offer[3] + '</td>';
             html += '<td><input type="text" id="editgoal_' + offer[2] + '" class="form-control input-sm edit_goals" value="' + offer[1] + '"></td>';
-            html += '<td><input type="text" id="s1payout_' + offer[2] + '" class="form-control input-sm s1_edit_payouts" value="' + (null == offer[7] ? "": offer[7]) + '" placeholder="' + offer_type[6] + '"/></td>';
+            html += '<td><input type="text" id="s1payout_' + offer[2] + '" class="form-control input-sm s1_edit_payouts" value="' + (null == offer[7] || 0 == offer[7] ? "": offer[7]) + '" placeholder="' + offer_type[6] + '"/></td>';
             if (2 == offer_type[5])
-                html += '<td><input type="text" id="s2payout_' + offer[2] + '" class="form-control input-sm s2_edit_payouts" value="' + (null == offer[8] ? "": offer[8]) + '" placeholder="' + offer_type[7] + '"/></td>';
+                html += '<td><input type="text" id="s2payout_' + offer[2] + '" class="form-control input-sm s2_edit_payouts" value="' + (null == offer[8] || 0 == offer[8] ? "": offer[8]) + '" placeholder="' + offer_type[7] + '"/></td>';
             html += '</tr>';
         }
         html += '</tbody></table>';

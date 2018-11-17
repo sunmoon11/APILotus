@@ -213,7 +213,7 @@ if (in_array(4, $features))
                                     </ul>
                                 </li>
 
-                                <?php if ($tab_name == "CAP Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings") { ?>
+                                <?php if ($tab_name == "CAP Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings" || $tab_name == "Billing") { ?>
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
                             <?php } else { ?>
@@ -235,6 +235,11 @@ if (in_array(4, $features))
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./afid_settings.php">Affiliate Settings</a></li>
                                         <?php } else { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./afid_settings.php">Affiliate Settings</a></li>
+                                        <?php } ?>
+                                        <?php if ($tab_name == "Billing") { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./billing.php">Billing</a></li>
+                                        <?php } else { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./billing.php">Billing</a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>
