@@ -56,6 +56,6 @@ if ($crmList != null)
             $date_lastweek = $llcrmHook->getCrmSalesBreakDown($token, $last_week_start, $last_week_end, $crmID);
             $dbApi->addCrmResults($crmID, $crmGoal, $date_lastweek, $last_week_start, $last_week_end);
         }
-        return true;
+        echo json_encode($date_thisweek);
     }
 }

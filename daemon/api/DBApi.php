@@ -8945,7 +8945,7 @@ class DBApi
             $crm_count = mysqli_num_rows($result);
             if ($crm_count > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order']);
+                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order'], 'timestamp'=>$row['timestamp']);
                 }
             }
 

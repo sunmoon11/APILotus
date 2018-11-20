@@ -126,6 +126,7 @@ jQuery(document).ready(function(t) {
                                     a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>';
+                                    a += '<td id="updated_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td><button type="button" id="setting_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>';
                                     a += '<td><button type="button" id="refresh_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
                                     a += "</tr>";
@@ -169,6 +170,7 @@ jQuery(document).ready(function(t) {
                                                 a += '<td id="crm8_' + l + '_0"></td>';
                                                 a += '<td id="crm9_' + l + '_0"></td>';
                                                 a += '<td id="crm10_' + l + '_0"></td>';
+                                                a += '<td id="updated_' + l + '_0"></td>';
                                                 a += '<td><button type="button" id="setting_' + l + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>';
                                                 a += '<td><button type="button" id="refresh_' + l + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
                                                 a += "</tr>";
@@ -218,6 +220,7 @@ jQuery(document).ready(function(t) {
                                         a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>',
+                                        a += '<td id="updated_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td><button type="button" id="setting_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>',
                                         a += '<td><button type="button" id="refresh_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>',
                                         a += "</tr>")
@@ -520,6 +523,8 @@ jQuery(document).ready(function(t) {
                                     t("#crm8_" + a[1] + "_" + label_type).html("0");
 
                                 t("#crm10_" + a[1] + "_" + label_type).html(step1 + " / " + goal);
+                                t("#updated_" + a[1] + "_" + label_type).html(a[3][d].timestamp);
+
                                 var M = 0;
                                 if (goal > 0 && (M = Math.round(100 * step1 / goal)),
                                     "0" == label_type) {

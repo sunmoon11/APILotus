@@ -58,7 +58,7 @@ $tab_name = "CAP Update";
 <html>
 <?php include('./common/header.php'); ?>
 <body>
-<?php include('./dashboard_modal.php'); ?>
+<?php include('./setting_affiliation_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
     <div class="col-xs-12">

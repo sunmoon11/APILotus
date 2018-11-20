@@ -213,7 +213,7 @@ if (in_array(4, $features))
                                     </ul>
                                 </li>
 
-                                <?php if ($tab_name == "CAP Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings" || $tab_name == "Billing") { ?>
+                                <?php if ($tab_name == "CAP Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings") { ?>
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
                             <?php } else { ?>
@@ -236,14 +236,20 @@ if (in_array(4, $features))
                                         <?php } else { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./afid_settings.php">Affiliate Settings</a></li>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Billing") { ?>
-                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./billing.php">Billing</a></li>
-                                        <?php } else { ?>
-                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./billing.php">Billing</a></li>
-                                        <?php } ?>
                                     </ul>
                                 </li>
 
+                            <?php if ($tab_name == "Billing") { ?>
+                                <li class="hidden-xs visible-sm visible-md hidden-lg"><a href="./billing.php" class="dropdown-toggle crm_tab_label active" role="button" aria-expanded="false">BILLING</a></li>
+                            <?php } else { ?>
+                                <li class="hidden-xs visible-sm visible-md hidden-lg"><a href="./billing.php" class="dropdown-toggle crm_tab_label" role="button" aria-expanded="false">BILLING</a></li>
+                            <?php } ?>
+
+                            <?php if ($tab_name == "Billing") { ?>
+                                <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label active" href="./billing.php">BILLING</a></li>
+                            <?php } else { ?>
+                                <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label" href="./billing.php">BILLING</a></li>
+                            <?php } ?>
 
                                 <?php if ($enableKKCRM) { ?>
                                     <?php if ($tab_name == "Konnektive Order Summary" || $tab_name == "Konnektive Retention" || $tab_name == "Konnektive Account Management" || $tab_name == "Konnektive Campaign Management") { ?>

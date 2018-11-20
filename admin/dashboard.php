@@ -149,6 +149,7 @@ $tab_name = "Dashboard";
 							<th>DECLINE%</th>
 	            	        <th>GOAL%</th>
 	                	    <th>GOAL</th>
+                            <th>UPDATED</th>
 	                	    <th>SETTING</th>
 	                    	<th><button type="button" class="btn btn-link btn-sm btn_refresh_all" id=""><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></th>
 						</tr>

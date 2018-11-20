@@ -58,7 +58,7 @@ $tab_name = "Billing";
 <html>
 <?php include('./common/header.php'); ?>
 <body>
-<?php include('./dashboard_modal.php'); ?>
+<?php include('./setting_affiliation_modal.php'); ?>
 <?php include('./common/body_up.php'); ?>
 <div class="row">
     <div class="col-xs-12">
@@ -77,9 +77,25 @@ $tab_name = "Billing";
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px; border-radius: 0">
                                 Week To Date <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu date_dropdown_menu" role="menu">
+                            <ul class="dropdown-menu date_dropdown_menu" role="menu" style="overflow: auto; max-height: 300px;">
                                 <li><a href="#" id="date_thisweek">Week To Date</a></li>
                                 <li><a href="#" id="date_lastweek">Last Week</a></li>
+                                <?php
+                                    $firstDayOfYear = mktime(0, 0, 0, 1, 1, date('Y'));
+                                    $nextMonday     = strtotime('monday', $firstDayOfYear);
+                                    $nextSunday     = strtotime('sunday', $nextMonday);
+
+                                    $weeks = array();
+
+                                    while ($nextMonday < strtotime("previous monday")) {
+                                        $weeks[] = date('m.d.y', $nextMonday). '-'. date('m.d.y', $nextSunday);
+                                        $nextMonday = strtotime('+1 week', $nextMonday);
+                                        $nextSunday = strtotime('+1 week', $nextSunday);
+                                    }
+                                    foreach (array_reverse($weeks) as $week) {
+                                        echo '<li><a href="#" id="date_'. $week . '">'.$week.'</a></li>';
+                                    }
+                                ?>
                             </ul>
                         </span>
                         <span class="input-group-addon calendar_label">From</span>
