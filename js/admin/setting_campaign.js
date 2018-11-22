@@ -360,6 +360,8 @@ jQuery(document).ready(function($) {
                 $("#tlabel_12").prop("checked", false);
                 $("#tlabel_21").prop("checked", false);
                 $("#tlabel_22").prop("checked", false);
+                $("#tlabel_31").prop("checked", false);
+                $("#tlabel_32").prop("checked", false);
                 $("#tlabel_41").prop("checked", false);
                 $("#tlabel_42").prop("checked", false);
                 var modal_table_html = "";
@@ -383,6 +385,8 @@ jQuery(document).ready(function($) {
         $("#tlabel_12").prop("checked", false);
         $("#tlabel_21").prop("checked", false);
         $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
         $("#tlabel_41").prop("checked", false);
         $("#tlabel_42").prop("checked", false);
     });
@@ -391,6 +395,8 @@ jQuery(document).ready(function($) {
         $("#tlabel_12").prop("checked", false);
         $("#tlabel_21").prop("checked", false);
         $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
         $("#tlabel_41").prop("checked", false);
         $("#tlabel_42").prop("checked", false);
     });
@@ -399,6 +405,8 @@ jQuery(document).ready(function($) {
         $("#tlabel_11").prop("checked", false);
         $("#tlabel_21").prop("checked", false);
         $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
         $("#tlabel_41").prop("checked", false);
         $("#tlabel_42").prop("checked", false);
     });
@@ -407,6 +415,8 @@ jQuery(document).ready(function($) {
         $("#tlabel_11").prop("checked", false);
         $("#tlabel_12").prop("checked", false);
         $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
         $("#tlabel_41").prop("checked", false);
         $("#tlabel_42").prop("checked", false);
     });
@@ -415,6 +425,28 @@ jQuery(document).ready(function($) {
         $("#tlabel_11").prop("checked", false);
         $("#tlabel_12").prop("checked", false);
         $("#tlabel_21").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
+        $("#tlabel_41").prop("checked", false);
+        $("#tlabel_42").prop("checked", false);
+    });
+    $("#tlabel_31").click(function() {
+        $("#tlabel_3").prop("checked", true);
+        $("#tlabel_11").prop("checked", false);
+        $("#tlabel_12").prop("checked", false);
+        $("#tlabel_21").prop("checked", false);
+        $("#tlabel_22").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
+        $("#tlabel_41").prop("checked", false);
+        $("#tlabel_42").prop("checked", false);
+    });
+    $("#tlabel_32").click(function() {
+        $("#tlabel_3").prop("checked", true);
+        $("#tlabel_11").prop("checked", false);
+        $("#tlabel_12").prop("checked", false);
+        $("#tlabel_21").prop("checked", false);
+        $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
         $("#tlabel_41").prop("checked", false);
         $("#tlabel_42").prop("checked", false);
     });
@@ -424,6 +456,8 @@ jQuery(document).ready(function($) {
         $("#tlabel_12").prop("checked", false);
         $("#tlabel_21").prop("checked", false);
         $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
         $("#tlabel_42").prop("checked", false);
     });
     $("#tlabel_42").click(function() {
@@ -432,6 +466,8 @@ jQuery(document).ready(function($) {
         $("#tlabel_12").prop("checked", false);
         $("#tlabel_21").prop("checked", false);
         $("#tlabel_22").prop("checked", false);
+        $("#tlabel_31").prop("checked", false);
+        $("#tlabel_32").prop("checked", false);
         $("#tlabel_41").prop("checked", false);
     });
     $(".modal_btn_action_edit").click(function() {
@@ -451,6 +487,12 @@ jQuery(document).ready(function($) {
                         campaign_type = "2,5";
                     } else if ($("#tlabel_22").prop("checked")) {
                         campaign_type = "2,6";
+                    }
+                } else if ("3" == campaign_type) {
+                    if ($("#tlabel_31").prop("checked")) {
+                        campaign_type = "3,1";
+                    } else if ($("#tlabel_32").prop("checked")) {
+                        campaign_type = "3,2";
                     }
                 } else if ("4" == campaign_type) {
                     if ($("#tlabel_41").prop("checked")) {

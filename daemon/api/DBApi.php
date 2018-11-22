@@ -1181,6 +1181,58 @@ class DBApi
             return null;
         }
     }
+    public function getPrepaidStep1Campaign($crmId)
+    {
+        $allLabel = $this->getAllLabels();
+        if ($allLabel == null)
+            return null;
+        $prepaidLabel = $this->getLabelIdByName('Prepaids', $allLabel);
+        if (!$this->checkConnection())
+            return null;
+
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_label_campaign WHERE label_ids LIKE ",' . $prepaidLabel .',1,%" AND crm_id=' . $crmId;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $ret = array();
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $ret[] = array($row['campaign_id'], $row['label_ids']);
+                }
+            }
+
+            return $ret;
+
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+    public function getPrepaidStep2Campaign($crmId)
+    {
+        $allLabel = $this->getAllLabels();
+        if ($allLabel == null)
+            return null;
+        $prepaidLabel = $this->getLabelIdByName('Prepaids', $allLabel);
+        if (!$this->checkConnection())
+            return null;
+
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_label_campaign WHERE label_ids LIKE ",' . $prepaidLabel .',2,%" AND crm_id=' . $crmId;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $ret = array();
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $ret[] = array($row['campaign_id'], $row['label_ids']);
+                }
+            }
+
+            return $ret;
+
+        } catch (Exception $e) {
+            return null;
+        }
+    }
     /*
 	*@description
 	*	Get STEP1 campaign ids of Crm
@@ -8878,12 +8930,13 @@ class DBApi
             return false;
 
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, from_date, to_date, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order) VALUES (null,"'
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, from_date, to_date, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order, prepaid_step1, prepaid_step2) VALUES (null,"'
                 . $fromDate . '","' . $toDate . '","' . $time . '",' . $crmID . ','
                 . $crm_result[0] . ',"' . $crm_result[1] . '",' . $crm_result[2] . ','
                 . $crm_result[3] . ',' . $crm_result[4] . ',' . $crm_result[5] . ','
                 . $crm_result[6] . ',' . $crm_result[7] . ',' . $crm_result[8] . ','
-                . $crm_result[9] . ',' . $crm_result[10] . ',' . $crm_result[11] . ',' . $crm_result[12] . ')';
+                . $crm_result[9] . ',' . $crm_result[10] . ',' . $crm_result[11] . ','
+                . $crm_result[12] . ',' . $crm_result[13] . ',' . $crm_result[14] . ')';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             if ($result === TRUE)
@@ -8945,7 +8998,7 @@ class DBApi
             $crm_count = mysqli_num_rows($result);
             if ($crm_count > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order'], 'timestamp'=>$row['timestamp']);
+                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order'], 'prepaid_step1'=>(int)$row['prepaid_step1'], 'prepaid_step2'=>(int)$row['prepaid_step2'], 'timestamp'=>$row['timestamp']);
                 }
             }
 

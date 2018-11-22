@@ -811,6 +811,10 @@ class LLCrmHook
         $campaignSTEP1NonPP = $dbApi->getSTEP1NonPPCampaign($crmID);
         // get campaign for PrePaids
         $campaignPrepaids = $dbApi->getPrepaidCampaign($crmID);
+        // get campaign for PrePaids Step1
+        $campaignPrepaidsStep1 = $dbApi->getPrepaidStep1Campaign($crmID);
+        // get campaign for PrePaids Step2
+        $campaignPrepaidsStep2 = $dbApi->getPrepaidStep2Campaign($crmID);
         // get labels (only visible verticals and custom labels per crm ) details
         $labelInfo = $dbApi->getLabelsAndGoalsByCrmAndType($crmID, 3);
 
@@ -825,13 +829,15 @@ class LLCrmHook
         $valueOrderPage = 0;
         $valuePrepaid = 0;
         $orderCount = 0;
+        $valuePrepaidStep1 = 0;
+        $valuePrepaidStep2 = 0;
 
         // Initialize
         $breakDown = array();
         foreach ($labelInfo as $item)
         {
             // id, label, goal, step1, step2, tablet, prepaids, step2 non pp, step1 non pp, order page, order count, initial decline, gross order
-            $breakDown[] = array($item[0], $item[1], $item[3], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            $breakDown[] = array($item[0], $item[1], $item[3], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
         $ret = array();
 
@@ -934,6 +940,52 @@ class LLCrmHook
                     }
                 }
             }
+            foreach ($campaignPrepaidsStep1 as $item)
+            {
+                if ($item[0] == $cId)
+                {
+                    $valuePrepaidStep1 += $value['initial_customer'];
+                    foreach ($labelInfo as $label)
+                    {
+                        $id = $label[0];
+                        for ($i = 0; $i < count($breakDown); $i++)
+                        {
+                            $breakItem = $breakDown[$i];
+                            if ($breakItem[0] == $id)
+                            {
+                                if (strstr($item[1], ','.$id.',') !== FALSE)
+                                {
+                                    $breakItem[13] += $value['initial_customer'];
+                                }
+                            }
+                            $breakDown[$i] = $breakItem;
+                        }
+                    }
+                }
+            }
+            foreach ($campaignPrepaidsStep2 as $item)
+            {
+                if ($item[0] == $cId)
+                {
+                    $valuePrepaidStep2 += $value['initial_customer'];
+                    foreach ($labelInfo as $label)
+                    {
+                        $id = $label[0];
+                        for ($i = 0; $i < count($breakDown); $i++)
+                        {
+                            $breakItem = $breakDown[$i];
+                            if ($breakItem[0] == $id)
+                            {
+                                if (strstr($item[1], ','.$id.',') !== FALSE)
+                                {
+                                    $breakItem[14] += $value['initial_customer'];
+                                }
+                            }
+                            $breakDown[$i] = $breakItem;
+                        }
+                    }
+                }
+            }
             foreach ($campaignSTEP2NonPP as $item)
             {
                 if ($item[0] == $cId)
@@ -1013,7 +1065,7 @@ class LLCrmHook
                 }
             }
         }
-        $ret[] = array(0, '', '', $valueSTEP1, $valueSTEP2, $valueTABLET, $valuePrepaid, $valueSTEP1NonPP, $valueSTEP2NonPP, $valueOrderPage, $orderCount, $valueDecline, $valueGrossOrder);
+        $ret[] = array(0, '', '', $valueSTEP1, $valueSTEP2, $valueTABLET, $valuePrepaid, $valueSTEP1NonPP, $valueSTEP2NonPP, $valueOrderPage, $orderCount, $valueDecline, $valueGrossOrder, $valuePrepaidStep1, $valuePrepaidStep2);
         foreach ($breakDown as $item)
         {
             $ret[] = $item;

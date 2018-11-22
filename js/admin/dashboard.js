@@ -1,108 +1,112 @@
 jQuery(document).ready(function(t) {
-    var e;
-    var loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
-    var r = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color: #ffa5a5"></span>';
-    var crm_list = null;
-    var i = -1;
-    var kkcrm_active_list = null;
-    var s = -1;
-    var date_type = "date_thisweek";
-    var from_date = "";
-    var to_date = "";
-    var dashboard_columns = "";
-    var crm_positions = "";
+    let e;
+    let loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
+    let remove_icon = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color: #ffa5a5"></span>';
+    let crm_list = null;
+    let i = -1;
+    let kkcrm_active_list = null;
+    let s = -1;
+    let date_type = "date_thisweek";
+    let from_date = "";
+    let to_date = "";
+    let dashboard_columns = "";
+    let crm_positions = "";
 
-    function h(e, a) {
-        if (e == "sales") {
-            t(".dashboard_sales_alert").html(a);
+    function show_alert(type, content) {
+        if (type == "sales") {
+            t(".dashboard_sales_alert").html(content);
             t(".dashboard_sales_alert").fadeIn(1000, function() {
                 t(".dashboard_sales_alert").fadeOut(3000)
             });
         }
-        else if (e == "setting") {
-            t(".setting_edit_alert").html(a);
+        else if (type == "setting") {
+            t(".setting_edit_alert").html(content);
             t(".setting_edit_alert").fadeIn(1000, function () {
                 t(".setting_edit_alert").fadeOut(3000)
             });
         }
     }
 
-    function show_loading_status(e, r, d) {
-        if (e == "sales") {
-            d ? t(".dashboard_sales_waiting").html(loading_gif) : t(".dashboard_sales_waiting").html("")
+    function show_waiting(type, crm_id, show) {
+        if (type == "sales") {
+            show ? t(".dashboard_sales_waiting").html(loading_gif) : t(".dashboard_sales_waiting").html("");
         }
-        else if (e == "crm") {
-            d ? (t("#crm1_" + r + "_0").html(loading_gif),
-                t("#crm2_" + r + "_0").html(""),
-                t("#crm3_" + r + "_0").html(""),
-                t("#crm4_" + r + "_0").html(""),
-                t("#crm5_" + r + "_0").html(""),
-                t("#crm6_" + r + "_0").html(""),
-                t("#crm7_" + r + "_0").html(""),
-                t("#crm8_" + r + "_0").html(""),
-                t("#crm9_" + r + "_0").html(""),
-                t("#crm10_" + r + "_0").html(""),
-                t(".subrow_" + r).each(function(e) {
+        else if (type == "crm") {
+            show ? (t("#crm1_" + crm_id + "_0").html(loading_gif),
+                t("#crm2_" + crm_id + "_0").html(""),
+                t("#crm3_" + crm_id + "_0").html(""),
+                t("#crm4_" + crm_id + "_0").html(""),
+                t("#crm5_" + crm_id + "_0").html(""),
+                t("#crm6_" + crm_id + "_0").html(""),
+                t("#crm61_" + crm_id + "_0").html(""),
+                t("#crm62_" + crm_id + "_0").html(""),
+                t("#crm7_" + crm_id + "_0").html(""),
+                t("#crm8_" + crm_id + "_0").html(""),
+                t("#crm9_" + crm_id + "_0").html(""),
+                t("#crm10_" + crm_id + "_0").html(""),
+                t(".subrow_" + crm_id).each(function(e) {
                     t(this).remove()
-                })) : t("#crm1_" + r + "_0").html("")
+                })) : t("#crm1_" + crm_id + "_0").html("");
         }
-        else if (e == "kkcrm") {
-            d ? (t("#kkcrm1_" + r + "_0").html(loading_gif),
-                t("#kkcrm2_" + r + "_0").html(""),
-                t("#kkcrm3_" + r + "_0").html(""),
-                t("#kkcrm4_" + r + "_0").html(""),
-                t("#kkcrm5_" + r + "_0").html(""),
-                t("#kkcrm6_" + r + "_0").html(""),
-                t("#kkcrm7_" + r + "_0").html(""),
-                t("#kkcrm8_" + r + "_0").html(""),
-                t("#kkcrm9_" + r + "_0").html(""),
-                t("#kkcrm10_" + r + "_0").html("")) : t("#kkcrm1_" + r + "_0").html("")
+        else if (type == "kkcrm") {
+            show ? (t("#kkcrm1_" + crm_id + "_0").html(loading_gif),
+                t("#kkcrm2_" + crm_id + "_0").html(""),
+                t("#kkcrm3_" + crm_id + "_0").html(""),
+                t("#kkcrm4_" + crm_id + "_0").html(""),
+                t("#kkcrm5_" + crm_id + "_0").html(""),
+                t("#kkcrm6_" + crm_id + "_0").html(""),
+                t("#kkcrm7_" + crm_id + "_0").html(""),
+                t("#kkcrm8_" + crm_id + "_0").html(""),
+                t("#kkcrm9_" + crm_id + "_0").html(""),
+                t("#kkcrm10_" + crm_id + "_0").html("")) : t("#kkcrm1_" + crm_id + "_0").html("");
         }
     }
 
     function show_headers() {
-        if (dashboard_columns != "")
-            for (var e = dashboard_columns.split(","), a = 1; a <= 8; a++) {
-                t(".table_overall th:nth-child(" + a + ")").hide();
-                t(".table_overall td:nth-child(" + a + ")").hide();
-                t(".table_dashboard th:nth-child(" + (a + 3) + ")").hide();
-                t(".table_dashboard td:nth-child(" + (a + 3) + ")").hide();
+        if (dashboard_columns != "") {
+            let columns = dashboard_columns.split(",");
+            for (let i = 1; i <= 8; i++) {
+                t(".table_overall th:nth-child(" + i + ")").hide();
+                t(".table_overall td:nth-child(" + i + ")").hide();
+                t(".table_dashboard th:nth-child(" + (i + 3) + ")").hide();
+                t(".table_dashboard td:nth-child(" + (i + 3) + ")").hide();
 
-                for (var r = 0; r < e.length; r++) {
-                    if (a == e[r]) {
-                        t(".table_overall th:nth-child(" + a + ")").show();
-                        t(".table_overall td:nth-child(" + a + ")").show();
-                        t(".table_dashboard th:nth-child(" + (a + 3) + ")").show();
-                        t(".table_dashboard td:nth-child(" + (a + 3) + ")").show();
+                for (let j = 0; j < columns.length; j++) {
+                    if (i == columns[j]) {
+                        t(".table_overall th:nth-child(" + i + ")").show();
+                        t(".table_overall td:nth-child(" + i + ")").show();
+                        t(".table_dashboard th:nth-child(" + (i + 3) + ")").show();
+                        t(".table_dashboard td:nth-child(" + (i + 3) + ")").show();
                         break
                     }
                 }
             }
+        }
     }
 
-    function b() {
-        show_loading_status("sales", "", true);
+    function show_result() {
+        show_waiting("sales", "", true);
         t.ajax({
             type: "GET",
             url: "../daemon/ajax_admin/crm_list.php",
             data: {},
             success: function(e) {
-                show_loading_status("sales", "", false);
+                show_waiting("sales", "", false);
                 if ("error" == e) {
-                    h("sales", "Cannot load CRM site information.");
+                    show_alert("sales", "Cannot load CRM site information.");
                 }
                 else if ("no_cookie" == e) {
                     window.location.href = "../../admin/login.php";
                 }
                 else {
                     crm_list = jQuery.parseJSON(e);
-                    show_loading_status("sales", "", true);
+                    show_waiting("sales", "", true);
                     t.ajax({
                         type: "GET",
                         url: "../daemon/ajax_admin/konnektive/crm_active_list.php",
                         data: {},
                         success: function(e) {
-                            show_loading_status("sales", "", false);
+                            show_waiting("sales", "", false);
                             if ("error" == e) {
 
                             }
@@ -124,6 +128,8 @@ jQuery(document).ready(function(t) {
                                     a += '<td id="crm6_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm7_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>';
+                                    a += '<td id="crm61_' + crm_list[r][0] + '_0"></td>';
+                                    a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="updated_' + crm_list[r][0] + '_0"></td>';
@@ -168,6 +174,8 @@ jQuery(document).ready(function(t) {
                                                 a += '<td id="crm6_' + l + '_0"></td>';
                                                 a += '<td id="crm7_' + l + '_0"></td>';
                                                 a += '<td id="crm8_' + l + '_0"></td>';
+                                                a += '<td id="crm61_' + l + '_0"></td>';
+                                                a += '<td id="crm62_' + l + '_0"></td>';
                                                 a += '<td id="crm9_' + l + '_0"></td>';
                                                 a += '<td id="crm10_' + l + '_0"></td>';
                                                 a += '<td id="updated_' + l + '_0"></td>';
@@ -218,6 +226,8 @@ jQuery(document).ready(function(t) {
                                         a += '<td id="crm6_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm7_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>',
+                                        a += '<td id="crm61_' + crm_list[r][0] + '_0"></td>',
+                                        a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="updated_' + crm_list[r][0] + '_0"></td>',
@@ -256,12 +266,12 @@ jQuery(document).ready(function(t) {
                             t(".table_dashboard_sales_body").html(a);
                             show_headers();
                             if ("date_custom" == date_type) {
-                                for (var r = 0; r < crm_list.length; r++)
-                                    f(crm_list[r][0], crm_list[r][7]);
+                                for (let r = 0; r < crm_list.length; r++)
+                                    get_dahsboard_sales(crm_list[r][0], crm_list[r][7]);
                             }
                             else {
-                                for (var r = 0; r < crm_list.length; r++)
-                                    show_loading_status("crm", crm_list[r][0], true);
+                                for (let r = 0; r < crm_list.length; r++)
+                                    show_waiting("crm", crm_list[r][0], true);
                                 get_dashboard_sales_db(crm_list);
                             }
                             if (null != kkcrm_active_list)
@@ -269,28 +279,28 @@ jQuery(document).ready(function(t) {
                                     g(kkcrm_active_list[r][0], kkcrm_active_list[r][7])
                         },
                         failure: function(e) {
-                            show_loading_status("sales", "", false);
-                            h("sales", "Cannot load Konnective CRM account information.");
+                            show_waiting("sales", "", false);
+                            show_alert("sales", "Cannot load Konnective CRM account information.");
                         }
                     })
                 }
             },
             failure: function(t) {
-                show_loading_status("sales", "", !1),
-                    h("sales", "Cannot load CRM site information.")
+                show_waiting("sales", "", !1),
+                    show_alert("sales", "Cannot load CRM site information.")
             }
         })
     }
 
-    function f(e, a) {
+    function get_dahsboard_sales(e, a) {
         if ("" == t("#from_date").val()) {
-            h("sales", "Please select FROM DATE.")
+            show_alert("sales", "Please select FROM DATE.")
         }
         else if ("" == t("#to_date").val()) {
-            h("sales", "Please select TO DATE.")
+            show_alert("sales", "Please select TO DATE.")
         }
         else {
-            show_loading_status("crm", e, true);
+            show_waiting("crm", e, true);
             t.ajax({
                 type: "GET",
                 url: "../daemon/ajax_admin/dashboard_sales.php",
@@ -302,95 +312,101 @@ jQuery(document).ready(function(t) {
                     to_date: t("#to_date").val()
                 },
                 success: function(e) {
-                    var a = jQuery.parseJSON(e);
-                    if ("error" == a[0]) {
-                        h("sales", "Cannot load sales information.");
-                        return void t("#crm1_" + a[1] + "_0").html(r);
+                    let sales = jQuery.parseJSON(e);
+                    if ("error" == sales[0]) {
+                        show_alert("sales", "Cannot load sales information.");
+                        return void t("#crm1_" + sales[1] + "_0").html(remove_icon);
                     }
-                    if ("no_result" == a[0]) {
-                        h("sales", "No result.");
-                        return void t("#crm1_" + a[1] + "_0").html(r);
+                    if ("no_result" == sales[0]) {
+                        show_alert("sales", "No result.");
+                        return void t("#crm1_" + sales[1] + "_0").html('No result');
                     }
-                    if ("no_cookie" == a[0]) {
+                    if ("no_cookie" == sales[0]) {
                         window.location.href = "../../admin/login.php"
                     }
                     else {
-                        for (var d = 0; d < a[3].length; d++) {
-                            var label_type = a[3][d][0];
-                            var label_name = a[3][d][1];
-                            var crm_goal = a[3][d][2];
+                        for (var d = 0; d < sales[3].length; d++) {
+                            var label_type = sales[3][d][0];
+                            var label_name = sales[3][d][1];
+                            var crm_goal = sales[3][d][2];
                             if ("0" != label_type) {
                                 var l = "";
-                                l += '<tr class="subrow_' + a[1] + '">';
+                                l += '<tr class="subrow_' + sales[1] + '">';
                                 l += '<td style="border-top:none"></td>';
                                 l += '<td style="border-top:none"></td>';
-                                l += '<td id="crm0_' + a[1] + "_" + label_type + '">' + label_name + "</td>";
-                                l += '<td id="crm1_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm2_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm3_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm4_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm5_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm6_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm7_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm8_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm9_' + a[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm10_' + a[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm0_' + sales[1] + "_" + label_type + '">' + label_name + "</td>";
+                                l += '<td id="crm1_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm2_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm3_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm4_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm5_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm6_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm7_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm8_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm61_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm62_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm9_' + sales[1] + "_" + label_type + '"></td>';
+                                l += '<td id="crm10_' + sales[1] + "_" + label_type + '"></td>';
                                 l += "<td></td>";
                                 l += "<td></td>";
                                 l += "</tr>";
-                                t("#row_" + a[1]).closest("tr").after(l);
+                                t("#row_" + sales[1]).closest("tr").after(l);
                             }
-                            var step1 = parseFloat(a[3][d][3]);
-                            var step2 = parseFloat(a[3][d][4]);
-                            var tablet_step1 = parseFloat(a[3][d][5]);
-                            var prepaid = parseFloat(a[3][d][6]);
-                            var step1_nonpp = parseFloat(a[3][d][7]);
-                            var step2_nonpp = parseFloat(a[3][d][8]);
-                            var order_page = parseFloat(a[3][d][9]);
-                            var order_count = parseFloat(a[3][d][10]);
-                            var decline = parseFloat(a[3][d][11]);
-                            var gross_order = parseFloat(a[3][d][12]);
-                            var goal = parseFloat(a[2]);
+                            var step1 = parseFloat(sales[3][d][3]);
+                            var step2 = parseFloat(sales[3][d][4]);
+                            var tablet_step1 = parseFloat(sales[3][d][5]);
+                            var prepaid = parseFloat(sales[3][d][6]);
+                            var prepaid_step1 = parseFloat(sales[3][i]['prepaid_step1']);
+                            var prepaid_step2 = parseFloat(sales[3][i]['prepaid_step2']);
+                            var step1_nonpp = parseFloat(sales[3][d][7]);
+                            var step2_nonpp = parseFloat(sales[3][d][8]);
+                            var order_page = parseFloat(sales[3][d][9]);
+                            var order_count = parseFloat(sales[3][d][10]);
+                            var decline = parseFloat(sales[3][d][11]);
+                            var gross_order = parseFloat(sales[3][d][12]);
+                            var goal = parseFloat(sales[2]);
 
                             if ("0" == label_type) {
-                                var w = '<div class="bar-main-container"><div id="bar_' + a[1] + '" class="bar-percentage">0</div><div class="bar-container"><div class="bar"></div></div></div>';
-                                t("#crm9_" + a[1] + "_" + label_type).html(w)
+                                var w = '<div class="bar-main-container"><div id="bar_' + sales[1] + '" class="bar-percentage">0</div><div class="bar-container"><div class="bar"></div></div></div>';
+                                t("#crm9_" + sales[1] + "_" + label_type).html(w)
                             } else
                                 goal = crm_goal;
 
-                            t("#crm1_" + a[1] + "_" + label_type).html(step1);
-                            t("#crm2_" + a[1] + "_" + label_type).html(step2);
+                            t("#crm1_" + sales[1] + "_" + label_type).html(step1);
+                            t("#crm2_" + sales[1] + "_" + label_type).html(step2);
                             if (0 != step1) {
                                 var x = 100 * step2 / step1;
-                                t("#crm3_" + a[1] + "_" + label_type).html(x.toFixed(2))
+                                t("#crm3_" + sales[1] + "_" + label_type).html(x.toFixed(2))
                             } else
-                                t("#crm3_" + a[1] + "_" + label_type).html("0");
+                                t("#crm3_" + sales[1] + "_" + label_type).html("0");
 
-                            t("#crm4_" + a[1] + "_" + label_type).html(tablet_step1);
+                            t("#crm4_" + sales[1] + "_" + label_type).html(tablet_step1);
                             if (tablet_step1 + step1 != 0) {
                                 var F = 100 * tablet_step1 / (tablet_step1 + step1);
-                                t("#crm5_" + a[1] + "_" + label_type).html(F.toFixed(2));
+                                t("#crm5_" + sales[1] + "_" + label_type).html(F.toFixed(2));
                             } else
-                                t("#crm5_" + a[1] + "_" + label_type).html("0");
+                                t("#crm5_" + sales[1] + "_" + label_type).html("0");
 
-                            t("#crm6_" + a[1] + "_" + label_type).html(prepaid);
+                            t("#crm6_" + sales[1] + "_" + label_type).html(prepaid);
+                            t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2));
+                            t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                             if (0 != order_count) {
                                 var j = order_page / order_count;
-                                t("#crm7_" + a[1] + "_" + label_type).html(j.toFixed(2));
+                                t("#crm7_" + sales[1] + "_" + label_type).html(j.toFixed(2));
                             } else
-                                t("#crm7_" + a[1] + "_" + label_type).html("0");
+                                t("#crm7_" + sales[1] + "_" + label_type).html("0");
 
                             if (0 != gross_order) {
                                 var D = decline / gross_order;
-                                t("#crm8_" + a[1] + "_" + label_type).html(D.toFixed(2))
+                                t("#crm8_" + sales[1] + "_" + label_type).html(D.toFixed(2))
                             } else
-                                t("#crm8_" + a[1] + "_" + label_type).html("0");
+                                t("#crm8_" + sales[1] + "_" + label_type).html("0");
 
-                            t("#crm10_" + a[1] + "_" + label_type).html(step1 + " / " + goal);
+                            t("#crm10_" + sales[1] + "_" + label_type).html(step1 + " / " + goal);
                             var M = 0;
                             if (goal > 0 && (M = Math.round(100 * step1 / goal)),
                                 "0" == label_type) {
-                                var C = t("#bar_" + a[1]);
+                                var C = t("#bar_" + sales[1]);
                                 t({
                                     countNum: M
                                 }).animate({
@@ -403,26 +419,26 @@ jQuery(document).ready(function(t) {
                                         C.text(t) && C.siblings().children().css("width", t)
                                     }
                                 }),
-                                    k()
+                                    calculate_total()
                             } else
-                                t("#crm9_" + a[1] + "_" + label_type).html(M + "%");
+                                t("#crm9_" + sales[1] + "_" + label_type).html(M + "%");
                             show_headers();
                         }
                     }
                 },
                 failure: function(e) {
-                    h("sales", "Cannot load sales information.")
+                    show_alert("sales", "Cannot load sales information.")
                 }
             })
         }
     }
 
     function get_dashboard_sales_db(crm_list) {
-        if ("" == t("#from_date").val()) {
-            h("sales", "Please select FROM DATE.")
+        if ("" === t("#from_date").val()) {
+            show_alert("sales", "Please select FROM DATE.")
         }
-        else if ("" == t("#to_date").val()) {
-            h("sales", "Please select TO DATE.")
+        else if ("" === t("#to_date").val()) {
+            show_alert("sales", "Please select TO DATE.")
         }
         else {
             t.ajax({
@@ -434,123 +450,128 @@ jQuery(document).ready(function(t) {
                     to_date: t("#to_date").val()
                 },
                 success: function(e) {
-                    var results = jQuery.parseJSON(e);
-                    for (var i = 0; i < results.length; i++) {
-                        var a = jQuery.parseJSON(results[i]);
-                        if ("error" == a[0]) {
-                            h("sales", "Cannot load sales information.");
-                            t("#crm1_" + a[1] + "_0").html(r);
-                            continue;
+                    let results = jQuery.parseJSON(e);
+                    for (let i = 0; i < results.length; i++) {
+                        let sales = jQuery.parseJSON(results[i]);
+                        if ("error" === sales[0]) {
+                            show_alert("sales", "Cannot load sales information.");
+                            t("#crm1_" + sales[1] + "_0").html(remove_icon);
                         }
-                        if ("no_result" == a[0]) {
-                            h("sales", "No result.");
-                            t("#crm1_" + a[1] + "_0").html(r);
-                            continue;
+                        else if ("no_result" === sales[0]) {
+                            show_alert("sales", "No result.");
+                            t("#crm1_" + sales[1] + "_0").html('No result');
                         }
-                        if ("no_cookie" == a[0]) {
+                        else if ("no_cookie" === sales[0]) {
                             window.location.href = "../../admin/login.php"
                         }
                         else {
-                            for (var d = 0; d < a[3].length; d++) {
-                                var label_type = a[3][d][0];
-                                var label_name = a[3][d][1];
-                                var crm_goal = a[3][d][2];
-                                if ("0" != label_type) {
-                                    var l = "";
-                                    l += '<tr class="subrow_' + a[1] + '">';
-                                    l += '<td style="border-top:none"></td>';
-                                    l += '<td style="border-top:none"></td>';
-                                    l += '<td id="crm0_' + a[1] + "_" + label_type + '">' + label_name + "</td>";
-                                    l += '<td id="crm1_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm2_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm3_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm4_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm5_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm6_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm7_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm8_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm9_' + a[1] + "_" + label_type + '"></td>';
-                                    l += '<td id="crm10_' + a[1] + "_" + label_type + '"></td>';
-                                    l += "<td></td>";
-                                    l += "<td></td>";
-                                    l += "</tr>";
-                                    t("#row_" + a[1]).closest("tr").after(l);
+                            for (let i = 0; i < sales[3].length; i++) {
+                                let label_type = sales[3][i][0];
+                                let label_name = sales[3][i][1];
+                                let crm_goal = sales[3][i][2];
+                                if ("0" !== label_type) {
+                                    let html = "";
+                                    html += '<tr class="subrow_' + sales[1] + '">';
+                                    html += '<td style="border-top:none"></td>';
+                                    html += '<td style="border-top:none"></td>';
+                                    html += '<td id="crm0_' + sales[1] + "_" + label_type + '">' + label_name + "</td>";
+                                    html += '<td id="crm1_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm2_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm3_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm4_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm5_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm6_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm7_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm8_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm61_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm62_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm9_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += '<td id="crm10_' + sales[1] + "_" + label_type + '"></td>';
+                                    html += "<td></td>";
+                                    html += "<td></td>";
+                                    html += "</tr>";
+                                    t("#row_" + sales[1]).closest("tr").after(html);
                                 }
-                                var step1 = parseFloat(a[3][d][3]);
-                                var step2 = parseFloat(a[3][d][4]);
-                                var tablet = parseFloat(a[3][d][5]);
-                                var prepaid = parseFloat(a[3][d][6]);
-                                var step1_nonpp = parseFloat(a[3][d][7]);
-                                var step2_nonpp = parseFloat(a[3][d][8]);
-                                var order_page = parseFloat(a[3][d][9]);
-                                var order_count = parseFloat(a[3][d][10]);
-                                var decline = parseFloat(a[3][d][11]);
-                                var gross_order = parseFloat(a[3][d][12]);
-                                var goal = parseFloat(a[2]);
+                                let step1 = parseFloat(sales[3][i][3]);
+                                let step2 = parseFloat(sales[3][i][4]);
+                                let tablet = parseFloat(sales[3][i][5]);
+                                let prepaid = parseFloat(sales[3][i][6]);
+                                let prepaid_step1 = parseFloat(sales[3][i]['prepaid_step1']);
+                                let prepaid_step2 = parseFloat(sales[3][i]['prepaid_step2']);
+                                let step1_nonpp = parseFloat(sales[3][i][7]);
+                                let step2_nonpp = parseFloat(sales[3][i][8]);
+                                let order_page = parseFloat(sales[3][i][9]);
+                                let order_count = parseFloat(sales[3][i][10]);
+                                let decline = parseFloat(sales[3][i][11]);
+                                let gross_order = parseFloat(sales[3][i][12]);
+                                let goal = parseFloat(sales[2]);
 
-                                if ("0" == label_type) {
-                                    var w = '<div class="bar-main-container"><div id="bar_' + a[1] + '" class="bar-percentage">0</div><div class="bar-container"><div class="bar"></div></div></div>';
-                                    t("#crm9_" + a[1] + "_" + label_type).html(w)
-                                } else
+                                if ("0" === label_type) {
+                                    let html = '<div class="bar-main-container"><div id="bar_' + sales[1] + '" class="bar-percentage">0</div><div class="bar-container"><div class="bar"></div></div></div>';
+                                    t("#crm9_" + sales[1] + "_" + label_type).html(html)
+                                } else {
                                     goal = crm_goal;
+                                }
 
-                                t("#crm1_" + a[1] + "_" + label_type).html(step1);
-                                t("#crm2_" + a[1] + "_" + label_type).html(step2);
+                                t("#crm1_" + sales[1] + "_" + label_type).html(step1);
+                                t("#crm2_" + sales[1] + "_" + label_type).html(step2);
                                 if (0 != step1) {
                                     var x = 100 * step2 / step1;
-                                    t("#crm3_" + a[1] + "_" + label_type).html(x.toFixed(2))
+                                    t("#crm3_" + sales[1] + "_" + label_type).html(x.toFixed(2))
                                 } else
-                                    t("#crm3_" + a[1] + "_" + label_type).html("0");
+                                    t("#crm3_" + sales[1] + "_" + label_type).html("0");
 
-                                t("#crm4_" + a[1] + "_" + label_type).html(tablet);
+                                t("#crm4_" + sales[1] + "_" + label_type).html(tablet);
                                 if (tablet + step2_nonpp != 0) {
                                     var F = 100 * tablet / (tablet + step2_nonpp);
-                                    t("#crm5_" + a[1] + "_" + label_type).html(F.toFixed(2));
+                                    t("#crm5_" + sales[1] + "_" + label_type).html(F.toFixed(2));
                                 } else
-                                    t("#crm5_" + a[1] + "_" + label_type).html("0");
+                                    t("#crm5_" + sales[1] + "_" + label_type).html("0");
 
-                                t("#crm6_" + a[1] + "_" + label_type).html(prepaid);
+                                t("#crm6_" + sales[1] + "_" + label_type).html(prepaid);
+                                t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2) );
+                                t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                                 if (0 != order_count) {
                                     var j = order_page / order_count;
-                                    t("#crm7_" + a[1] + "_" + label_type).html(j.toFixed(2));
+                                    t("#crm7_" + sales[1] + "_" + label_type).html(j.toFixed(2));
                                 } else
-                                    t("#crm7_" + a[1] + "_" + label_type).html("0");
+                                    t("#crm7_" + sales[1] + "_" + label_type).html("0");
 
                                 if (0 != gross_order) {
                                     var D = decline / gross_order;
-                                    t("#crm8_" + a[1] + "_" + label_type).html(D.toFixed(2))
+                                    t("#crm8_" + sales[1] + "_" + label_type).html(D.toFixed(2))
                                 } else
-                                    t("#crm8_" + a[1] + "_" + label_type).html("0");
+                                    t("#crm8_" + sales[1] + "_" + label_type).html("0");
 
-                                t("#crm10_" + a[1] + "_" + label_type).html(step1 + " / " + goal);
-                                t("#updated_" + a[1] + "_" + label_type).html(a[3][d].timestamp);
+                                t("#crm10_" + sales[1] + "_" + label_type).html(step1 + " / " + goal);
+                                t("#updated_" + sales[1] + "_" + label_type).html(sales[3][i].timestamp);
 
-                                var M = 0;
-                                if (goal > 0 && (M = Math.round(100 * step1 / goal)),
-                                    "0" == label_type) {
-                                    var C = t("#bar_" + a[1]);
+                                let goal_percent = goal > 0 ? Math.round(100 * step1 / goal) : 0;
+                                if ("0" === label_type) {
+                                    let goal_div = t("#bar_" + sales[1]);
                                     t({
-                                        countNum: M
+                                        countNum: goal_percent
                                     }).animate({
-                                        countNum: M
+                                        countNum: goal_percent
                                     }, {
                                         duration: 2e3,
                                         easing: "linear",
                                         step: function () {
-                                            var t = this.countNum + "%";
-                                            C.text(t) && C.siblings().children().css("width", t)
+                                            let t = this.countNum + "%";
+                                            goal_div.text(t) && goal_div.siblings().children().css("width", t)
                                         }
-                                    }),
-                                        k()
-                                } else
-                                    t("#crm9_" + a[1] + "_" + label_type).html(M + "%");
+                                    });
+                                    calculate_total();
+                                } else {
+                                    t("#crm9_" + sales[1] + "_" + label_type).html(goal_percent + "%");
+                                }
                                 show_headers();
                             }
                         }
                     }
                 },
                 failure: function(e) {
-                    h("sales", "Cannot load sales information.")
+                    show_alert("sales", "Cannot load sales information.")
                 }
             })
         }
@@ -558,13 +579,13 @@ jQuery(document).ready(function(t) {
 
     function g(e, a) {
         if ("" == t("#from_date").val()) {
-            h("sales", "Please select FROM DATE.")
+            show_alert("sales", "Please select FROM DATE.")
         }
         else if ("" == t("#to_date").val()) {
-            h("sales", "Please select TO DATE.")
+            show_alert("sales", "Please select TO DATE.")
         }
         else {
-            show_loading_status("kkcrm", e, !0);
+            show_waiting("kkcrm", e, !0);
             t.ajax({
                 type: "GET",
                 url: "../daemon/ajax_admin/konnektive/dashboard_sales.php",
@@ -577,8 +598,8 @@ jQuery(document).ready(function(t) {
                 success: function(e) {
                     var a = jQuery.parseJSON(e);
                     if ("error" == a[0])
-                        return h("sales", "Cannot load konnektive sales information."),
-                            void t("#kkcrm1_" + a[1] + "_0").html(r);
+                        return show_alert("sales", "Cannot load konnektive sales information."),
+                            void t("#kkcrm1_" + a[1] + "_0").html(remove_icon);
                     if ("no_cookie" != a[0]) {
                         var d = parseFloat(a[3][0])
                             , i = parseFloat(a[2])
@@ -612,52 +633,50 @@ jQuery(document).ready(function(t) {
                         window.location.href = "../../admin/login.php"
                 },
                 failure: function(t) {
-                    h("sales", "Cannot load konnektive sales information.")
+                    show_alert("sales", "Cannot load konnektive sales information.")
                 }
             })
         }
     }
 
-    function k() {
-        var e = 0;
-        var a = 0;
-        var r = 0;
-        var d = 0;
-        var i = 0;
-        var n = 0;
-        var s = 0;
-        var l = 0;
-        var o = 0;
-        var _ = 0;
-        var c = 0;
-        t(".crm_row").each(function(d) {
-            var c = t(this).prop("id").substring(4);
-            if (!isNaN(t("#crm1_" + c + "_0").html())) {
-                a += parseInt(t("#crm1_" + c + "_0").html()),
-                    r += parseInt(t("#crm2_" + c + "_0").html()),
-                    i += parseInt(t("#crm4_" + c + "_0").html()),
-                    n += parseFloat(t("#crm5_" + c + "_0").html()),
-                    s += parseInt(t("#crm6_" + c + "_0").html()),
-                    l += parseFloat(t("#crm7_" + c + "_0").html()),
-                    o += parseFloat(t("#crm8_" + c + "_0").html());
-                var m = t("#crm10_" + c + "_0").html()
-                    , h = m.indexOf(" / ");
-                _ += parseInt(m.substr(h + 3)),
-                    e++
+    function calculate_total() {
+        let count = 0;
+        let step1 = 0;
+        let step2 = 0;
+        let tablet = 0;
+        let tablet_percent = 0;
+        let prepaids = 0;
+        let order_percent = 0;
+        let decline_percent = 0;
+        let goal = 0;
+        t(".crm_row").each(function() {
+            let crm_id = t(this).prop("id").substring(4);
+            if (!isNaN(t("#crm1_" + crm_id + "_0").html())) {
+                step1 += parseInt(t("#crm1_" + crm_id + "_0").html());
+                step2 += parseInt(t("#crm2_" + crm_id + "_0").html());
+                tablet += parseInt(t("#crm4_" + crm_id + "_0").html());
+                tablet_percent += parseFloat(t("#crm5_" + crm_id + "_0").html());
+                prepaids += parseInt(t("#crm6_" + crm_id + "_0").html());
+                order_percent += parseFloat(t("#crm7_" + crm_id + "_0").html());
+                decline_percent += parseFloat(t("#crm8_" + crm_id + "_0").html());
+                goal += parseInt(t("#crm10_" + crm_id + "_0").html().split(' / ')[1]);
+                count++;
             }
-        }),
-        _ > 0 && (c = (100 * a / _).toFixed(2)),
-        a > 0 && (d = (100 * r / a).toFixed(2)),
-        e > 0 && (t("#all1").html(a),
-            t("#all2").html(r),
+        });
+        let c = 0;
+        let d = 0;
+        goal > 0 && (c = (100 * step1 / goal).toFixed(2)),
+        step1 > 0 && (d = (100 * step2 / step1).toFixed(2)),
+        count > 0 && (t("#all1").html(step1),
+            t("#all2").html(step2),
             t("#all3").html(d),
-            t("#all4").html(i),
-            t("#all5").html((n / e).toFixed(2)),
-            t("#all6").html(s),
-            t("#all7").html((l / e).toFixed(2)),
-            t("#all8").html((o / e).toFixed(2)),
+            t("#all4").html(tablet),
+            t("#all5").html((tablet_percent / count).toFixed(2)),
+            t("#all6").html(prepaids),
+            t("#all7").html((order_percent / count).toFixed(2)),
+            t("#all8").html((decline_percent / count).toFixed(2)),
             t("#all9").html(c),
-            t("#all10").html(a + " / " + _));
+            t("#all10").html(step1 + " / " + goal));
     }
 
     function set_dates() {
@@ -675,7 +694,7 @@ jQuery(document).ready(function(t) {
             to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
         }
         else if ("date_thisweek" == date_type) {
-            var r = cur_date.getDate() + 1;
+            let r = cur_date.getDate() + 1;
             0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
             cur_date.setDate(r);
             from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
@@ -689,7 +708,7 @@ jQuery(document).ready(function(t) {
             to_date = formatted_date;
         }
         else if ("date_lastweek" == date_type) {
-            r = cur_date.getDate() + 1 - 7;
+            let r = cur_date.getDate() + 1 - 7;
             0 == cur_date.getDay() ? r -= 7 : r -= cur_date.getDay();
             cur_date.setDate(r);
             from_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
@@ -713,7 +732,7 @@ jQuery(document).ready(function(t) {
     }
 
     function bulk_update_crm_goal(ids, goals) {
-        show_loading_status("sales", "", true);
+        show_waiting("sales", "", true);
         t.ajax({
             type: "GET",
             url: "../daemon/ajax_admin/setting_crm_goal.php",
@@ -722,20 +741,20 @@ jQuery(document).ready(function(t) {
                 crm_goals: goals
             },
             success: function(e) {
-                show_loading_status("sales", "", false);
+                show_waiting("sales", "", false);
                 if ("error" == e) {
-                    h("sales", "Cannot update CRM Sales Goal.");
+                    show_alert("sales", "Cannot update CRM Sales Goal.");
                 }
                 else if ("no_cookie" == e) {
                     window.location.href = "../../admin/login.php";
                 }
                 else {
-                    b();
+                    show_result();
                 }
             },
             failure: function(t) {
-                show_loading_status("sales", "", !1);
-                h("sales", "Cannot update CRM Sales Goal.");
+                show_waiting("sales", "", !1);
+                show_alert("sales", "Cannot update CRM Sales Goal.");
             }
         })
     }
@@ -749,7 +768,7 @@ jQuery(document).ready(function(t) {
             },
             success: function(e) {
                 if (1 == e) {
-                    b();
+                    show_result();
                 }
                 else if ("no_cookie" == e) {
                     window.location.href = "../../admin/login.php";
@@ -764,25 +783,30 @@ jQuery(document).ready(function(t) {
 
     crm_positions = t("#crm_positions").html();
     set_dates();
-    show_loading_status("sales", "", true);
+
+    // get dashboard_columns
+    show_waiting("sales", "", true);
     t.ajax({
         type: "GET",
         url: "../daemon/ajax_admin/dashboard_columns_get.php",
         data: {},
-        success: function(t) {
-            show_loading_status("sales", "", false);
-            var e = jQuery.parseJSON(t);
-            if ("success" == e[0])
-                dashboard_columns = e[1];
-            else if ("no_cookie" == e[0])
-                return void (window.location.href = "../../admin/login.php");
-            b();
+        success: function(data) {
+            show_waiting("sales", "", false);
+            let result = jQuery.parseJSON(data);
+            if ("success" == result[0]) {
+                dashboard_columns = result[1];
+                show_result();
+            }
+            else if ("no_cookie" == result[0]) {
+                window.location.href = "../../admin/login.php";
+            }
         },
-        failure: function(t) {
-            show_loading_status("sales", "", false);
-            h("sales", "Cannot load columns for dashboard.");
+        failure: function() {
+            show_waiting("sales", "", false);
+            show_alert("sales", "Cannot load columns for dashboard.");
         }
     });
+
     t(".input-daterange").datepicker({});
     t(".date_dropdown_menu li").on("click", function(e) {
         var a = t(this).text();
@@ -791,7 +815,7 @@ jQuery(document).ready(function(t) {
         set_dates();
     }),
     t(".sales_search_button").click(function() {
-        b();
+        show_result();
     }),
     t(".btn_crm_position").click(function() {
         var e = "";
@@ -818,7 +842,7 @@ jQuery(document).ready(function(t) {
                 a += r
         }),
             e = a,
-            show_loading_status("sales", "", !0),
+            show_waiting("sales", "", !0),
             t.ajax({
                 type: "GET",
                 url: "../daemon/ajax_admin/crm_position_set.php",
@@ -826,20 +850,20 @@ jQuery(document).ready(function(t) {
                     crm_positions: e
                 },
                 success: function(a) {
-                    if (show_loading_status("sales", "", !1),
+                    if (show_waiting("sales", "", !1),
                         "success" == a)
                         crm_positions = e,
                             t("#crm_positions").html(crm_positions),
-                            b();
+                            show_result();
                     else {
                         if ("no_cookie" == a)
                             return void (window.location.href = "../../admin/login.php");
-                        h("sales", "Cannot save CRM positions.")
+                        show_alert("sales", "Cannot save CRM positions.")
                     }
                 },
                 failure: function(t) {
-                    show_loading_status("sales", "", !1),
-                        h("sales", "Cannot save CRM positions.")
+                    show_waiting("sales", "", !1),
+                        show_alert("sales", "Cannot save CRM positions.")
                 }
             }),
             t("#crm_position_modal").modal("toggle")
@@ -869,13 +893,13 @@ jQuery(document).ready(function(t) {
     });
 
     t(".btn_refresh_all").click(function() {
-        b();
+        show_result();
     });
     t(".table_dashboard_sales_body").on("click", ".btn_refresh", function(e) {
         i = t(this).prop("id").substring(8);
         for (var a = 0; a < crm_list.length; a++)
             if (crm_list[a][0] == i)
-                return void f(i, crm_list[a][7])
+                return void get_dahsboard_sales(i, crm_list[a][7])
     }),
     t(".table_dashboard_sales_body").on("click", ".btn_kkrefresh", function(e) {
         s = t(this).prop("id").substring(8);
@@ -911,10 +935,10 @@ jQuery(document).ready(function(t) {
                         } else
                             window.location.href = "../../admin/login.php";
                     else
-                        h("setting", "Cannot load alert level information.")
+                        show_alert("setting", "Cannot load alert level information.")
                 },
                 failure: function(t) {
-                    h("setting", "Cannot load alert level information.")
+                    show_alert("setting", "Cannot load alert level information.")
                 }
             });
         for (var n = 0; n < crm_list.length; n++)
@@ -928,23 +952,23 @@ jQuery(document).ready(function(t) {
     }),
     t(".modal_btn_setting_edit").click(function() {
         if ("" == t(".edit_crm_name").val())
-            return h("setting", "Please input CRM Name."),
+            return show_alert("setting", "Please input CRM Name."),
                 void t(".edit_crm_name").focus();
         if ("" == t(".edit_crm_url").val())
-            return h("setting", "Please input CRM Site URL."),
+            return show_alert("setting", "Please input CRM Site URL."),
                 void t(".edit_crm_url").focus();
         if ("" == t(".edit_crm_username").val())
-            return h("setting", "Please input CRM User Name."),
+            return show_alert("setting", "Please input CRM User Name."),
                 void t(".edit_crm_username").focus();
         if ("" == t(".edit_api_username").val())
-            return h("setting", "Please input API User Name."),
+            return show_alert("setting", "Please input API User Name."),
                 void t(".edit_api_username").focus();
         if ("" == t(".edit_sales_goal").val())
-            return h("setting", "Please input Sales Goal."),
+            return show_alert("setting", "Please input Sales Goal."),
                 void t(".edit_sales_goal").focus();
         for (var a = 0; a < e.length; a++)
             if ("1" == e[a][8] && "" == t(".edit_level_" + e[a][2]).val())
-                return h("setting", "Please input Alert level."),
+                return show_alert("setting", "Please input Alert level."),
                     void t(".edit_level_" + e[a][2]).focus();
         t("#setting_edit_modal").modal("toggle"),
             function() {
@@ -964,16 +988,16 @@ jQuery(document).ready(function(t) {
                     },
                     success: function(t) {
                         if ("success" == t)
-                            b();
+                            show_result();
                         else {
                             if ("no_cookie" == t)
                                 return void (window.location.href = "../../admin/login.php");
-                            h("sales", "CRM information cannot be changed.")
+                            show_alert("sales", "CRM information cannot be changed.")
                         }
                     },
                     failure: function(t) {
-                        show_loading_status(!1),
-                            h("sales", "CRM information cannot be changed.")
+                        show_waiting(!1),
+                            show_alert("sales", "CRM information cannot be changed.")
                     }
                 })
             }();
@@ -993,12 +1017,12 @@ jQuery(document).ready(function(t) {
                     },
                     success: function(t) {
                         if ("error" == t)
-                            h("sales", "Alert level cannot be changed.");
+                            show_alert("sales", "Alert level cannot be changed.");
                         else if ("no_cookie" == t)
                             return void (window.location.href = "../../admin/login.php")
                     },
                     failure: function(t) {
-                        h("sales", "Alert level cannot be changed.")
+                        show_alert("sales", "Alert level cannot be changed.")
                     }
                 }));
         var r, d, n, s
@@ -1021,6 +1045,6 @@ jQuery(document).ready(function(t) {
 
     setInterval(function () {
         // refresh();
-        b();
+        show_result();
     }, 600000);
 });

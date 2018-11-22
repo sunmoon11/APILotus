@@ -147,6 +147,8 @@ $tab_name = "Dashboard";
 							<th>PREPAIDS</th>
 							<th>ORDER%</th>
 							<th>DECLINE%</th>
+                            <th>STEP1 PP%</th>
+                            <th>STEP2 PP%</th>
 	            	        <th>GOAL%</th>
 	                	    <th>GOAL</th>
                             <th>UPDATED</th>

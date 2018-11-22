@@ -106,8 +106,8 @@
                         <tr>
                             <td><input type="radio" id="tlabel_3" class="modal_tlabel_item" name="type"></td>
                             <td>Prepaids</td>
-                            <td></td>
-                            <td></td>
+                            <td><input type="checkbox" id="tlabel_31" class="input-sm" style="vertical-align:middle;margin:0;padding:0;">&nbsp;Step1</input></td>
+                            <td><input type="checkbox" id="tlabel_32" class="input-sm" style="vertical-align:middle;margin:0;padding:0;">&nbsp;Step2</input></td>
                         </tr>
                         <tr>
                             <td><input type="radio" id="tlabel_4" class="modal_tlabel_item" name="type"></td>
