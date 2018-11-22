@@ -65,9 +65,9 @@ $tab_name = "Billing";
         <div class="crm_board">
             <div class="row crm_board_title">
                 <div class="col-xs-10" style="padding-left: 0">Billing</div>
-                <div class="col-xs-2 cap_update_waiting" style="text-align:right;"></div>
+                <div class="col-xs-2 billing_waiting" style="text-align:right;"></div>
             </div>
-            <div class="alert alert-warning cap_update_alert" role="alert" style="display:none"></div>
+            <div class="alert alert-warning billing_alert" role="alert" style="display:none"></div>
             <div class="row crm_board_row">
                 <div class="col-xs-1">
                 </div>
@@ -114,7 +114,7 @@ $tab_name = "Billing";
                 </div>
             </div>
             <div class="c_top">
-                <div class="row div_cap_update_body">
+                <div class="row div_billing_body">
                 </div>
             </div>
         </div>

@@ -305,11 +305,10 @@ jQuery(document).ready(function (t) {
         $(".add_affiliation_name").val("");
         $(".add_affiliation_afid").val("");
         let all_options = "";
-        for (let i = 0; i < all_offers.length; i++) {
+        for (let i = 0; i < all_offers.length; i++)
             all_options += '<option value="' + all_offers[i][0] + '">' + all_offers[i][1] + '</option>';
-            $(".left_options").html(all_options);
-            $(".right_options").html("");
-        }
+        $(".left_options").html(all_options);
+        $(".right_options").html("");
         $("#id_add_affiliation_offer_caps_table").css("display", "none");
         $("#id_add_affiliation_offer_caps_body").html("");
     });
@@ -355,11 +354,10 @@ jQuery(document).ready(function (t) {
 
     $(document).on("click", ".btn_affiliation_edit", function () {
         let all_options = "";
-        for (let i = 0; i < all_offers.length; i++) {
+        for (let i = 0; i < all_offers.length; i++)
             all_options += '<option value="' + all_offers[i][0] + '">' + all_offers[i][1] + '</option>';
-            $(".all_options").html(all_options);
-            $(".chosen_options").html("");
-        }
+        $(".all_options").html(all_options);
+        $(".chosen_options").html("");
         $(".affiliation_offer_caps").html("");
 
         selected_id = $(this).prop("id").substring(6);
