@@ -1109,7 +1109,7 @@ class AlertManager {
     {
         $dbApi = DBApi::getInstance();
         $dbApi->setSubDomain($this->__get('subDomain'));
-        $alertData = $dbApi->getDashboardData();
+        $alertData = $dbApi->getCrmResultForAlert13();
         // update alert_status
         $from = date('Y-m-d');
         $to = date('Y-m-d');
@@ -1147,8 +1147,8 @@ class AlertManager {
 
                 if(in_array($day, $days))
                 {
-                    if(in_array($hour, $hours))
-                    {
+//                    if(in_array($hour, $hours))
+//                    {
                         $methods = array();
                         if($setting[7] == 1)
                             $methods[] = 1;
@@ -1181,7 +1181,7 @@ class AlertManager {
                             $this->checkTabletTakeRate($methods);
                         if($type == 13)
                             $this->checkStep1Goal($methods);
-                    }
+//                    }
                 }
             }
         }

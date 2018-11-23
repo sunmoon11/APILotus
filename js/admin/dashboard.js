@@ -39,7 +39,7 @@ jQuery(document).ready(function(t) {
                 t("#crm5_" + crm_id + "_0").html(""),
                 t("#crm6_" + crm_id + "_0").html(""),
                 t("#crm61_" + crm_id + "_0").html(""),
-                t("#crm62_" + crm_id + "_0").html(""),
+                // t("#crm62_" + crm_id + "_0").html(""),
                 t("#crm7_" + crm_id + "_0").html(""),
                 t("#crm8_" + crm_id + "_0").html(""),
                 t("#crm9_" + crm_id + "_0").html(""),
@@ -129,7 +129,7 @@ jQuery(document).ready(function(t) {
                                     a += '<td id="crm7_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm61_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>';
+                                    // a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>';
                                     a += '<td id="updated_' + crm_list[r][0] + '_0"></td>';
@@ -175,7 +175,7 @@ jQuery(document).ready(function(t) {
                                                 a += '<td id="crm7_' + l + '_0"></td>';
                                                 a += '<td id="crm8_' + l + '_0"></td>';
                                                 a += '<td id="crm61_' + l + '_0"></td>';
-                                                a += '<td id="crm62_' + l + '_0"></td>';
+                                                // a += '<td id="crm62_' + l + '_0"></td>';
                                                 a += '<td id="crm9_' + l + '_0"></td>';
                                                 a += '<td id="crm10_' + l + '_0"></td>';
                                                 a += '<td id="updated_' + l + '_0"></td>';
@@ -227,7 +227,7 @@ jQuery(document).ready(function(t) {
                                         a += '<td id="crm7_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm61_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>',
+                                        // a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>',
                                         a += '<td id="updated_' + crm_list[r][0] + '_0"></td>',
@@ -344,7 +344,7 @@ jQuery(document).ready(function(t) {
                                 l += '<td id="crm7_' + sales[1] + "_" + label_type + '"></td>';
                                 l += '<td id="crm8_' + sales[1] + "_" + label_type + '"></td>';
                                 l += '<td id="crm61_' + sales[1] + "_" + label_type + '"></td>';
-                                l += '<td id="crm62_' + sales[1] + "_" + label_type + '"></td>';
+                                // l += '<td id="crm62_' + sales[1] + "_" + label_type + '"></td>';
                                 l += '<td id="crm9_' + sales[1] + "_" + label_type + '"></td>';
                                 l += '<td id="crm10_' + sales[1] + "_" + label_type + '"></td>';
                                 l += "<td></td>";
@@ -389,7 +389,7 @@ jQuery(document).ready(function(t) {
 
                             t("#crm6_" + sales[1] + "_" + label_type).html(prepaid);
                             t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2));
-                            t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
+                            // t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                             if (0 != order_count) {
                                 var j = order_page / order_count;
                                 t("#crm7_" + sales[1] + "_" + label_type).html(j.toFixed(2));
@@ -484,7 +484,7 @@ jQuery(document).ready(function(t) {
                                     html += '<td id="crm7_' + sales[1] + "_" + label_type + '"></td>';
                                     html += '<td id="crm8_' + sales[1] + "_" + label_type + '"></td>';
                                     html += '<td id="crm61_' + sales[1] + "_" + label_type + '"></td>';
-                                    html += '<td id="crm62_' + sales[1] + "_" + label_type + '"></td>';
+                                    // html += '<td id="crm62_' + sales[1] + "_" + label_type + '"></td>';
                                     html += '<td id="crm9_' + sales[1] + "_" + label_type + '"></td>';
                                     html += '<td id="crm10_' + sales[1] + "_" + label_type + '"></td>';
                                     html += "<td></td>";
@@ -530,7 +530,7 @@ jQuery(document).ready(function(t) {
 
                                 t("#crm6_" + sales[1] + "_" + label_type).html(prepaid);
                                 t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2) );
-                                t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
+                                // t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                                 if (0 != order_count) {
                                     var j = order_page / order_count;
                                     t("#crm7_" + sales[1] + "_" + label_type).html(j.toFixed(2));
