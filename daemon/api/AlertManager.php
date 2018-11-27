@@ -410,7 +410,7 @@ class AlertManager {
         }
     }
 
-    public function sendCapAlerts($data, $subDomain) {
+    public function sendCapAlerts($data, $subDomain, $type) {
         $telegramBot = new TelegramBot();
         $dbApi = DBApi::getInstance();
 
@@ -428,7 +428,7 @@ class AlertManager {
             $botId = $account[9];
             $enableBot = $account[12];
             if ($enableBot == 1 && $botId != null) {
-                $texts = $this->dataToText($data, 24);
+                $texts = $this->dataToText($data, $type);
                 foreach ($texts as $text){
                     if ($text != "")
                         $telegramBot->sendMessageByID($text, $botId);
@@ -693,8 +693,12 @@ class AlertManager {
             $title = '*CRM Password Update*';
         if($type == 13)
             $title = '*CRM Goal Progress*';
-        if($type == 24)
-            $title = 'Cap Update Level Alert';
+        if ($type == 111)
+            $title = 'Cap Update Level Capped Alert';
+        if ($type == 107)
+            $title = 'Cap Update Level Away Alert';
+        if ($type == 108)
+            $title = 'Cap Update Level Over Alert';
 
         if($type == 12)
         {
@@ -744,8 +748,14 @@ class AlertManager {
         // body
         foreach ($content['status'] as $data)
         {
-            if ($type == 24) {
+            if ($type == 111) {
+                $alertText = $alertText.$data[0].' is Capped ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
+            }
+            else if ($type == 107) {
                 $alertText = $alertText.$data[0].' is '.$data[4].' Away From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
+            }
+            else if ($type == 108) {
+                $alertText = $alertText.$data[0].' is '.$data[4].' Over From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
             else {
                 if($data[4] == 1)
@@ -1147,8 +1157,8 @@ class AlertManager {
 
                 if(in_array($day, $days))
                 {
-//                    if(in_array($hour, $hours))
-//                    {
+                    if(in_array($hour, $hours))
+                    {
                         $methods = array();
                         if($setting[7] == 1)
                             $methods[] = 1;
@@ -1181,7 +1191,7 @@ class AlertManager {
                             $this->checkTabletTakeRate($methods);
                         if($type == 13)
                             $this->checkStep1Goal($methods);
-//                    }
+                    }
                 }
             }
         }

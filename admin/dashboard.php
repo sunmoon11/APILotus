@@ -144,10 +144,10 @@ $tab_name = "Dashboard";
 							<th>TAKE RATE</th>
 							<th>TABLET</th>
 							<th>TABLET%</th>
-							<th>PREPAIDS</th>
+							<th>S1 PREPAIDS</th>
 							<th>ORDER%</th>
 							<th>DECLINE%</th>
-                            <th>STEP1 PP%</th>
+                            <th>S1 PP%</th>
 <!--                            <th>STEP2 PP%</th>-->
 	            	        <th>GOAL%</th>
 	                	    <th>GOAL</th>

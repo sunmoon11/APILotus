@@ -387,7 +387,7 @@ jQuery(document).ready(function(t) {
                             } else
                                 t("#crm5_" + sales[1] + "_" + label_type).html("0");
 
-                            t("#crm6_" + sales[1] + "_" + label_type).html(prepaid);
+                            t("#crm6_" + sales[1] + "_" + label_type).html(prepaid_step1);
                             t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2));
                             // t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                             if (0 != order_count) {
@@ -528,7 +528,7 @@ jQuery(document).ready(function(t) {
                                 } else
                                     t("#crm5_" + sales[1] + "_" + label_type).html("0");
 
-                                t("#crm6_" + sales[1] + "_" + label_type).html(prepaid);
+                                t("#crm6_" + sales[1] + "_" + label_type).html(prepaid_step1);
                                 t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2) );
                                 // t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                                 if (0 != order_count) {
