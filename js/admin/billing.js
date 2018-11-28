@@ -60,8 +60,8 @@ jQuery(document).ready(function(t) {
             let date_selected = date_type.split('_')[1];
             from_date = date_selected.split('-')[0];
             to_date = date_selected.split('-')[1];
-            from_date = from_date.substring(0, 2) + '/' + from_date.substring(3, 5) + '/00' + from_date.substring(6);
-            to_date = to_date.substring(0, 2) + '/' + to_date.substring(3, 5) + '/00' + to_date.substring(6);
+            from_date = from_date.substring(0, 2) + '/' + from_date.substring(3, 5) + '/20' + from_date.substring(6);
+            to_date = to_date.substring(0, 2) + '/' + to_date.substring(3, 5) + '/20' + to_date.substring(6);
         }
         t("#from_date").val(from_date);
         t("#to_date").val(to_date);
@@ -95,7 +95,11 @@ jQuery(document).ready(function(t) {
                         t.ajax({
                             type: "GET",
                             url: "../daemon/ajax_admin/billing_list.php",
-                            data: {},
+                            data: {
+                                date_type: date_type,
+                                from_date: t("#from_date").val(),
+                                to_date: t("#to_date").val()
+                            },
                             success: function(e) {
                                 show_waiting(false);
                                 if ("no_cookie" === e)

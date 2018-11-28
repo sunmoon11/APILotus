@@ -5,8 +5,8 @@ require_once '../api/DBApi.php';
  
 class TelegramBot
 {
-//    private $tokenKey = '374410536:AAEDQKvvJWr14eNqYXtASkCM7xwcofK4_Bg';
     private $tokenKey = '675022460:AAHB6q5tqZdPd0cyXxVzE-XBm_IolohXYm0';
+//    private $tokenKey = '796563407:AAENWxTWobpEy-2bpkCub_kASYmf6AQVmeo';
     private $baseUrl = 'https://api.telegram.org/bot';
 
     private $chatIDList = array();

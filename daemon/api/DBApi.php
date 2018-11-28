@@ -9431,21 +9431,32 @@ class DBApi
         }
     }
 
-    public function getBilling()
+    public function getBilling($date_type, $fromDate, $toDate)
     {
         if (!$this->checkConnection())
             return null;
 
         $ret = array();
         try {
-            $query = 'SELECT
-                          pag.*, pa.name as affiliate_name, pa.afid,
-                          po.name as offer_name, po.crm_id, po.crm_name, po.sales_goal, po.campaign_ids, po.label_ids, po.offer_type, po.s1_payout as s1_payout_, po.s2_payout as s2_payout_
-                      FROM
-                          primary_affiliate_goal pag
-                      LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
-                      LEFT JOIN (SELECT po.*, pca.crm_name, pca.sales_goal FROM primary_offer po LEFT JOIN primary_crm_account pca ON po.crm_id=pca.id) po ON pag.offer_id = po.id
-                      ORDER BY 2, 3';
+            if ('date_thisweek' == $date_type)
+                $query = 'SELECT
+                              pag.*, pa.name as affiliate_name, pa.afid,
+                              po.name as offer_name, po.crm_id, po.crm_name, po.sales_goal, po.campaign_ids, po.label_ids, po.offer_type, po.s1_payout as s1_payout_, po.s2_payout as s2_payout_
+                          FROM
+                              primary_affiliate_goal pag
+                          LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
+                          LEFT JOIN (SELECT po.*, pca.crm_name, pca.sales_goal FROM primary_offer po LEFT JOIN primary_crm_account pca ON po.crm_id=pca.id) po ON pag.offer_id = po.id
+                          ORDER BY 2, 3';
+            else
+                $query = 'SELECT
+                              pag.*, pa.name as affiliate_name, pa.afid,
+                              po.name as offer_name, po.crm_id, po.crm_name, po.sales_goal, po.campaign_ids, po.label_ids, po.offer_type, po.s1_payout as s1_payout_, po.s2_payout as s2_payout_
+                          FROM
+                              primary_affiliate_backup_for_billing pag
+                          LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
+                          LEFT JOIN (SELECT po.*, pca.crm_name, pca.sales_goal FROM primary_offer po LEFT JOIN primary_crm_account pca ON po.crm_id=pca.id) po ON pag.offer_id = po.id
+                          WHERE pag.from_date="'.$fromDate.'" and pag.to_date="'.$toDate.'"
+                          ORDER BY 2, 3';
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             $count = mysqli_num_rows($result);
@@ -9613,6 +9624,20 @@ class DBApi
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function addAffiliateForBilling($affiliate_id, $offer_id, $goal, $s1_payout, $s2_payout, $from_date, $to_date)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'INSERT INTO ' . $this->subdomain . '_affiliate_backup_for_billing VALUES (null,' . $affiliate_id . ',' . $offer_id . ','. $goal . ','. $s1_payout . ','. $s2_payout . ',"'. $from_date . '","'. $to_date . '")';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     public function getDashboardRefresh($date_type)

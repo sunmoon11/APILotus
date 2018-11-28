@@ -3,6 +3,8 @@
 cd /var/www/html/daemon/alert
 php ./alert_prospect.php
 sleep 250
+php ./alert_cap_update.php
+sleep 250
 php ./alert_decline_percentage_day.php
 sleep 255
 php ./alert_decline_percentage_week.php

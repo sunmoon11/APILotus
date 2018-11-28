@@ -92,7 +92,7 @@ $tab_name = "Billing";
                                         $nextMonday = strtotime('+1 week', $nextMonday);
                                         $nextSunday = strtotime('+1 week', $nextSunday);
                                     }
-                                    foreach (array_reverse($weeks) as $week) {
+                                    foreach (array_slice(array_reverse($weeks), 1) as $week) {
                                         echo '<li><a href="#" id="date_'. $week . '">'.$week.'</a></li>';
                                     }
                                 ?>

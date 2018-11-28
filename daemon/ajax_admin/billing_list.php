@@ -8,6 +8,9 @@
 
 require_once '../api/DBApi.php';
 
+$date_type = $_GET['date_type'];
+$fromDate = $_GET['from_date'];
+$toDate = $_GET['to_date'];
 
 $dbApi = DBApi::getInstance();
 if ($dbApi->getSubDomain() == '')
@@ -16,6 +19,6 @@ if ($dbApi->getSubDomain() == '')
     return;
 }
 
-$billing = $dbApi->getBilling();
+$billing = $dbApi->getBilling($date_type, $fromDate, $toDate);
 
 echo json_encode($billing);
