@@ -147,8 +147,10 @@ jQuery(document).ready(function(t) {
                                 }
                                 t(".div_billing_body").html(html);
 
-                                for (let i = 0; i < crm_list.length; i++) {
-                                    get_billing_goal_list(crm_list[i][0]);
+                                if (billing_list.length > 0) {
+                                    for (let i = 0; i < crm_list.length; i++) {
+                                        get_billing_goal_list(crm_list[i][0]);
+                                    }
                                 }
                             },
                             failure: function() {
