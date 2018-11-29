@@ -9501,7 +9501,7 @@ class DBApi
             $count = mysqli_num_rows($result);
             if ($count > 0) {
                 while($row = mysqli_fetch_assoc($result))
-                    $ret[] = array($row['id'], $row['name'], $row['afid']);
+                    $ret[] = array($row['id'], $row['name'], $row['afid'], $row['code'], $row['bot']);
             }
             return $ret;
         } catch (Exception $e) {
@@ -9848,5 +9848,176 @@ class DBApi
         } catch (Exception $e) {
             return 'error';
         }
+    }
+
+    public function editSpecialCode($affiliate_id, $special_code)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        $group_chat_id = '';
+        try {
+            $query = 'SELECT bot FROM ' . $this->subdomain . '_affiliate WHERE id=' . $affiliate_id;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $group_chat_id = $row['bot'];
+                if ($group_chat_id == false)
+                    $group_chat_id = 'empty';
+            }
+            $query = 'UPDATE ' . $this->subdomain . '_affiliate SET code="' . $special_code . '", bot="" WHERE id=' . $affiliate_id;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            return $group_chat_id;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function checkAffiliateBotID($botId) {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT * FROM '.$this->subdomain.'_affiliate WHERE bot="'.$botId.'"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $count = mysqli_num_rows($result);
+            if ($count > 0)
+                return true;
+            else
+                return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function activateAffiliateBotID($special_code, $botId) {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT * FROM '.$this->subdomain.'_affiliate WHERE code="'.$special_code.'"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                $query = 'UPDATE '.$this->subdomain.'_affiliate SET bot="'.$botId.'" WHERE code="'.$special_code.'"';
+                $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+                return true;
+            }
+            else
+                return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function deactivateAffiliateBotID($botId) {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'UPDATE '.$this->subdomain.'_affiliate SET bot="" WHERE bot="'.$botId.'"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    public function getAffiliationByGroupChatID($botID)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+            $query = 'SELECT id, name, afid FROM ' . $this->subdomain . '_affiliate WHERE bot="' . $botID . '"';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                return array(
+                    "id" => $row['id'],
+                    "name" => $row['name'],
+                    "afid" => $row['afid']
+                );
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
+    }
+
+    public function getCapUpdateByAffiliateID($affiliate_id)
+    {
+        if (!$this->checkConnection())
+            return null;
+
+        $ret = array();
+        try {
+            $query = 'SELECT
+                          pag.*, pa.name as affiliate_name, pa.afid,
+                          po.name as offer_name, po.crm_id, po.crm_name, po.sales_goal, po.campaign_ids, po.label_ids, po.offer_type, po.s1_payout as s1_payout_, po.s2_payout as s2_payout_
+                      FROM
+                          primary_affiliate_goal pag
+                      LEFT JOIN primary_affiliate pa ON pag.affiliate_id = pa.id
+                      LEFT JOIN (SELECT po.*, pca.crm_name, pca.sales_goal FROM primary_offer po LEFT JOIN primary_crm_account pca ON po.crm_id=pca.id) po ON pag.offer_id = po.id
+                      WHERE pag.affiliate_id='.$affiliate_id.'
+                      ORDER BY 2, 3';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = [
+                        "id" => $row['id'],
+                        "affiliate_id" => $row['affiliate_id'],
+                        "affiliate_name" => $row['affiliate_name'],
+                        "afid" => $row['afid'],
+                        "goal" => $row['goal'],
+                        "s1_payout" => $row['s1_payout'],
+                        "s2_payout" => $row['s2_payout'],
+                        "offer_id" => $row['offer_id'],
+                        "offer_name" => $row['offer_name'],
+                        "campaign_ids" => $row['campaign_ids'],
+                        "label_ids" => $row['label_ids'],
+                        "offer_type" => $row['offer_type'],
+                        "s1_payout_" => $row['s1_payout_'],
+                        "s2_payout_" => $row['s2_payout_'],
+                        "crm_id" => $row['crm_id'],
+                        "crm_name" => $row['crm_name'],
+                        "sales_goal" => $row['sales_goal'],
+                    ];
+            }
+            return $ret;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function getAvailableAffiliateIDs()
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        $ret = [];
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_affiliate WHERE bot<>""';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ret[] = array(
+                        "id" => $row['id'],
+                        "name" => $row['name'],
+                        "bot" => $row['bot']
+                    );
+            }
+            return $ret;
+        } catch (Exception $e) {
+            return false;
+        }
+        return false;
     }
 }

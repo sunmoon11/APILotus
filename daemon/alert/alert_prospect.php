@@ -24,6 +24,8 @@ function getProspectReportAndSendAlerts($name){
     $timeUtil = TimeUtils::getInstance();
     $fromDate = $timeUtil->getDateOfCurrentWeek()[0];
     $toDate = $timeUtil->getDateOfCurrentWeek()[1];
+    $day = $timeUtil->getDayOfWeek();
+    $hour = $timeUtil->getHour();
 
     $dbApi->setSubDomain($name);
     $crmList = $dbApi->getAllActiveCrm();
@@ -127,76 +129,94 @@ function getProspectReportAndSendAlerts($name){
             }
             $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $goal, $status, $from, $to, $timestamp);
 
-            // 100, 50, 10 Step1 Sales Away From Cap
-            $types = [15, 14, 7];
-            foreach ($types as $type) {
-                $status = 0;
-                $Step1100Triggered = false;
-                $setting = $dbApi->getAlertTypeByType($type);
-                $level = explode(' ', $setting[2])[0];
+            $setting = $dbApi->getAlertTypeByType(7);
+            $days = $setting[5];
+            if ("" == $days)
+                $days = "Sun,Mon,Tue,Wed,Thu,Fri,Sat";
+            $hours = $setting[6];
+            $days = explode(',', $days);
+            $hours = explode(',', $hours);
+            if (in_array($day, $days) and in_array($hour, $hours)) {
+                // 100, 50, 10 Step1 Sales Away From Cap
+                $types = [15, 14, 7];
+                foreach ($types as $type) {
+                    $status = 0;
+                    $Step1100Triggered = false;
+                    $setting = $dbApi->getAlertTypeByType($type);
+                    $level = explode(' ', $setting[2])[0];
 
-                if($salesStep1 >= ($goal - $level) && ($goal > $salesStep1) && $away100Sales == false)
-                {
-                    $status = 1;
-                    $away100Sales = true;
-                    $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
-                    if($alertStatus != array())
+                    if($salesStep1 >= ($goal - $level) && ($goal > $salesStep1) && $away100Sales == false)
                     {
-                        $data = $alertStatus[0];
-                        if($data[5] == 0)
+                        $status = 1;
+                        $away100Sales = true;
+                        $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
+                        if($alertStatus != array())
+                        {
+                            $data = $alertStatus[0];
+                            if($data[5] == 0)
+                            {
+                                $Step1100Triggered = true;
+                            }
+                        }
+                        else
                         {
                             $Step1100Triggered = true;
                         }
-                    }
-                    else
-                    {
-                        $Step1100Triggered = true;
-                    }
 
-                    if($Step1100Triggered)
-                    {
-                        $alertOf100AwaySales['fromDate'] = $from;
-                        $alertOf100AwaySales['toDate'] = $to;
-                        $dataOf100AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                        if($Step1100Triggered)
+                        {
+                            $alertOf100AwaySales['fromDate'] = $from;
+                            $alertOf100AwaySales['toDate'] = $to;
+                            $dataOf100AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                        }
                     }
+                    $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
                 }
-                $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
             }
 
-            // 10, 25, 50, 75, 100, 125, 150, 200, 250 Step1 Sales Over Cap
-            $types = [23, 22, 21, 20, 19, 18, 17, 16, 8];
-            foreach ($types as $type) {
-                $status = 0;
-                $Step130Triggered = false;
-                $setting = $dbApi->getAlertTypeByType($type);
-                $level = explode(' ', $setting[2])[0];
+            $setting = $dbApi->getAlertTypeByType(8);
+            $days = $setting[5];
+            if ("" == $days)
+                $days = "Sun,Mon,Tue,Wed,Thu,Fri,Sat";
+            $hours = $setting[6];
+            $days = explode(',', $days);
+            $hours = explode(',', $hours);
+            if (in_array($day, $days) and in_array($hour, $hours)) {
+                // 10, 25, 50, 75, 100, 125, 150, 200, 250 Step1 Sales Over Cap
+                $types = [23, 22, 21, 20, 19, 18, 17, 16, 8];
+                foreach ($types as $type) {
+                    $status = 0;
+                    $Step130Triggered = false;
+                    $setting = $dbApi->getAlertTypeByType($type);
+                    $level = explode(' ', $setting[2])[0];
 
-                if($salesStep1 >= ($goal + $level) && ($goal < $salesStep1) && $over30Sales == false)
-                {
-                    $status = 1;
-                    $over30Sales = true;
-                    $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
-                    if($alertStatus != array())
+                    if($salesStep1 >= ($goal + $level) && ($goal < $salesStep1) && $over30Sales == false)
                     {
-                        $data = $alertStatus[0];
-                        if($data[5] == 0)
+                        $status = 1;
+                        $over30Sales = true;
+                        $alertStatus = $dbApi->getAlertReportByType($crmID, date('Y-m-d'), $type);
+                        if($alertStatus != array())
+                        {
+                            $data = $alertStatus[0];
+                            if($data[5] == 0)
+                            {
+                                $Step130Triggered = true;
+                            }
+                        }
+                        else
                         {
                             $Step130Triggered = true;
                         }
-                    }
-                    else
-                    {
-                        $Step130Triggered = true;
-                    }
 
-                    if($Step130Triggered)
-                    {
-                        $alertOf30AwaySales['fromDate'] = $from;
-                        $alertOf30AwaySales['toDate'] = $to;
-                        $dataOf30AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                        if($Step130Triggered)
+                        {
+                            $alertOf30AwaySales['fromDate'] = $from;
+                            $alertOf30AwaySales['toDate'] = $to;
+                            $dataOf30AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                        }
                     }
+                    $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
                 }
-                $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
             }
         }
 

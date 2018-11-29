@@ -437,6 +437,15 @@ class AlertManager {
         }
     }
 
+    public function sendCapAlertsToAffiliates($data, $type, $botId) {
+        $telegramBot = new TelegramBot(false);
+        $texts = $this->dataToText($data, $type);
+        foreach ($texts as $text){
+            if ($text != "")
+                $telegramBot->sendMessageByID($text, $botId);
+        }
+    }
+
     public function sendKKCrmAlerts($sms, $email, $bot, $data, $type, $subDomain) {
         $sender = AlertMethodApi::getInstance();
         $telegramBot = new TelegramBot();
@@ -693,11 +702,11 @@ class AlertManager {
             $title = '*CRM Password Update*';
         if($type == 13)
             $title = '*CRM Goal Progress*';
-        if ($type == 111)
+        if ($type == 111 or $type == 211)
             $title = 'Cap Update Level Capped Alert';
-        if ($type == 107)
+        if ($type == 107 or $type == 207)
             $title = 'Cap Update Level Away Alert';
-        if ($type == 108)
+        if ($type == 108 or $type == 208)
             $title = 'Cap Update Level Over Alert';
 
         if($type == 12)
@@ -748,14 +757,17 @@ class AlertManager {
         // body
         foreach ($content['status'] as $data)
         {
-            if ($type == 111) {
-                $alertText = $alertText.$data[0].' is Capped ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
+            if ($type == 111 or $type == 211) {
+                $alertText .= 'Timestamp : '.$data[4]."\r\n";
+                $alertText .= $data[0].' is Capped ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
-            else if ($type == 107) {
-                $alertText = $alertText.$data[0].' is '.$data[4].' Away From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
+            else if ($type == 107 or $type == 207) {
+                $alertText .= 'Timestamp : '.$data[4]."\r\n";
+                $alertText .= $data[0].' is '.($data[3] - $data[2]).' Away From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
-            else if ($type == 108) {
-                $alertText = $alertText.$data[0].' is '.$data[4].' Over From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
+            else if ($type == 108 or $type == 208) {
+                $alertText .= 'Timestamp : '.$data[4]."\r\n";
+                $alertText .= $data[0].' is '.($data[2] - $data[3]).' Over From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
             else {
                 if($data[4] == 1)

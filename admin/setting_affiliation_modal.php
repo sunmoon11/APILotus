@@ -5,6 +5,8 @@
  * Time: 3:37 AM
  */
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
 <div class="modal fade" id="affiliation_add_modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -73,9 +75,17 @@
                         <div class="col-xs-3 modal_input_label">Name:</div>
                         <div class="col-xs-9"><input type="text" class="form-control input-sm edit_affiliation_name"></div>
                     </div>
-                    <div class="row" style="margin-bottom:25px;">
+                    <div class="row" style="margin-bottom:5px;">
                         <div class="col-xs-3 modal_input_label">AFID(s):</div>
                         <div class="col-xs-9"><input type="text" class="form-control input-sm edit_affiliation_afid"></div>
+                    </div>
+                    <div class="row" style="margin-bottom:25px;">
+                        <div class="col-xs-3 modal_input_label">Special Code:</div>
+                        <div class="col-xs-6"><input id="edit_special_code" type="text" class="form-control input-sm" readonly></div>
+                        <div class="col-xs-3" style="text-align: right">
+                            <button type="button" class="btn btn-success modal_btn_special_code_copy"><i class="fa fa-copy"></i></button>
+                            <button type="button" class="btn btn-danger modal_btn_special_code_reset" style="color: white">Reset</button>
+                        </div>
                     </div>
                     <div class="row affiliation_offer_caps"></div>
                     <div class="row" style="margin-top:10px;">

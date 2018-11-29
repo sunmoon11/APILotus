@@ -5,20 +5,23 @@ require_once '../api/DBApi.php';
  
 class TelegramBot
 {
-    private $tokenKey = '675022460:AAHB6q5tqZdPd0cyXxVzE-XBm_IolohXYm0';
-//    private $tokenKey = '796563407:AAENWxTWobpEy-2bpkCub_kASYmf6AQVmeo';
     private $baseUrl = 'https://api.telegram.org/bot';
 
     private $chatIDList = array();
-     
+
 
     /**
      * @brief
      *
-     **/
-    public function __construct() 
-    { 
-        $this->baseUrl = $this->baseUrl.$this->tokenKey;
+     * @param bool $bot_method
+     */
+    public function __construct($bot_method=true)
+    {
+        if ($bot_method)
+            $tokenKey = '675022460:AAHB6q5tqZdPd0cyXxVzE-XBm_IolohXYm0';
+        else
+            $tokenKey = '796563407:AAENWxTWobpEy-2bpkCub_kASYmf6AQVmeo';
+        $this->baseUrl = $this->baseUrl.$tokenKey;
     } 
 
 
@@ -143,6 +146,38 @@ class TelegramBot
             array('/alert_decline_percentage_day', '/alert_decline_percentage_week'),
             array('/alert_100step1_sales', '/alert_30step1_sales', '/alert_take_rate', '/alert_table_take_rate'),
             array('/alert_step1_crm_capped', '/alert_password_validdays'),
+        );
+        $resp = array('keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true);
+        $reply = json_encode($resp);
+
+        $url .= '&reply_markup='.$reply;
+
+        $sendStatus = $this->GetCurl($url);
+    }
+
+    public function sendAffiliateRegisterMessage($msg='', $userID)
+    {
+        $url = $this->baseUrl.'/sendMessage?chat_id=';
+        $url .= $userID;
+        $url .= '&text='.urlencode($msg);
+
+        $keyboard = array(array('/activate'));
+        $resp = array('keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true);
+        $reply = json_encode($resp);
+
+        $url .= '&reply_markup='.$reply;
+
+        $sendStatus = $this->GetCurl($url);
+    }
+
+    public function sendAffiliateNormalMessage($msg='', $userID)
+    {
+        $url = $this->baseUrl.'/sendMessage?chat_id=';
+        $url .= $userID;
+        $url .= '&text='.urlencode($msg);
+
+        $keyboard = array(
+            array('/capupdate', '/capped', '/capupdateid', '/deactivate'),
         );
         $resp = array('keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => true);
         $reply = json_encode($resp);

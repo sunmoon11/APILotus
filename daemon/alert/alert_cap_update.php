@@ -25,6 +25,8 @@ function getCapUpdateReportAndSendAlerts($name){
     $timeUtil = TimeUtils::getInstance();
     $fromDate = $timeUtil->getDateOfCurrentWeek()[0];
     $toDate = $timeUtil->getDateOfCurrentWeek()[1];
+    $day = $timeUtil->getDayOfWeek();
+    $hour = $timeUtil->getHour();
 
     $dbApi->setSubDomain($name);
     $crmList = $dbApi->getAllActiveCrm();
@@ -73,7 +75,6 @@ function getCapUpdateReportAndSendAlerts($name){
                 $affiliate_name = $affiliate_goal[4];
                 $offer_name = $affiliate_goal[6];
 
-
                 $type = 11; // Step 1 CRM Capped
                 $status = 0;
                 $CappedTriggered = false;
@@ -97,69 +98,87 @@ function getCapUpdateReportAndSendAlerts($name){
                         $CappedTriggered = true;
                     }
                     if ($CappedTriggered) {
-                        $dataOfCapped[] = array($affiliate_name, $offer_name, $count, $goal);
+                        $dataOfCapped[] = array($affiliate_name, $offer_name, $count, $goal, $updated_time);
                     }
                 }
                 $ret = $dbApi->updateAlertStatus($affiliate_goal[0], $type + 100, $count, $goal, $status, $from, $to, $timestamp);
 
-                // 100, 50, 10 Step1 Sales Away From Cap
-                $types = [15, 14, 7];
-                $awayAlreadyTriggered = false;
-                foreach ($types as $type) {
-                    $status = 0;
-                    $AwayTriggered = false;
-                    $setting = $dbApi->getAlertTypeByType($type);
-                    $level = explode(' ', $setting[2])[0];
+                $setting = $dbApi->getAlertTypeByType(7);
+                $days = $setting[5];
+                if ("" == $days)
+                    $days = "Sun,Mon,Tue,Wed,Thu,Fri,Sat";
+                $hours = $setting[6];
+                $days = explode(',', $days);
+                $hours = explode(',', $hours);
+                if (in_array($day, $days) and in_array($hour, $hours)) {
+                    // 100, 50, 10 Step1 Sales Away From Cap
+                    $types = [15, 14, 7];
+                    $awayAlreadyTriggered = false;
+                    foreach ($types as $type) {
+                        $status = 0;
+                        $AwayTriggered = false;
+                        $setting = $dbApi->getAlertTypeByType($type);
+                        $level = explode(' ', $setting[2])[0];
 
-                    if ($count >= ($goal - $level) && ($goal > $count) && $awayAlreadyTriggered == false) {
-                        $status = 1;
-                        $awayAlreadyTriggered = true;
-                        $alertStatus = $dbApi->getAlertReportByType($affiliate_goal[0], date('Y-m-d'), $type + 100);
-                        if ($alertStatus != array()) {
-                            $data = $alertStatus[0];
-                            if($data[5] == 0) {
+                        if ($count >= ($goal - $level) && ($goal > $count) && $awayAlreadyTriggered == false) {
+                            $status = 1;
+                            $awayAlreadyTriggered = true;
+                            $alertStatus = $dbApi->getAlertReportByType($affiliate_goal[0], date('Y-m-d'), $type + 100);
+                            if ($alertStatus != array()) {
+                                $data = $alertStatus[0];
+                                if($data[5] == 0) {
+                                    $AwayTriggered = true;
+                                }
+                            }
+                            else {
                                 $AwayTriggered = true;
                             }
-                        }
-                        else {
-                            $AwayTriggered = true;
-                        }
 
-                        if ($AwayTriggered) {
-                            $dataOfAway[] = array($affiliate_name, $offer_name, $count, $goal, $level);
-                        }
-                    }
-                    $ret = $dbApi->updateAlertStatus($affiliate_goal[0], $type + 100, $count, $level, $status, $from, $to, $timestamp);
-                }
-
-                // 10, 25, 50, 75, 100, 125, 150, 200, 250 Step1 Sales Over Cap
-                $types = [23, 22, 21, 20, 19, 18, 17, 16, 8];
-                $over30Sales = false;
-                foreach ($types as $type) {
-                    $status = 0;
-                    $Step130Triggered = false;
-                    $setting = $dbApi->getAlertTypeByType($type);
-                    $level = explode(' ', $setting[2])[0];
-
-                    if ($count >= ($goal + $level) && ($goal < $count) && $over30Sales == false) {
-                        $status = 1;
-                        $over30Sales = true;
-                        $alertStatus = $dbApi->getAlertReportByType($affiliate_goal[0], date('Y-m-d'), $type + 100);
-                        if ($alertStatus != array()) {
-                            $data = $alertStatus[0];
-                            if ($data[5] == 0) {
-                                $Step130Triggered = true;
+                            if ($AwayTriggered) {
+                                $dataOfAway[] = array($affiliate_name, $offer_name, $count, $goal, $updated_time);
                             }
                         }
-                        else {
-                            $Step130Triggered = true;
-                        }
-
-                        if ($Step130Triggered) {
-                            $dataOfOver[] = array($affiliate_name, $offer_name, $count, $goal, $level);
-                        }
+                        $ret = $dbApi->updateAlertStatus($affiliate_goal[0], $type + 100, $count, $level, $status, $from, $to, $timestamp);
                     }
-                    $ret = $dbApi->updateAlertStatus($affiliate_goal[0], $type + 100, $count, $level, $status, $from, $to, $timestamp);
+                }
+
+                $setting = $dbApi->getAlertTypeByType(8);
+                $days = $setting[5];
+                if ("" == $days)
+                    $days = "Sun,Mon,Tue,Wed,Thu,Fri,Sat";
+                $hours = $setting[6];
+                $days = explode(',', $days);
+                $hours = explode(',', $hours);
+                if (in_array($day, $days) and in_array($hour, $hours)) {
+                    // 10, 25, 50, 75, 100, 125, 150, 200, 250 Step1 Sales Over Cap
+                    $types = [23, 22, 21, 20, 19, 18, 17, 16, 8];
+                    $over30Sales = false;
+                    foreach ($types as $type) {
+                        $status = 0;
+                        $Step130Triggered = false;
+                        $setting = $dbApi->getAlertTypeByType($type);
+                        $level = explode(' ', $setting[2])[0];
+
+                        if ($count >= ($goal + $level) && ($goal < $count) && $over30Sales == false) {
+                            $status = 1;
+                            $over30Sales = true;
+                            $alertStatus = $dbApi->getAlertReportByType($affiliate_goal[0], date('Y-m-d'), $type + 100);
+                            if ($alertStatus != array()) {
+                                $data = $alertStatus[0];
+                                if ($data[5] == 0) {
+                                    $Step130Triggered = true;
+                                }
+                            }
+                            else {
+                                $Step130Triggered = true;
+                            }
+
+                            if ($Step130Triggered) {
+                                $dataOfOver[] = array($affiliate_name, $offer_name, $count, $goal, $updated_time);
+                            }
+                        }
+                        $ret = $dbApi->updateAlertStatus($affiliate_goal[0], $type + 100, $count, $level, $status, $from, $to, $timestamp);
+                    }
                 }
             }
         }

@@ -285,6 +285,32 @@ jQuery(document).ready(function (t) {
         return html;
     }
 
+    function save_special_code() {
+        show_waiting("edit", true);
+        $.ajax({
+            type: "GET",
+            url: "../daemon/ajax_admin/setting_affiliation_save_special_code.php",
+            data: {
+                affiliate_id: affiliate_id,
+                special_code: $('#edit_special_code').val()
+            },
+            success: function (status) {
+                show_waiting("edit", false);
+                if ("error" == status)
+                    show_alert("main", "Affiliate cannot be deleted.");
+                else if ("no_cookie" == status)
+                    window.location.href = "../../admin/login.php";
+                else if ("success" == status) {
+
+                }
+            },
+            failure: function () {
+                show_waiting("edit", false);
+                show_alert("edit", "Special Code cannot be saved.");
+            }
+        });
+    }
+
     $(".crm_main_dropdown_menu li").on("click", function() {
         crm_main_id = $(this).find("a").attr("id");
         $(".crm_main_toggle_button").html($(this).text() + ' <span class="caret"></span>');
@@ -364,6 +390,7 @@ jQuery(document).ready(function (t) {
         affiliate_id = results[selected_id][0][0];
         $(".edit_affiliation_name").val(results[selected_id][0][1]);
         $(".edit_affiliation_afid").val(results[selected_id][0][2]);
+        $("#edit_special_code").val(results[selected_id][0][3]);
 
         $(".affiliation_offer_caps").html(make_html(results[selected_id][1]));
 
@@ -502,6 +529,26 @@ jQuery(document).ready(function (t) {
             $("#addgoal_" + selected_options[i].value).parent().parent().remove();
         }
         refresh_table("add_");
+    });
+
+    $('.modal_btn_special_code_reset').click(function () {
+        let rand_str = '01234567890123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let special_code = '';
+        for (let i = 0; i < 16; i++) {
+            special_code += rand_str[Math.floor(Math.random() * rand_str.length)];
+        }
+        $("#edit_special_code").val(special_code);
+
+        let result = results[selected_id];
+        result[0][3] = special_code;
+
+        save_special_code();
+    });
+
+    $('.modal_btn_special_code_copy').click(function () {
+        let special_code = document.getElementById("edit_special_code");
+        special_code.select();
+        document.execCommand("copy");
     });
 
     let loading_gif = '<img src="../images/loading.gif" style="width:22px;height:22px;">';
