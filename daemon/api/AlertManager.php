@@ -755,19 +755,22 @@ class AlertManager {
             $dateText = 'Week to Date Alert'."\r\n".$dateText;
 
         // body
-        foreach ($content['status'] as $data)
+        foreach ($content['status'] as $idx=>$data)
         {
             if ($type == 111 or $type == 211) {
-                $alertText .= 'Timestamp : '.$data[4]."\r\n";
+                if (0 == $idx)
+                    $alertText .= 'Timestamp : '.$data[4]."\r\n\r\n";
                 $alertText .= $data[0].' is Capped ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
             else if ($type == 107 or $type == 207) {
-                $alertText .= 'Timestamp : '.$data[4]."\r\n";
+                if (0 == $idx)
+                    $alertText .= 'Timestamp : '.$data[4]."\r\n\r\n";
                 $alertText .= $data[0].' is '.($data[3] - $data[2]).' Away From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
             else if ($type == 108 or $type == 208) {
-                $alertText .= 'Timestamp : '.$data[4]."\r\n";
-                $alertText .= $data[0].' is '.($data[2] - $data[3]).' Over From Capping ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
+                if (0 == $idx)
+                    $alertText .= 'Timestamp : '.$data[4]."\r\n\r\n";
+                $alertText .= $data[0].' is '.($data[2] - $data[3]).' Sales Over Cap ['.$data[1].'] ['.$data[2].'/'.$data[3]."]\r\n";
             }
             else {
                 if($data[4] == 1)

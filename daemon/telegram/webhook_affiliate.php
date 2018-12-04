@@ -8,6 +8,7 @@
 
 require_once './TelegramBot.php';
 require_once '../api/DBApi.php';
+require_once '../../lib/utils/TimeUtils.php';
 
 function startsWith($haystack, $needle)
 {
@@ -70,6 +71,7 @@ if (empty($chatName) == true) {
     $chatName = $data['message']['chat']['title'];
 }
 
+$timeUtil = TimeUtils::getInstance();
 
 $bot = new TelegramBot(false);
 $bot->sendChatAction('typing', $chatID);
@@ -128,8 +130,8 @@ else if ($command == '/capupdate') {
     $affiliate = $dbApi->getAffiliationByGroupChatID($chatID);
     $offers = $dbApi->getCapUpdateByAffiliateID($affiliate['id']);
 
-    $fromDate = date('m/d/Y', strtotime('previous monday'));
-    $toDate = date('m/d/Y');
+    $fromDate = $timeUtil->getDateOfCurrentWeek()[0];
+    $toDate = $timeUtil->getDateOfCurrentWeek()[1];
 
     $text = '* '.$affiliate['name'].' Progress *'."\r\n\r\n";
 
@@ -164,8 +166,8 @@ else if ($command == '/capped') {
     $affiliate = $dbApi->getAffiliationByGroupChatID($chatID);
     $offers = $dbApi->getCapUpdateByAffiliateID($affiliate['id']);
 
-    $fromDate = date('m/d/Y', strtotime('previous monday'));
-    $toDate = date('m/d/Y');
+    $fromDate = $timeUtil->getDateOfCurrentWeek()[0];
+    $toDate = $timeUtil->getDateOfCurrentWeek()[1];
 
     $text = '* '.$affiliate['name'].' Capped Progress *'."\r\n\r\n";
 
@@ -216,8 +218,8 @@ else if (startsWith($command, '/capupdateid')) {
         else {
             $offers = $dbApi->getCapUpdateByAffiliateID($affiliate['id']);
 
-            $fromDate = date('m/d/Y', strtotime('previous monday'));
-            $toDate = date('m/d/Y');
+            $fromDate = $timeUtil->getDateOfCurrentWeek()[0];
+            $toDate = $timeUtil->getDateOfCurrentWeek()[1];
 
             $text = '* '.$affiliate['name'].' Progress *'."\r\n\r\n";
 

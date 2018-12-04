@@ -9016,7 +9016,7 @@ class DBApi
         try {
             $arrayCrm = array();
 
-            $fromDate = date('m/d/Y', strtotime('previous monday'));
+            $fromDate = $this->getDateOfCurrentMonday();
             $toDate = date('m/d/Y');
 
             $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE from_date="' . $fromDate . '" and to_date="' . $toDate . '" and label_id=0 ORDER BY crm_id';
@@ -9041,6 +9041,58 @@ class DBApi
                         $tabletTakeRate = ($salesTablet / ($salesTablet + $salesStep2NNP)) * 100;
 
                     $arrayCrm[] = array($row['crm_id'], $this->getCrmName($row['crm_id']), $row['step1'], $row['step2'], $takeRate, $row['tablet'], $tabletTakeRate, $row['goal']);
+                }
+            }
+
+            return $arrayCrm;
+        } catch (Exception $e) {
+            return 'error';
+        }
+    }
+
+    public function getCrmResultForAlert()
+    {
+        if (!$this->checkConnection())
+            return 'error';
+
+        try {
+            $arrayCrm = array();
+
+            $fromDate = $this->getDateOfCurrentMonday();
+            $toDate = date('m/d/Y');
+
+            $query = 'SELECT * FROM ' . $this->subdomain . '_crm_result WHERE from_date="' . $fromDate . '" and to_date="' . $toDate . '" and label_id=0 ORDER BY crm_id';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $crm_count = mysqli_num_rows($result);
+            if ($crm_count > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    $salesTablet = $row['tablet'];
+                    $salesStep1NNP = $row['step1_nonpp'];
+                    $salesStep2NNP = $row['step2_nonpp'];
+
+                    if(($salesStep1NNP) == 0)
+                        $takeRate = 0;
+                    else
+                        $takeRate = (($salesTablet + $salesStep2NNP) / $salesStep1NNP) * 100;
+
+                    if(($salesStep2NNP + $salesTablet) == 0)
+                        $tabletTakeRate = 0;
+                    else
+                        $tabletTakeRate = ($salesTablet / ($salesTablet + $salesStep2NNP)) * 100;
+
+                    $arrayCrm[] = array(
+                        "crm_id" => $row['crm_id'],
+                        "crm_name" => $this->getCrmName($row['crm_id']),
+                        "step1" => $row['step1'],
+                        "step2" => $row['step2'],
+                        "takerate" => $takeRate,
+                        "tablet" => $row['tablet'],
+                        "tablet_takerate" => $tabletTakeRate,
+                        "goal" => $row['goal'],
+                        "timestamp" => $row['timestamp']
+                    );
                 }
             }
 
@@ -10018,6 +10070,15 @@ class DBApi
         } catch (Exception $e) {
             return false;
         }
-        return false;
+    }
+
+    public function getDateOfCurrentMonday()
+    {
+        if(date('D') != 'Mon')
+            $monday =  date('m/d/Y', strtotime('last Monday'));
+        else
+            $monday =  date('m/d/Y');
+
+        return $monday;
     }
 }

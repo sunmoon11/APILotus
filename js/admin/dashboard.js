@@ -318,7 +318,7 @@ jQuery(document).ready(function(t) {
                         return void t("#crm1_" + sales[1] + "_0").html(remove_icon);
                     }
                     if ("no_result" == sales[0]) {
-                        show_alert("sales", "No result.");
+                        // show_alert("sales", "No result.");
                         return void t("#crm1_" + sales[1] + "_0").html('No result');
                     }
                     if ("no_cookie" == sales[0]) {
@@ -458,7 +458,7 @@ jQuery(document).ready(function(t) {
                             t("#crm1_" + sales[1] + "_0").html(remove_icon);
                         }
                         else if ("no_result" === sales[0]) {
-                            show_alert("sales", "No result.");
+                            // show_alert("sales", "No result.");
                             t("#crm1_" + sales[1] + "_0").html('No result');
                         }
                         else if ("no_cookie" === sales[0]) {

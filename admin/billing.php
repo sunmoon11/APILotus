@@ -87,7 +87,12 @@ $tab_name = "Billing";
 
                                     $weeks = array();
 
-                                    while ($nextMonday < strtotime("previous monday")) {
+                                    if(date('D') != 'Mon')
+                                        $monday = strtotime('last Monday');
+                                    else
+                                        $monday = strtotime(date('m/d/Y'));
+
+                                    while ($nextMonday < $monday) {
                                         $weeks[] = date('m.d.y', $nextMonday). '-'. date('m.d.y', $nextSunday);
                                         $nextMonday = strtotime('+1 week', $nextMonday);
                                         $nextSunday = strtotime('+1 week', $nextSunday);

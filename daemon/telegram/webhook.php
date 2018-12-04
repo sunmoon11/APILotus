@@ -92,35 +92,35 @@ else if ($command == '/dashboard_takerate' || $command == '/dashboard_takerate@a
         }
         else
         {
-            $ret = $dbApi->getDashboardData();
-            $activeCrmIds = array();
-            foreach ($activeCrms as $item)
-            {
-                $activeCrmIds[] = $item[0];
-            }
+            $ret = $dbApi->getCrmResultForAlert();
 
-            $filtered = array();
-            foreach ($ret as $item)
-            {
-                $crmId = $item[0];
-                if (in_array($crmId, $activeCrmIds))
+            if (count($ret) == 0) {
+                $text = "There are no result, please try again after some minutes later.";
+            }
+            else {
+                $activeCrmIds = array();
+                foreach ($activeCrms as $item)
                 {
-                    $filtered[] = $item;
+                    $activeCrmIds[] = $item[0];
                 }
-            }
-            $ret = $filtered;
 
-            $text = 'CRM Name    [TAKE RATE %]'."\r\n\r\n";
-            if ($ret == array())
-            {
-                $text .= "There is no data.\r\n";
-            }
-            else
-            {
+                $filtered = array();
+                foreach ($ret as $item)
+                {
+                    $crmId = $item['crm_id'];
+                    if (in_array($crmId, $activeCrmIds))
+                    {
+                        $filtered[] = $item;
+                    }
+                }
+                $ret = $filtered;
+
+                $text = 'CRM Name    [TAKE RATE %]'."\r\n\r\n";
+                $text .= 'Timestamp: '.$ret[0]['timestamp']."\r\n\r\n";
+
                 for ($i = 0; $i < sizeof($ret); $i ++)
-                    $text .= ($i + 1).'. '.$ret[$i][1].'    ['.round($ret[$i][4], 2).'%]'."\r\n";
+                    $text .= ($i + 1).'. '.$ret[$i]['crm_name'].'    ['.round($ret[$i]['takerate'], 2).'%]'."\r\n";
             }
-
             $text .= "\r\n\r\n".'Related commands:'."\r\n";
             $text .= '/dashboard_tablet'."\r\n";
             $text .= '/dashboard_goal'."\r\n";
@@ -143,28 +143,34 @@ else if ($command == '/dashboard_tablet' || $command == '/dashboard_tablet@apilo
         }
         else
         {
-            $ret = $dbApi->getDashboardData();
-            $activeCrmIds = array();
-            foreach ($activeCrms as $item)
-            {
-                $activeCrmIds[] = $item[0];
-            }
+            $ret = $dbApi->getCrmResultForAlert();
 
-            $filtered = array();
-            foreach ($ret as $item)
-            {
-                $crmId = $item[0];
-                if (in_array($crmId, $activeCrmIds))
+            if (count($ret) == 0) {
+                $text = "There are no result, please try again after some minutes later.";
+            }
+            else {
+                $activeCrmIds = array();
+                foreach ($activeCrms as $item)
                 {
-                    $filtered[] = $item;
+                    $activeCrmIds[] = $item[0];
                 }
+
+                $filtered = array();
+                foreach ($ret as $item)
+                {
+                    $crmId = $item['crm_id'];
+                    if (in_array($crmId, $activeCrmIds))
+                    {
+                        $filtered[] = $item;
+                    }
+                }
+                $ret = $filtered;
+
+                $text = 'CRM Name    [TABLET %]' . "\r\n\r\n";
+                $text .= 'Timestamp: '.$ret[0]['timestamp']."\r\n\r\n";
+                for ($i = 0; $i < sizeof($ret); $i++)
+                    $text .= ($i + 1) . '. ' . $ret[$i]['crm_name'] . '    [' . round($ret[$i]['tablet_takerate'], 2) . '%]' . "\r\n";
             }
-            $ret = $filtered;
-
-            $text = 'CRM Name    [TABLET %]' . "\r\n\r\n";
-            for ($i = 0; $i < sizeof($ret); $i++)
-                $text .= ($i + 1) . '. ' . $ret[$i][1] . '    [' . round($ret[$i][6], 2) . '%]' . "\r\n";
-
             $text .= "\r\n\r\n" . 'Related commands:' . "\r\n";
             $text .= '/dashboard_takerate' . "\r\n";
             $text .= '/dashboard_goal' . "\r\n";
@@ -186,33 +192,39 @@ else if ($command == '/dashboard_goal' || $command == '/dashboard_goal@apilotus_
         }
         else
         {
-            $ret = $dbApi->getDashboardData();
-            $activeCrmIds = array();
-            foreach ($activeCrms as $item)
-            {
-                $activeCrmIds[] = $item[0];
-            }
+            $ret = $dbApi->getCrmResultForAlert();
 
-            $filtered = array();
-            foreach ($ret as $item)
-            {
-                $crmId = $item[0];
-                if (in_array($crmId, $activeCrmIds))
+            if (count($ret) == 0) {
+                $text = "There are no result, please try again after some minutes later.";
+            }
+            else {
+                $activeCrmIds = array();
+                foreach ($activeCrms as $item)
                 {
-                    $filtered[] = $item;
+                    $activeCrmIds[] = $item[0];
+                }
+
+                $filtered = array();
+                foreach ($ret as $item)
+                {
+                    $crmId = $item['crm_id'];
+                    if (in_array($crmId, $activeCrmIds))
+                    {
+                        $filtered[] = $item;
+                    }
+                }
+                $ret = $filtered;
+
+                $text = 'CRM Name    [STEP1 / GOAL]'."\r\n\r\n";
+                $text .= 'Timestamp: '.$ret[0]['timestamp']."\r\n\r\n";
+                for ($i = 0; $i < sizeof($ret); $i ++)
+                {
+                    if ($ret[$i]['goal'] == '0')
+                        $text .= ($i + 1).'. '.$ret[$i]['crm_name'].'    ['.$ret[$i]['step1'].' / '.$ret[$i]['goal'].'] (0%)'."\r\n";
+                    else
+                        $text .= ($i + 1).'. '.$ret[$i]['crm_name'].'    ['.$ret[$i]['step1'].' / '.$ret[$i]['goal'].'] ('.round($ret[$i]['step1'] * 100 / $ret[$i]['goal'], 2).'%)'."\r\n";
                 }
             }
-            $ret = $filtered;
-
-            $text = 'CRM Name    [STEP1 / GOAL]'."\r\n\r\n";
-            for ($i = 0; $i < sizeof($ret); $i ++)
-            {
-                if ($ret[$i][7] == '0')
-                    $text .= ($i + 1).'. '.$ret[$i][1].'    ['.$ret[$i][2].' / '.$ret[$i][7].'] (0%)'."\r\n";
-                else
-                    $text .= ($i + 1).'. '.$ret[$i][1].'    ['.$ret[$i][2].' / '.$ret[$i][7].'] ('.round($ret[$i][2] * 100 / $ret[$i][7], 2).'%)'."\r\n";
-            }
-
             $text .= "\r\n\r\n".'Related commands:'."\r\n";
             $text .= '/dashboard_takerate'."\r\n";
             $text .= '/dashboard_tablet'."\r\n";

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /var/www/html/daemon/alert
-php ./backup_affiliates.sh
+php ./backup_affiliates.php
