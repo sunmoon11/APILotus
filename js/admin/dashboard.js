@@ -388,7 +388,10 @@ jQuery(document).ready(function(t) {
                                 t("#crm5_" + sales[1] + "_" + label_type).html("0");
 
                             t("#crm6_" + sales[1] + "_" + label_type).html(prepaid_step1);
-                            t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2));
+                            if (prepaid != 0)
+                                t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2));
+                            else
+                                t("#crm61_" + sales[1] + "_" + label_type).html("0");
                             // t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                             if (0 != order_count) {
                                 var j = order_page / order_count;
@@ -529,7 +532,10 @@ jQuery(document).ready(function(t) {
                                     t("#crm5_" + sales[1] + "_" + label_type).html("0");
 
                                 t("#crm6_" + sales[1] + "_" + label_type).html(prepaid_step1);
-                                t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2) );
+                                if (prepaid != 0)
+                                    t("#crm61_" + sales[1] + "_" + label_type).html((prepaid_step1 * 100 / prepaid).toFixed(2));
+                                else
+                                    t("#crm61_" + sales[1] + "_" + label_type).html("0");
                                 // t("#crm62_" + sales[1] + "_" + label_type).html((prepaid_step2 * 100 / prepaid).toFixed(2));
                                 if (0 != order_count) {
                                     var j = order_page / order_count;

@@ -43,12 +43,12 @@ function getProspectReportAndSendAlerts($name){
     // variables for 100, 30 step1 alert
     $away100Sales = false;
     $over30Sales = false;
-    $alertOfOverGoal = array();
-    $dataOfOverGoal = array();
-    $alertOf30AwaySales = array();
-    $dataOf30AwaySales = array();
-    $alertOf100AwaySales = array();
-    $dataOf100AwaySales = array();
+    $alertOfCapped = array();
+    $dataOfCapped = array();
+    $alertOfOverSales = array();
+    $dataOfOverSales = array();
+    $alertOfAwaySales = array();
+    $dataOfAwaySales = array();
 
     foreach ($arrayCrm as $crm) {
         $crmID = $crm[0];
@@ -61,28 +61,19 @@ function getProspectReportAndSendAlerts($name){
 
         $salesData = $salesData[0];
         $salesStep1 = $salesData[3];
-        $salesStep2 = $salesData[4];
         $salesTablet = $salesData[5];
-        $salesPrepaid = $salesData[6];
         $salesStep1NNP = $salesData[7];
         $salesStep2NNP = $salesData[8];
 
         if(($salesStep1NNP) == 0)
             $takeRate = 0;
-        else {
+        else
             $takeRate = (($salesTablet + $salesStep2NNP) / $salesStep1NNP) * 100;
-            // $takeRate = number_format($takeRate, 2);
-        }
 
         if(($salesStep2NNP + $salesTablet) == 0)
             $tabletTakeRate = 0;
-        else {
+        else
             $tabletTakeRate = ($salesTablet / ($salesTablet + $salesStep2NNP)) * 100;
-            // $takeRate = number_format($takeRate, 2);
-        }
-
-        // store data to DB
-        $dbApi->storeDashboardData($crmID, $crmName, $salesStep1, $salesStep2, $takeRate, $salesTablet, $tabletTakeRate, $goal);
 
         $from = date('Y-m-d', strtotime($fromDate));
         $toDate = $timeUtil->getDateOfCurrentSunday();
@@ -122,12 +113,12 @@ function getProspectReportAndSendAlerts($name){
                 }
                 if($Step1GoalTriggered)
                 {
-                    $alertOfOverGoal['fromDate'] = $from;
-                    $alertOfOverGoal['toDate'] = $to;
-                    $dataOfOverGoal[] = array($crmName, $salesStep1, $goal, $type, 1, $crmID);
+                    $alertOfCapped['fromDate'] = $from;
+                    $alertOfCapped['toDate'] = $to;
+                    $dataOfCapped[] = array($crmName, $salesStep1, $goal, $type, 1, $crmID);
                 }
             }
-            $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $goal, $status, $from, $to, $timestamp);
+            $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $goal, $status, $from, $to, $timestamp);
 
             $setting = $dbApi->getAlertTypeByType(7);
             $days = $setting[5];
@@ -165,12 +156,12 @@ function getProspectReportAndSendAlerts($name){
 
                         if($Step1100Triggered)
                         {
-                            $alertOf100AwaySales['fromDate'] = $from;
-                            $alertOf100AwaySales['toDate'] = $to;
-                            $dataOf100AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                            $alertOfAwaySales['fromDate'] = $from;
+                            $alertOfAwaySales['toDate'] = $to;
+                            $dataOfAwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
                         }
                     }
-                    $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
+                    $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
                 }
             }
 
@@ -210,12 +201,12 @@ function getProspectReportAndSendAlerts($name){
 
                         if($Step130Triggered)
                         {
-                            $alertOf30AwaySales['fromDate'] = $from;
-                            $alertOf30AwaySales['toDate'] = $to;
-                            $dataOf30AwaySales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
+                            $alertOfOverSales['fromDate'] = $from;
+                            $alertOfOverSales['toDate'] = $to;
+                            $dataOfOverSales[] = array($crmName, $salesStep1, $level, $type, 1, $crmID);
                         }
                     }
-                    $ret = $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
+                    $dbApi->updateAlertStatus($crmID, $type, $salesStep1, $level, $status, $from, $to, $timestamp);
                 }
             }
         }
@@ -228,7 +219,7 @@ function getProspectReportAndSendAlerts($name){
             {
                 // Take Rate Alert
                 $status = $takeRate < $setting[4] ? 1 : 0;
-                $ret = $dbApi->updateAlertStatus($crmID, $type, $takeRate, $setting[4], $status, $from, $to, $timestamp);
+                $dbApi->updateAlertStatus($crmID, $type, $takeRate, $setting[4], $status, $from, $to, $timestamp);
             }
 
             $type = 10;
@@ -236,23 +227,18 @@ function getProspectReportAndSendAlerts($name){
             {
                 // Tablet Take Rate Alert
                 $status = $tabletTakeRate <= $setting[4] ? 1 : 0;
-                $ret = $dbApi->updateAlertStatus($crmID, $type, $tabletTakeRate, $setting[4], $status, $from, $to, $timestamp);
+                $dbApi->updateAlertStatus($crmID, $type, $tabletTakeRate, $setting[4], $status, $from, $to, $timestamp);
             }
         }
     }
 
-//    print_r(array($dataOf30AwaySales, $name));
-//    print_r(array($dataOf100AwaySales, $name));
-//    print_r(array($dataOfOverGoal, $name));
-//    return;
-
     // send alert
-    if($dataOf100AwaySales != array() || $dataOf30AwaySales != array() || $dataOfOverGoal != array())
+    if($dataOfAwaySales != array() || $dataOfOverSales != array() || $dataOfCapped != array())
     {
         $alertMgr = AlertManager::getInstance();
-        if($dataOfOverGoal != array())
+        if($dataOfCapped != array())
         {
-            $alertOfOverGoal['status'] = $dataOfOverGoal;
+            $alertOfCapped['status'] = $dataOfCapped;
             $setting = $dbApi->getAlertTypeByType(11);
             $telegramBot = false;
             $email = false;
@@ -264,11 +250,11 @@ function getProspectReportAndSendAlerts($name){
             if($setting[7] == 1)
                 $sms = true;
 
-            $alertMgr->checkStep1SalesGoalOverWithData($alertOfOverGoal, $sms, $email, $telegramBot, $name);
+            $alertMgr->checkStep1SalesGoalOverWithData($alertOfCapped, $sms, $email, $telegramBot, $name);
         }
-        if($dataOf30AwaySales != array())
+        if($dataOfOverSales != array())
         {
-            $alertOf30AwaySales['status'] = $dataOf30AwaySales;
+            $alertOfOverSales['status'] = $dataOfOverSales;
             $setting = $dbApi->getAlertTypeByType(8);
             $telegramBot = false;
             $email = false;
@@ -279,11 +265,11 @@ function getProspectReportAndSendAlerts($name){
                 $email = true;
             if($setting[7] == 1)
                 $sms = true;
-            $alertMgr->check30Step1SalesAwayWithData($alertOf30AwaySales, $sms, $email, $telegramBot, $name);
+            $alertMgr->check30Step1SalesAwayWithData($alertOfOverSales, $sms, $email, $telegramBot, $name);
         }
-        if($dataOf100AwaySales != array())
+        if($dataOfAwaySales != array())
         {
-            $alertOf100AwaySales['status'] = $dataOf100AwaySales;
+            $alertOfAwaySales['status'] = $dataOfAwaySales;
             $setting = $dbApi->getAlertTypeByType(7);
             $telegramBot = false;
             $email = false;
@@ -294,7 +280,7 @@ function getProspectReportAndSendAlerts($name){
                 $email = true;
             if($setting[7] == 1)
                 $sms = true;
-            $alertMgr->check100Step1SalesAwayWithData($alertOf100AwaySales, $sms, $email, $telegramBot, $name);
+            $alertMgr->check100Step1SalesAwayWithData($alertOfAwaySales, $sms, $email, $telegramBot, $name);
         }
     }
     else

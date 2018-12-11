@@ -4721,7 +4721,7 @@ class DBApi
 
         try {
             $stringCampaigns = join("','", $campaignIdsSTEP1);
-            $query = 'SELECT sum(gross_order) as sumGross, sum(net_approved) as sumNet, from_date, to_date , crm_name FROM ' . $this->subdomain . '_retention_initial_alert WHERE crm_id=' . $crmId . ' and day=' . $day . " and affiliate_id=''" . " and campaign_id IN ('$stringCampaigns')";
+            $query = 'SELECT sum(gross_order) as sumGross, sum(net_approved) as sumNet, from_date, to_date , crm_name FROM ' . $this->subdomain . '_retention_initial_alert WHERE crm_id=' . $crmId . ' and day=' . $day . " and affiliate_id=''" . " and campaign_id IN ('$stringCampaigns') GROUP BY from_date, to_date, crm_name";
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             $count = mysqli_num_rows($result);

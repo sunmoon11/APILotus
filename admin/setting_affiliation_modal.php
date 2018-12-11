@@ -25,7 +25,7 @@
                         <div class="col-xs-3 modal_input_label">AFID(s):</div>
                         <div class="col-xs-9"><input type="text" class="form-control input-sm add_affiliation_afid"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="overflow: auto; max-height: 320px;">
                         <table id="id_add_affiliation_offer_caps_table" class="table table-hover" style="display:none">
                             <thead id="id_add_affiliation_offer_caps_header">
                                 <tr>
@@ -87,7 +87,7 @@
                             <button type="button" class="btn btn-danger modal_btn_special_code_reset" style="color: white">Reset</button>
                         </div>
                     </div>
-                    <div class="row affiliation_offer_caps"></div>
+                    <div class="row affiliation_offer_caps" style="overflow: auto; max-height: 320px;"></div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-xs-5">
                             <select multiple="multiple" name="all_options" class="all_options" style="width: 200px; height: 300px;">
