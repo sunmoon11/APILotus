@@ -246,10 +246,10 @@ jQuery(document).ready(function (t) {
         afids = afids.split(',');
         if ((new Set(afids)).size !== afids.length)
             return false;
-        for (let i = 0; i < afids.length; i++) {
-            if (isNaN(afids[i]))
-                return false;
-        }
+        // for (let i = 0; i < afids.length; i++) {
+        //     if (isNaN(afids[i]))
+        //         return false;
+        // }
         return true;
     }
 

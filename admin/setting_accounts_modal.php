@@ -183,21 +183,124 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">CRM Permission Dialog</h4>
+                <h4 class="modal-title">Client Permissions</h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>CRM Name</th>
-                                <th><input id="permission_all" type="checkbox" style="margin:0;padding:0"></input></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table_permission_body">
-                        </tbody>
-                    </table>
+                    <div class="row" style="padding: 15px; border: 1px solid #ccc;">
+<!--                        <div id="permission_all" class="permission_all_btn">Select All</div>-->
+<!--                        <div>-->
+<!--                            <input type="text" class="form-control input-sm search_offers" placeholder="Search by Client name">-->
+<!--                        </div>-->
+                        <div style="overflow: auto; max-height: 200px;">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr class="permission_category">
+                                        <th>Client Name</th>
+                                        <th>Enable <span id="penable" class="permission_all_btn">All</span></th>
+                                        <th>Disable <span id="pdisable" class="permission_all_btn">All</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table_permission_body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="selected_perms_count" style="text-align: right"></div>
+                    </div>
+                </div>
+                <div class="container-fluid" style="margin-top: 10px;">
+                    <div class="row" style="padding: 15px; border: 1px solid #ccc;">
+                        <div style="overflow: auto; max-height: 300px;">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr class="permission_category">
+                                        <td>User Profile</td>
+                                        <td>Enable <span id="penable_1" class="permission_all_btn">All</span></td>
+                                        <td>Disable <span id="pdisable_1" class="permission_all_btn">All</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>My Profile</td>
+                                        <td><input id="penable_11" type="radio" class="penable_item" name="pradio_11"/></td>
+                                        <td><input id="pdisable_11" type="radio" class="pdisable_item" name="pradio_11"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payment Management</td>
+                                        <td><input id="penable_12" type="radio" class="penable_item" name="pradio_12"/></td>
+                                        <td><input id="pdisable_12" type="radio" class="pdisable_item" name="pradio_12"/></td>
+                                    </tr>
+
+                                    <tr class="permission_category">
+                                        <td>Reports</td>
+                                        <td>Enable <span id="penable_2" class="permission_all_btn">All</span></td>
+                                        <td>Disable <span id="pdisable_2" class="permission_all_btn">All</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Initial Report</td>
+                                        <td><input id="penable_21" type="radio" class="penable_item" name="pradio_21"/></td>
+                                        <td><input id="pdisable_21" type="radio" class="pdisable_item" name="pradio_21"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rebill Report</td>
+                                        <td><input id="penable_22" type="radio" class="penable_item" name="pradio_22"/></td>
+                                        <td><input id="pdisable_22" type="radio" class="pdisable_item" name="pradio_22"/></td>
+                                    </tr>
+
+                                    <tr class="permission_category">
+                                        <td>Settings</td>
+                                        <td>Enable <span id="penable_4" class="permission_all_btn">All</span></td>
+                                        <td>Disable <span id="pdisable_4" class="permission_all_btn">All</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Client Setup</td>
+                                        <td><input id="penable_41" type="radio" class="penable_item" name="pradio_41"/></td>
+                                        <td><input id="pdisable_41" type="radio" class="pdisable_item" name="pradio_41"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Campaign Management</td>
+                                        <td><input id="penable_42" type="radio" class="penable_item" name="pradio_42"/></td>
+                                        <td><input id="pdisable_42" type="radio" class="pdisable_item" name="pradio_42"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alert Percentage Levels</td>
+                                        <td><input id="penable_43" type="radio" class="penable_item" name="pradio_43"/></td>
+                                        <td><input id="pdisable_43" type="radio" class="pdisable_item" name="pradio_43"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Accounts</td>
+                                        <td><input id="penable_44" type="radio" class="penable_item" name="pradio_44"/></td>
+                                        <td><input id="pdisable_44" type="radio" class="pdisable_item" name="pradio_44"/></td>
+                                    </tr>
+
+                                    <tr class="permission_category">
+                                        <td>CAP Update</td>
+                                        <td>Enable <span id="penable_3" class="permission_all_btn">All</span></td>
+                                        <td>Disable <span id="pdisable_3" class="permission_all_btn">All</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cap Update</td>
+                                        <td><input id="penable_31" type="radio" class="penable_item" name="pradio_31"/></td>
+                                        <td><input id="pdisable_31" type="radio" class="pdisable_item" name="pradio_31"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Offers</td>
+                                        <td><input id="penable_32" type="radio" class="penable_item" name="pradio_32"/></td>
+                                        <td><input id="pdisable_32" type="radio" class="pdisable_item" name="pradio_32"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Affiliate Settings</td>
+                                        <td><input id="penable_33" type="radio" class="penable_item" name="pradio_33"/></td>
+                                        <td><input id="pdisable_33" type="radio" class="pdisable_item" name="pradio_33"/></td>
+                                    </tr>
+
+                                    <tr class="permission_category">
+                                        <td>Billing</td>
+                                        <td><input id="penable_51" type="radio" class="penable_item" name="pradio_51"/></td>
+                                        <td><input id="pdisable_51" type="radio" class="pdisable_item" name="pradio_51"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

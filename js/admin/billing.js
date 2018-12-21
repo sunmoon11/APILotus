@@ -133,7 +133,7 @@ jQuery(document).ready(function(t) {
                                         html += '<div style="color: #6772e5" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">CPA</div>';
                                         html += '<div style="color: #6772e5" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">TOTAL</div>';
                                         html += '</div>';
-                                        html += '<div class="c_cnt_list">';
+                                        html += '<div class="c_cnt_list" id="cnt_list_' + billing['affiliate_id'] + '">';
                                     }
                                     html += '<div class="row">';
                                     html += '<div style="text-align: center" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">' + billing['offer_name'] + '</div>';
@@ -193,6 +193,9 @@ jQuery(document).ready(function(t) {
                             let count = 0;
                             let afids = billing['afid'].split(',');
                             let campaign_ids = billing['campaign_ids'].split(',');
+
+                            let specials = {};
+
                             for (let k = 0; k < goal[2].length; k++) {
                                 let campaign_prospects = goal[2][k];
                                 for (let l = 0; l < campaign_ids.length; l++) {
@@ -201,8 +204,21 @@ jQuery(document).ready(function(t) {
                                         if (campaign_id == campaign_prospects[0]) {
                                             for (let m = 0; m < campaign_prospects[1].length; m++) {
                                                 for (let n = 0; n < afids.length; n++) {
-                                                    if (campaign_prospects[1][m][0] == afids[n]) {
-                                                        count += campaign_prospects[1][m][2];
+                                                    if (campaign_prospects[1][m][0] == afids[n].split('(')[0]) {
+                                                        if (afids[n].split('(').length == 2) {
+                                                            let special_id = afids[n];
+                                                            special_id = afids[n].split('(')[0];
+                                                            let special_price = afids[n].split('(')[1];
+                                                            special_price = special_price.substr(0, special_price.length - 1);
+
+                                                            if (special_id in specials)
+                                                                specials[special_id] = [special_price, specials[special_id][1] + parseInt(campaign_prospects[1][m][2])];
+                                                            else
+                                                                specials[special_id] = [special_price, parseInt(campaign_prospects[1][m][2])];
+                                                        }
+                                                        else {
+                                                            count += campaign_prospects[1][m][2];
+                                                        }
                                                     }
                                                 }
                                             }
@@ -212,17 +228,33 @@ jQuery(document).ready(function(t) {
                             }
                             billing['sales'] = count;
                             $("#capgoal_" + billing['affiliate_id'] + '_' + billing['offer_id']).html(count ? count.toString() : '');
-                            let total = 0;
+                            let price = 0;
                             if (null == billing['s1_payout'] || 0 == billing['s1_payout'])
-                                total = billing['s1_payout_'];
+                                price = billing['s1_payout_'];
                             else
-                                total = billing['s1_payout'];
+                                price = billing['s1_payout'];
                             $("#total_" + billing['affiliate_id'] + '_' + billing['offer_id']).html(
-                                '$ ' + (count ? ((count * total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')) : '-')
+                                '$ ' + (count ? ((count * price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')) : '-')
                             );
 
                             let tti = parseFloat($("#tti_" + billing['affiliate_id']).html().substring(20).replace(',', ''));
-                            tti += parseFloat(count * total);
+                            tti += parseFloat(count * price);
+
+                            if (!$.isEmptyObject(specials)) {
+                                for (let key in specials) {
+                                    console.log(key, specials[key]);
+                                    let html = '<div class="row">';
+                                    html += '<div style="text-align: center" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">' + billing['offer_name'] + ' - ID ' + key + '</div>';
+                                    html += '<div style="text-align: center" class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="capgoal_' + billing['affiliate_id'] + '_' + billing['offer_id'] + '">' + specials[key][1] + '</div>';
+                                    html += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="cpa_' + billing['affiliate_id'] + '_' + billing['offer_id'] + '">$ ' + specials[key][0] + '.00</div>';
+                                    html += '<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="total_' + billing['affiliate_id'] + '_' + billing['offer_id'] + '">$ ' + ((specials[key][0] * specials[key][1]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')) + '</div>';
+                                    html += '</div>';
+
+                                    tti += parseFloat(specials[key][0] * specials[key][1]);
+                                    $('#cnt_list_' + billing['affiliate_id']).append(html);
+                                }
+                            }
+
                             $("#tti_" + billing['affiliate_id']).html('Total To Invoice: $ ' + tti.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
                         }
                     }
@@ -452,10 +484,10 @@ jQuery(document).ready(function(t) {
         afids = afids.split(',');
         if ((new Set(afids)).size !== afids.length)
             return false;
-        for (let i = 0; i < afids.length; i++) {
-            if (isNaN(afids[i]))
-                return false;
-        }
+        // for (let i = 0; i < afids.length; i++) {
+        //     if (isNaN(afids[i]))
+        //         return false;
+        // }
         return true;
     }
 

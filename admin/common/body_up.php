@@ -27,6 +27,79 @@ if (in_array(3, $features))
 if (in_array(4, $features))
     $enableTablet = true;
 
+
+$enable_my_profile = false;
+$enable_payment_management = false;
+
+$enable_reports = false;
+$enable_initial_report = false;
+$enable_rebill_report = false;
+
+$enable_cap_update = false;
+$enable_capupdate = false;
+$enable_offers = false;
+$enable_affiliates = false;
+
+$enable_setting = false;
+$enable_client = false;
+$enable_campaign = false;
+$enable_alert = false;
+$enable_user = false;
+
+$enable_billing = false;
+
+if ($userRole == '0') {
+    $page_permissions = $dbApi->getPagePermissionOfAccount($userId);
+    $page_permissions = explode(',', $page_permissions);
+
+    if (in_array('11', $page_permissions))
+        $enable_my_profile = true;
+    if (in_array('12', $page_permissions))
+        $enable_payment_management = true;
+    if (in_array('21', $page_permissions))
+        $enable_initial_report = true;
+    if (in_array('22', $page_permissions))
+        $enable_rebill_report = true;
+    if ($enable_initial_report or $enable_rebill_report)
+        $enable_reports = true;
+    if (in_array('31', $page_permissions))
+        $enable_capupdate = true;
+    if (in_array('32', $page_permissions))
+        $enable_offers = true;
+    if (in_array('33', $page_permissions))
+        $enable_affiliates = true;
+    if ($enable_capupdate or $enable_offers or $enable_affiliates)
+        $enable_cap_update = true;
+    if (in_array('41', $page_permissions))
+        $enable_client = true;
+    if (in_array('42', $page_permissions))
+        $enable_campaign = true;
+    if (in_array('43', $page_permissions))
+        $enable_alert = true;
+    if (in_array('44', $page_permissions))
+        $enable_user = true;
+    if ($enable_client or $enable_campaign or $enable_alert or $enable_user)
+        $enable_setting = true;
+    if (in_array('51', $page_permissions))
+        $enable_billing = true;
+}
+else {
+    $enable_my_profile = true;
+    $enable_payment_management = true;
+    $enable_reports = true;
+    $enable_initial_report = true;
+    $enable_rebill_report = true;
+    $enable_cap_update = true;
+    $enable_capupdate = true;
+    $enable_offers = true;
+    $enable_affiliates = true;
+    $enable_setting = true;
+    $enable_client = true;
+    $enable_campaign = true;
+    $enable_alert = true;
+    $enable_user = true;
+    $enable_billing = true;
+}
 ?>
 
 <div class="modal fade" id="alert_delete_all_modal">
@@ -67,9 +140,9 @@ if (in_array(4, $features))
                         <div class="collapse navbar-collapse bs-navbar-collapse" style="padding-top:22px; padding-right: 20px">
                             <ul class="nav navbar-nav navbar-right">
                                 <?php if ($tab_name == "Dashboard" || $tab_name == "Affiliate" || $tab_name == "Retention" || $tab_name == "Sales" || $tab_name == "Alerts" || $tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "Client Setup") { ?>
-                            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-                            <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">LIMELIGHT CRM <span class="caret"></span></a>
-                            <?php } else { ?>
+                                <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+                                    <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">LIMELIGHT CRM <span class="caret"></span></a>
+                                <?php } else { ?>
                                 <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
                                     <a href="#" class="dropdown-toggle crm_tab_label" data-toggle="dropdown" role="button" aria-expanded="false">LIMELIGHT CRM <span class="caret"></span></a>
                                     <?php } ?>
@@ -79,20 +152,22 @@ if (in_array(4, $features))
                                         <?php } else { ?>
                                             <li><a class="crm_tab_label small" href="./dashboard.php">Dashboard</a></li>
                                         <?php } ?>
+
+                                        <?php if ($enable_reports) { ?>
                                         <li role="presentation" class="divider"></li>
-                                        <?php if ($tab_name == "Affiliate" && $enableAffiliate) { ?>
-                                            <li><a class="crm_tab_label active small" href="./affiliate.php">Affiliate Report</a></li>
-                                        <?php } else if ($enableAffiliate){ ?>
-                                            <li><a class="crm_tab_label small" href="./affiliate.php">Affiliate Report</a></li>
-                                        <?php } ?>
-                                        <?php if ($tab_name == "Retention" || $tab_name == "Export Retention") { ?>
+<!--                                        --><?php //if ($tab_name == "Affiliate" && $enableAffiliate) { ?>
+<!--                                            <li><a class="crm_tab_label active small" href="./affiliate.php">Affiliate Report</a></li>-->
+<!--                                        --><?php //} else if ($enableAffiliate){ ?>
+<!--                                            <li><a class="crm_tab_label small" href="./affiliate.php">Affiliate Report</a></li>-->
+<!--                                        --><?php //} ?>
+                                        <?php if ($tab_name == "Retention" && $enable_initial_report) { ?>
                                             <li><a class="crm_tab_label active small" href="./retention.php">Initial's Report</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_initial_report) { ?>
                                             <li><a class="crm_tab_label small" href="./retention.php">Initial's Report</a></li>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Rebill") { ?>
+                                        <?php if ($tab_name == "Rebill" && $enable_rebill_report) { ?>
                                             <li><a class="crm_tab_label active small" href="./rebill.php">Rebill Report</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_rebill_report) { ?>
                                             <li><a class="crm_tab_label small" href="./rebill.php">Rebill Report</a></li>
                                         <?php } ?>
 <!--                                        --><?php //if ($tab_name == "Sales") { ?>
@@ -105,62 +180,68 @@ if (in_array(4, $features))
 <!--                                        --><?php //} else { ?>
 <!--                                            <li><a class="crm_tab_label small" href="./alerts.php">Alerts Report</a></li>-->
 <!--                                        --><?php //} ?>
-                                        <li role="presentation" class="divider"></li>
-                                        <?php if ($userRole != '0') { ?>
-                                            <?php if ($tab_name == "Client Setup") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">Client Setup</a></li>
-                                            <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">Client Setup</a></li>
-                                            <?php } ?>
-                                            <?php if ($tab_name == "Campaign Management") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_campaign.php">Campaign Management Setting</a></li>
-                                            <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_campaign.php">Campaign Management Setting</a></li>
-                                            <?php } ?>
-                                            <?php if ($tab_name == "Affiliate Management" && $enableAffiliate) { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_affiliate.php">Affiliate Management Setting</a></li>
-                                            <?php } else if ($enableAffiliate){ ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_affiliate.php">Affiliate Management Setting</a></li>
-                                            <?php } ?>
-                                            <?php if ($tab_name == "Alert Percentage Levels") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_alert.php">Alert Percentage Levels Setting</a></li>
-                                            <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_alert.php">Alert Percentage Levels Setting</a></li>
-                                            <?php } ?>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Accounts") { ?>
+
+                                        <?php if ($enable_setting) { ?>
+                                        <li role="presentation" class="divider"></li>
+                                        <?php if ($tab_name == "Client Setup" && $enable_client) { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">Client Setup</a></li>
+                                        <?php } else if ($enable_client) { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">Client Setup</a></li>
+                                        <?php } ?>
+                                        <?php if ($tab_name == "Campaign Management" && $enable_campaign) { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_campaign.php">Campaign Management Setting</a></li>
+                                        <?php } else if ($enable_campaign) { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_campaign.php">Campaign Management Setting</a></li>
+                                        <?php } ?>
+<!--                                        --><?php //if ($tab_name == "Affiliate Management" && $enableAffiliate) { ?>
+<!--                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_affiliate.php">Affiliate Management Setting</a></li>-->
+<!--                                        --><?php //} else if ($enableAffiliate){ ?>
+<!--                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_affiliate.php">Affiliate Management Setting</a></li>-->
+<!--                                        --><?php //} ?>
+                                        <?php if ($tab_name == "Alert Percentage Levels" && $enable_alert) { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_alert.php">Alert Percentage Levels Setting</a></li>
+                                        <?php } else if ($enable_alert) { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_alert.php">Alert Percentage Levels Setting</a></li>
+                                        <?php } ?>
+                                        <?php if ($tab_name == "Accounts" && $enable_user) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_accounts.php">User Accounts Setting</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_user) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_accounts.php">User Accounts Setting</a></li>
+                                        <?php } ?>
                                         <?php } ?>
                                     </ul>
                                 </li>
+
+
                                 <?php if ($tab_name == "Dashboard") { ?>
-                                    <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label active" href="./dashboard.php">DASHBOARD</a></li>
+                                <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label active" href="./dashboard.php">DASHBOARD</a></li>
                                 <?php } else { ?>
-                                    <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label" href="./dashboard.php">DASHBOARD</a></li>
+                                <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label" href="./dashboard.php">DASHBOARD</a></li>
                                 <?php } ?>
+
+                                <?php if ($enable_reports) { ?>
                                 <?php if ($tab_name == "Affiliate" || $tab_name == "Retention" || $tab_name == "Alerts" || $tab_name == "Sales") { ?>
-                            <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
-                            <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">REPORTS <span class="caret"></span></a>
-                            <?php } else { ?>
+                                <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
+                                    <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">REPORTS <span class="caret"></span></a>
+                                <?php } else { ?>
                                 <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
                                     <a href="#" class="dropdown-toggle crm_tab_label" data-toggle="dropdown" role="button" aria-expanded="false">REPORTS <span class="caret"></span></a>
-                                    <?php } ?>
+                                <?php } ?>
                                     <ul class="dropdown-menu crm_setting_dropdown" role="menu">
-                                        <?php if ($tab_name == "Affiliate" && $enableAffiliate) { ?>
-                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./affiliate.php">Affiliate Report</a></li>
-                                        <?php } else if ($enableAffiliate){ ?>
-                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./affiliate.php">Affiliate Report</a></li>
-                                        <?php } ?>
-                                        <?php if ($tab_name == "Retention" || $tab_name == "Export Retention") { ?>
+<!--                                        --><?php //if ($tab_name == "Affiliate" && $enableAffiliate) { ?>
+<!--                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./affiliate.php">Affiliate Report</a></li>-->
+<!--                                        --><?php //} else if ($enableAffiliate){ ?>
+<!--                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./affiliate.php">Affiliate Report</a></li>-->
+<!--                                        --><?php //} ?>
+                                        <?php if ($tab_name == "Retention" && $enable_initial_report) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./retention.php">Initial's Report</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_initial_report) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./retention.php">Initial's Report</a></li>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Rebill") { ?>
+                                        <?php if ($tab_name == "Rebill" && $enable_rebill_report) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./rebill.php">Rebill Report</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_rebill_report) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./rebill.php">Rebill Report</a></li>
                                         <?php } ?>
 <!--										--><?php //if ($tab_name == "Sales") { ?>
@@ -175,81 +256,89 @@ if (in_array(4, $features))
 <!--										--><?php //} ?>
                                     </ul>
                                 </li>
+                                <?php } ?>
+
+
+                                <?php if ($enable_setting) { ?>
                                 <?php if ($tab_name == "Accounts" || $tab_name == "Affiliate Management" || $tab_name == "Alert Percentage Levels" || $tab_name == "Campaign Management" || $tab_name == "Client Setup") { ?>
-                            <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
-                            <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">SETTINGS <span class="caret"></span></a>
-                            <?php } else { ?>
+                                <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
+                                    <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">SETTINGS <span class="caret"></span></a>
+                                <?php } else { ?>
                                 <li class="dropdown visible-xs hidden-sm hidden-md visible-lg">
                                     <a href="#" class="dropdown-toggle crm_tab_label" data-toggle="dropdown" role="button" aria-expanded="false">SETTINGS <span class="caret"></span></a>
-                                    <?php } ?>
+                                <?php } ?>
                                     <ul class="dropdown-menu crm_setting_dropdown" role="menu">
-                                        <?php if ($userRole != '0') { ?>
-                                            <?php if ($tab_name == "Client Setup") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">Client Setup</a></li>
-                                            <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">Client Setup</a></li>
-                                            <?php } ?>
-                                            <?php if ($tab_name == "Campaign Management") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_campaign.php">Campaign Management</a></li>
-                                            <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_campaign.php">Campaign Management</a></li>
-                                            <?php } ?>
-                                            <?php if ($tab_name == "Affiliate Management" && $enableAffiliate) { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_affiliate.php">Affiliate Management</a></li>
-                                            <?php } else if ($enableAffiliate){ ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_affiliate.php">Affiliate Management</a></li>
-                                            <?php } ?>
-                                            <?php if ($tab_name == "Alert Percentage Levels") { ?>
-                                                <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_alert.php">Alert Percentage Levels</a></li>
-                                            <?php } else { ?>
-                                                <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_alert.php">Alert Percentage Levels</a></li>
-                                            <?php } ?>
+                                        <?php if ($tab_name == "Client Setup" && $enable_client) { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_crm.php">Client Setup</a></li>
+                                        <?php } else if ($enable_client) { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_crm.php">Client Setup</a></li>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Accounts") { ?>
+                                        <?php if ($tab_name == "Campaign Management" && $enable_campaign) { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_campaign.php">Campaign Management</a></li>
+                                        <?php } else if ($enable_campaign) { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_campaign.php">Campaign Management</a></li>
+                                        <?php } ?>
+<!--                                        --><?php //if ($tab_name == "Affiliate Management" && $enableAffiliate) { ?>
+<!--                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_affiliate.php">Affiliate Management</a></li>-->
+<!--                                        --><?php //} else if ($enableAffiliate){ ?>
+<!--                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_affiliate.php">Affiliate Management</a></li>-->
+<!--                                        --><?php //} ?>
+                                        <?php if ($tab_name == "Alert Percentage Levels" && $enable_alert) { ?>
+                                            <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_alert.php">Alert Percentage Levels</a></li>
+                                        <?php } else if ($enable_alert) { ?>
+                                            <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_alert.php">Alert Percentage Levels</a></li>
+                                        <?php } ?>
+                                        <?php if ($tab_name == "Accounts" && $enable_user) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_accounts.php">User Accounts</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_user) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_accounts.php">User Accounts</a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>
+                                <?php } ?>
 
+
+                                <?php if ($enable_cap_update) { ?>
                                 <?php if ($tab_name == "CAP Update" || $tab_name == "Offers" || $tab_name == "Affiliate Settings") { ?>
-                            <li class="dropdown">
-                            <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
-                            <?php } else { ?>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle crm_tab_label active" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
+                                <?php } else { ?>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle crm_tab_label" data-toggle="dropdown" role="button" aria-expanded="false">CAP UPDATE <span class="caret"></span></a>
-                                    <?php } ?>
+                                <?php } ?>
                                     <ul class="dropdown-menu crm_setting_dropdown" role="menu">
-                                        <?php if ($tab_name == "CAP Update") { ?>
+                                        <?php if ($tab_name == "CAP Update" && $enable_capupdate) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./cap_update.php">CAP Update</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_capupdate) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./cap_update.php">CAP Update</a></li>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Offers") { ?>
+                                        <?php if ($tab_name == "Offers" && $enable_offers) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./setting_offer.php">Offers</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_offers) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_offer.php">Offers</a></li>
                                         <?php } ?>
-                                        <?php if ($tab_name == "Affiliate Settings") { ?>
+                                        <?php if ($tab_name == "Affiliate Settings" && $enable_affiliates) { ?>
                                             <li class="crm_tab_left_active"><a class="crm_tab_label active small" href="./afid_settings.php">Affiliate Settings</a></li>
-                                        <?php } else { ?>
+                                        <?php } else if ($enable_affiliates) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./afid_settings.php">Affiliate Settings</a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>
+                                <?php } ?>
 
-                            <?php if ($tab_name == "Billing") { ?>
-                                <li class="hidden-xs visible-sm visible-md hidden-lg"><a href="./billing.php" class="dropdown-toggle crm_tab_label active" role="button" aria-expanded="false">BILLING</a></li>
-                            <?php } else { ?>
-                                <li class="hidden-xs visible-sm visible-md hidden-lg"><a href="./billing.php" class="dropdown-toggle crm_tab_label" role="button" aria-expanded="false">BILLING</a></li>
-                            <?php } ?>
 
-                            <?php if ($tab_name == "Billing") { ?>
-                                <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label active" href="./billing.php">BILLING</a></li>
-                            <?php } else { ?>
-                                <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label" href="./billing.php">BILLING</a></li>
-                            <?php } ?>
+                                <?php if ($tab_name == "Billing" && $enable_billing) { ?>
+                                    <li class="hidden-xs visible-sm visible-md hidden-lg"><a href="./billing.php" class="dropdown-toggle crm_tab_label active" role="button" aria-expanded="false">BILLING</a></li>
+                                <?php } else if ($enable_billing) { ?>
+                                    <li class="hidden-xs visible-sm visible-md hidden-lg"><a href="./billing.php" class="dropdown-toggle crm_tab_label" role="button" aria-expanded="false">BILLING</a></li>
+                                <?php } ?>
+
+
+                                <?php if ($tab_name == "Billing" && $enable_billing) { ?>
+                                    <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label active" href="./billing.php">BILLING</a></li>
+                                <?php } else if ($enable_billing) { ?>
+                                    <li class="visible-xs hidden-sm hidden-md visible-lg"><a class="crm_tab_label" href="./billing.php">BILLING</a></li>
+                                <?php } ?>
 
                                 <?php if ($enableKKCRM) { ?>
                                     <?php if ($tab_name == "Konnektive Order Summary" || $tab_name == "Konnektive Retention" || $tab_name == "Konnektive Account Management" || $tab_name == "Konnektive Campaign Management") { ?>
@@ -305,6 +394,7 @@ if (in_array(4, $features))
                                     </ul>
                                     </li>
                                 <?php } ?>
+
                                 <li id="alert_tab_item" class="hidden-xs visible-sm visible-md visible-lg">
                                     <a id="alert_link" class="crm_tab_label1" href="#" style="padding-top: 8px; padding-right: 0;">
                                         <img src="../images/bell.png" style="width:25px; height: 25px">
@@ -332,8 +422,10 @@ if (in_array(4, $features))
                                     <a href="#" class="dropdown-toggle crm_tab_label1" data-toggle="dropdown" role="button" aria-expanded="false" style="padding-top: 8px;"><img src="../images/user.png" style="width:25px; height: 25px"></a>
                                     <ul class="dropdown-menu dropdown-menu-right crm_setting_dropdown" role="menu">
                                         <li class="crm_tab_left"><a class="crm_tab_label small" href="#" style="background: #f9f9f9 !important; color: #00b9ab !important"><b><?php echo $userEmail; ?></b><br/><?php echo $user_name; ?></a></li>
+                                        <?php if ($enable_my_profile) { ?>
                                         <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_accounts.php">My Profile</a></li>
-                                        <?php if ($userRole == '9') { ?>
+                                        <?php } ?>
+                                        <?php if ($enable_payment_management) { ?>
                                             <li class="crm_tab_left"><a class="crm_tab_label small" href="./setting_payment.php">Payment Management</a></li>
                                         <?php } ?>
                                         <li class="crm_tab_left"><a class="crm_tab_label small" href="./logout.php">Logout</a></li>

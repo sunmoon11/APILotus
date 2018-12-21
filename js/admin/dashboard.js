@@ -4,7 +4,6 @@ jQuery(document).ready(function(t) {
     let remove_icon = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color: #ffa5a5"></span>';
     let crm_list = null;
     let i = -1;
-    let kkcrm_active_list = null;
     let s = -1;
     let date_type = "date_thisweek";
     let from_date = "";
@@ -90,204 +89,120 @@ jQuery(document).ready(function(t) {
             type: "GET",
             url: "../daemon/ajax_admin/crm_list.php",
             data: {},
-            success: function(e) {
+            success: function(response) {
                 show_waiting("sales", "", false);
-                if ("error" == e) {
+                if ("error" === response) {
                     show_alert("sales", "Cannot load CRM site information.");
                 }
-                else if ("no_cookie" == e) {
+                else if ("no_cookie" === response) {
                     window.location.href = "../../admin/login.php";
                 }
                 else {
-                    crm_list = jQuery.parseJSON(e);
-                    show_waiting("sales", "", true);
-                    t.ajax({
-                        type: "GET",
-                        url: "../daemon/ajax_admin/konnektive/crm_active_list.php",
-                        data: {},
-                        success: function(e) {
-                            show_waiting("sales", "", false);
-                            if ("error" == e) {
+                    crm_list = jQuery.parseJSON(response);
 
-                            }
-                            else if ("no_cookie" == e)
-                                return void (window.location.href = "../../admin/login.php");
-                            else
-                                kkcrm_active_list = jQuery.parseJSON(e);
-                            var a = "";
-                            if ("" == crm_positions) {
-                                for (var r = 0; r < crm_list.length; r++)
-                                    a += '<tr id="row_' + crm_list[r][0] + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (r + 1) + "</td>";
-                                    a += '<td><span id="ll' + crm_list[r][0] + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[r][1] + "</span></td>";
-                                    a += '<td id="crm0_' + crm_list[r][0] + '_0">-</td>';
-                                    a += '<td id="crm1_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm2_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm3_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm4_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm5_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm6_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm7_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm61_' + crm_list[r][0] + '_0"></td>';
-                                    // a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td id="updated_' + crm_list[r][0] + '_0"></td>';
-                                    a += '<td><button type="button" id="setting_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>';
-                                    a += '<td><button type="button" id="refresh_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
-                                    a += "</tr>";
-                                if (null != kkcrm_active_list)
-                                    for (var r = 0; r < kkcrm_active_list.length; r++)
-                                        a += '<tr id="kkrow_' + kkcrm_active_list[r][0] + '" class="kkcrm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (crm_list.length + r + 1) + "</td>";
-                                        a += '<td><span id="kk' + kkcrm_active_list[r][0] + '" class="payment_badge payment_badge_red crm_name_row">' + kkcrm_active_list[r][1] + "</span></td>";
-                                        a += '<td id="kkcrm0_' + kkcrm_active_list[r][0] + '_0">-</td>';
-                                        a += '<td id="kkcrm1_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm2_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm3_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm4_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm5_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm6_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm7_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm8_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm9_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += '<td id="kkcrm10_' + kkcrm_active_list[r][0] + '_0"></td>';
-                                        a += "<td></td>";
-                                        a += '<td><button type="button" id="refresh_' + kkcrm_active_list[r][0] + '" class="btn btn-link btn-sm btn_kkrefresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
-                                        a += "</tr>";
-                            } else {
-                                var i = 0;
-                                var position_ids = crm_positions.split(",");
-                                for (var r = 0; r < position_ids.length; r++) {
-                                    var s = position_ids[r].substring(0, 2);
-                                    var l = position_ids[r].substring(2);
-                                    if ("ll" == s) {
-                                        for (var o = 0; o < crm_list.length; o++)
-                                            if (l == crm_list[o][0]) {
-                                                a += '<tr id="row_' + l + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + ++i + "</td>";
-                                                a += '<td><span id="ll' + l + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[o][1] + "</span></td>";
-                                                a += '<td id="crm0_' + l + '_0">-</td>';
-                                                a += '<td id="crm1_' + l + '_0"></td>';
-                                                a += '<td id="crm2_' + l + '_0"></td>';
-                                                a += '<td id="crm3_' + l + '_0"></td>';
-                                                a += '<td id="crm4_' + l + '_0"></td>';
-                                                a += '<td id="crm5_' + l + '_0"></td>';
-                                                a += '<td id="crm6_' + l + '_0"></td>';
-                                                a += '<td id="crm7_' + l + '_0"></td>';
-                                                a += '<td id="crm8_' + l + '_0"></td>';
-                                                a += '<td id="crm61_' + l + '_0"></td>';
-                                                // a += '<td id="crm62_' + l + '_0"></td>';
-                                                a += '<td id="crm9_' + l + '_0"></td>';
-                                                a += '<td id="crm10_' + l + '_0"></td>';
-                                                a += '<td id="updated_' + l + '_0"></td>';
-                                                a += '<td><button type="button" id="setting_' + l + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>';
-                                                a += '<td><button type="button" id="refresh_' + l + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
-                                                a += "</tr>";
-                                                break
-                                            }
-                                    } else if (null != kkcrm_active_list)
-                                        for (var o = 0; o < kkcrm_active_list.length; o++)
-                                            if (l == kkcrm_active_list[o][0]) {
-                                                a += '<tr id="kkrow_' + l + '" class="kkcrm_row" style="border-top: 1px solid #00b9ab !important"><td>' + ++i + "</td>";
-                                                a += '<td><span id="kk' + l + '" class="payment_badge payment_badge_red crm_name_row">' + kkcrm_active_list[o][1] + "</span></td>";
-                                                a += '<td id="kkcrm0_' + l + '_0">-</td>';
-                                                a += '<td id="kkcrm1_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm2_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm3_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm4_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm5_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm6_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm7_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm8_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm9_' + l + '_0"></td>';
-                                                a += '<td id="kkcrm10_' + l + '_0"></td>';
-                                                a += "<td></td>";
-                                                a += '<td><button type="button" id="refresh_' + l + '" class="btn btn-link btn-sm btn_kkrefresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
-                                                a += "</tr>";
-                                                break
-                                            }
-                                }
-                                for (var r = 0; r < crm_list.length; r++) {
-                                    for (var _ = !1, o = 0; o < position_ids.length; o++) {
-                                        var s = position_ids[o].substring(0, 2);
-                                        var l = position_ids[o].substring(2);
-                                        if ("ll" == s && l == crm_list[r][0]) {
-                                            _ = true;
-                                            break
-                                        }
-                                    }
-                                    _ || (a += '<tr id="row_' + crm_list[r][0] + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (r + 1) + "</td>",
-                                        a += '<td><span id="ll' + crm_list[r][0] + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[r][1] + "</span></td>",
-                                        a += '<td id="crm0_' + crm_list[r][0] + '_0">-</td>',
-                                        a += '<td id="crm1_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm2_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm3_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm4_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm5_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm6_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm7_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm8_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm61_' + crm_list[r][0] + '_0"></td>',
-                                        // a += '<td id="crm62_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm9_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="crm10_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td id="updated_' + crm_list[r][0] + '_0"></td>',
-                                        a += '<td><button type="button" id="setting_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>',
-                                        a += '<td><button type="button" id="refresh_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>',
-                                        a += "</tr>")
-                                }
-                                if (null != kkcrm_active_list)
-                                    for (var r = 0; r < kkcrm_active_list.length; r++) {
-                                        for (var _ = !1, o = 0; o < position_ids.length; o++) {
-                                            var s = position_ids[o].substring(0, 2);
-                                            var l = position_ids[o].substring(2);
-                                            if ("kk" == s && l == kkcrm_active_list[r][0]) {
-                                                _ = true;
-                                                break
-                                            }
-                                        }
-                                        _ || (a += '<tr id="kkrow_' + kkcrm_active_list[r][0] + '" class="kkcrm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (crm_list.length + r + 1) + "</td>",
-                                            a += '<td><span id="kk' + kkcrm_active_list[r][0] + '" class="payment_badge payment_badge_red crm_name_row">' + kkcrm_active_list[r][1] + "</span></td>",
-                                            a += '<td id="kkcrm0_' + kkcrm_active_list[r][0] + '_0">-</td>',
-                                            a += '<td id="kkcrm1_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm2_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm3_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm4_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm5_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm6_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm7_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm8_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm9_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += '<td id="kkcrm10_' + kkcrm_active_list[r][0] + '_0"></td>',
-                                            a += "<td></td>",
-                                            a += '<td><button type="button" id="refresh_' + kkcrm_active_list[r][0] + '" class="btn btn-link btn-sm btn_kkrefresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>',
-                                            a += "</tr>")
-                                    }
-                            }
-                            t(".table_dashboard_sales_body").html(a);
-                            show_headers();
-                            if ("date_custom" == date_type) {
-                                for (let r = 0; r < crm_list.length; r++)
-                                    get_dahsboard_sales(crm_list[r][0], crm_list[r][7]);
-                            }
-                            else {
-                                for (let r = 0; r < crm_list.length; r++)
-                                    show_waiting("crm", crm_list[r][0], true);
-                                get_dashboard_sales_db(crm_list);
-                            }
-                            if (null != kkcrm_active_list)
-                                for (var r = 0; r < kkcrm_active_list.length; r++)
-                                    g(kkcrm_active_list[r][0], kkcrm_active_list[r][7])
-                        },
-                        failure: function(e) {
-                            show_waiting("sales", "", false);
-                            show_alert("sales", "Cannot load Konnective CRM account information.");
+                    let html = "";
+                    if ("" === crm_positions) {
+                        for (let r = 0; r < crm_list.length; r++) {
+                            html += '<tr id="row_' + crm_list[r][0] + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (r + 1) + "</td>";
+                            html += '<td><span id="ll' + crm_list[r][0] + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[r][1] + "</span></td>";
+                            html += '<td id="crm0_' + crm_list[r][0] + '_0">-</td>';
+                            html += '<td id="crm1_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm2_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm3_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm4_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm5_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm6_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm7_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm8_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm61_' + crm_list[r][0] + '_0"></td>';
+                            // html += '<td id="crm62_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm9_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="crm10_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td id="updated_' + crm_list[r][0] + '_0"></td>';
+                            html += '<td><button type="button" id="setting_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>';
+                            html += '<td><button type="button" id="refresh_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
+                            html += "</tr>";
                         }
-                    })
+                    }
+                    else {
+                        let i = 0;
+                        let position_ids = crm_positions.split(",");
+                        for (let r = 0; r < position_ids.length; r++) {
+                            let s = position_ids[r].substring(0, 2);
+                            let l = position_ids[r].substring(2);
+                            if ("ll" === s) {
+                                for (let o = 0; o < crm_list.length; o++) {
+                                    if (l === crm_list[o][0]) {
+                                        html += '<tr id="row_' + l + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + ++i + "</td>";
+                                        html += '<td><span id="ll' + l + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[o][1] + "</span></td>";
+                                        html += '<td id="crm0_' + l + '_0">-</td>';
+                                        html += '<td id="crm1_' + l + '_0"></td>';
+                                        html += '<td id="crm2_' + l + '_0"></td>';
+                                        html += '<td id="crm3_' + l + '_0"></td>';
+                                        html += '<td id="crm4_' + l + '_0"></td>';
+                                        html += '<td id="crm5_' + l + '_0"></td>';
+                                        html += '<td id="crm6_' + l + '_0"></td>';
+                                        html += '<td id="crm7_' + l + '_0"></td>';
+                                        html += '<td id="crm8_' + l + '_0"></td>';
+                                        html += '<td id="crm61_' + l + '_0"></td>';
+                                        // html += '<td id="crm62_' + l + '_0"></td>';
+                                        html += '<td id="crm9_' + l + '_0"></td>';
+                                        html += '<td id="crm10_' + l + '_0"></td>';
+                                        html += '<td id="updated_' + l + '_0"></td>';
+                                        html += '<td><button type="button" id="setting_' + l + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>';
+                                        html += '<td><button type="button" id="refresh_' + l + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>';
+                                        html += "</tr>";
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        for (var r = 0; r < crm_list.length; r++) {
+                            for (var _ = !1, o = 0; o < position_ids.length; o++) {
+                                var s = position_ids[o].substring(0, 2);
+                                var l = position_ids[o].substring(2);
+                                if ("ll" == s && l == crm_list[r][0]) {
+                                    _ = true;
+                                    break
+                                }
+                            }
+                            _ || (html += '<tr id="row_' + crm_list[r][0] + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (r + 1) + "</td>",
+                                html += '<td><span id="ll' + crm_list[r][0] + '" class="payment_badge payment_badge_blue crm_name_row">' + crm_list[r][1] + "</span></td>",
+                                html += '<td id="crm0_' + crm_list[r][0] + '_0">-</td>',
+                                html += '<td id="crm1_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm2_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm3_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm4_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm5_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm6_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm7_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm8_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm61_' + crm_list[r][0] + '_0"></td>',
+                                // html += '<td id="crm62_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm9_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="crm10_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td id="updated_' + crm_list[r][0] + '_0"></td>',
+                                html += '<td><button type="button" id="setting_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button></td>',
+                                html += '<td><button type="button" id="refresh_' + crm_list[r][0] + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></td>',
+                                html += "</tr>")
+                        }
+                    }
+                    t(".table_dashboard_sales_body").html(html);
+                    show_headers();
+                    if ("date_custom" == date_type) {
+                        for (let r = 0; r < crm_list.length; r++)
+                            get_dahsboard_sales(crm_list[r][0], crm_list[r][7]);
+                    }
+                    else {
+                        for (let r = 0; r < crm_list.length; r++)
+                            show_waiting("crm", crm_list[r][0], true);
+                        get_dashboard_sales_db(crm_list);
+                    }
                 }
             },
-            failure: function(t) {
-                show_waiting("sales", "", !1),
-                    show_alert("sales", "Cannot load CRM site information.")
+            failure: function() {
+                show_waiting("sales", "", false);
+                show_alert("sales", "Cannot load CRM site information.")
             }
         })
     }
@@ -906,12 +821,6 @@ jQuery(document).ready(function(t) {
         for (var a = 0; a < crm_list.length; a++)
             if (crm_list[a][0] == i)
                 return void get_dahsboard_sales(i, crm_list[a][7])
-    }),
-    t(".table_dashboard_sales_body").on("click", ".btn_kkrefresh", function(e) {
-        s = t(this).prop("id").substring(8);
-        for (var a = 0; a < kkcrm_active_list.length; a++)
-            if (kkcrm_active_list[a][0] == s)
-                return void g(s, kkcrm_active_list[a][7])
     }),
     t(".table_dashboard_sales_body").on("click", ".btn_setting", function(a) {
         var r;

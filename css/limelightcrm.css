@@ -1370,3 +1370,27 @@ input[disabled] {
 	margin-left: 8px;
 	border-bottom: 1px solid rgba(103,114,229,.4);
 }
+
+.permission_all_btn
+{
+	color: #0BB055;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.permission_all_btn:hover
+{
+	text-decoration: underline;
+}
+
+.permission_category
+{
+	background-color: #dadada !important;
+}
+
+.permission_category td, .permission_category th
+{
+	font-weight: bold !important;
+	color: #2E4B74 !important;
+	text-transform: initial !important;
+}

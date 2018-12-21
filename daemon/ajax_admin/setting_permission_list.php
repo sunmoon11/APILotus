@@ -14,9 +14,10 @@ if ($dbApi->getSubDomain() == '')
 }
 
 $permissionList = $dbApi->getCrmNamePermissionOfAccount($accountID);
+$page_permissions = $dbApi->getPagePermissionOfAccount($accountID);
 if ($permissionList != null)
 {
-	echo json_encode(array('success', $accountID, $permissionList));
+	echo json_encode(array('success', $accountID, $permissionList, $page_permissions));
 	return;
 }
 

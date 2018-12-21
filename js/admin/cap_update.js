@@ -208,7 +208,7 @@ jQuery(document).ready(function(t) {
                                         if (campaign_id == campaign_prospects[0]) {
                                             for (var m = 0; m < campaign_prospects[1].length; m++) {
                                                 for (var n = 0; n < afids.length; n++) {
-                                                    if (campaign_prospects[1][m][0] == afids[n]) {
+                                                    if (campaign_prospects[1][m][0] == afids[n].split('(')[0]) {
                                                         count += campaign_prospects[1][m][2];
                                                     }
                                                 }
@@ -462,10 +462,10 @@ jQuery(document).ready(function(t) {
         afids = afids.split(',');
         if ((new Set(afids)).size !== afids.length)
             return false;
-        for (let i = 0; i < afids.length; i++) {
-            if (isNaN(afids[i]))
-                return false;
-        }
+        // for (let i = 0; i < afids.length; i++) {
+        //     if (isNaN(afids[i]))
+        //         return false;
+        // }
         return true;
     }
 

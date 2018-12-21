@@ -538,6 +538,15 @@ class DBApi
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
             if ($result === TRUE) {
+                // update permission of admin users automatically
+                $admin_user_ids = $this->getAdminUserIds();
+                foreach ($admin_user_ids as $id) {
+                    $permissions = $this->getCrmPermissionOfAccount($id);
+                    $permissions = $permissions . ',' . $id;
+
+                    $this->setCrmPermissionOfAccount($userId, $permissions);
+                }
+
                 // update permission in user_account
                 $query = 'SELECT id FROM ' . $this->subdomain . '_crm_account WHERE crm_name="' . $crmName . '"';
 
@@ -548,12 +557,14 @@ class DBApi
                     $row = mysqli_fetch_assoc($result);
                     $id = $row['id'];
 
-                    $permissions = $this->getCrmPermissionOfAccount($userId);
-                    $permissions = $permissions . ',' . $id;
+                    if (!in_array($id, $admin_user_ids)) {
+                        $permissions = $this->getCrmPermissionOfAccount($userId);
+                        $permissions = $permissions . ',' . $id;
 
-                    return $this->setCrmPermissionOfAccount($userId, $permissions);
+                        $this->setCrmPermissionOfAccount($userId, $permissions);
+                    }
                 }
-                return false;
+                return true;
 
             } else {
                 return false;
@@ -3174,6 +3185,28 @@ class DBApi
         return $result;
     }
 
+    public function getPagePermissionOfAccount($accountId) {
+        if (!$this->checkConnection())
+            return '';
+
+        try {
+            $strPermissions = '';
+
+            $query = 'SELECT page_permissions FROM ' . $this->subdomain . '_user_account WHERE id=' . $accountId;
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $strPermissions = $row['page_permissions'];
+            }
+
+            return $strPermissions;
+        } catch (Exception $e) {
+            return '';
+        }
+    }
+
     /*
 	*@description
 	*	Set Crm permission of account as string ids seperated by comma
@@ -3190,6 +3223,27 @@ class DBApi
         try {
 
             $query = 'UPDATE ' . $this->subdomain . '_user_account SET crm_permissions="' . $strPermissions . '" WHERE id=' . $accountId;
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            if ($result === TRUE)
+                return true;
+            else
+                return false;
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function setPagePermissionOfAccount($accountId, $strPermissions)
+    {
+        if (!$this->checkConnection())
+            return false;
+
+        try {
+
+            $query = 'UPDATE ' . $this->subdomain . '_user_account SET page_permissions="' . $strPermissions . '" WHERE id=' . $accountId;
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
 
@@ -10080,5 +10134,29 @@ class DBApi
             $monday =  date('m/d/Y');
 
         return $monday;
+    }
+
+
+    private function getAdminUserIds()
+    {
+        if (!$this->checkConnection())
+            return '';
+
+        try {
+            $ids = array();
+
+            $query = 'SELECT id FROM ' . $this->subdomain . '_user_account WHERE user_role=9';
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+
+            $count = mysqli_num_rows($result);
+            if ($count > 0) {
+                while($row = mysqli_fetch_assoc($result))
+                    $ids[] = $row['id'];
+            }
+
+            return $ids;
+        } catch (Exception $e) {
+            return '';
+        }
     }
 }
