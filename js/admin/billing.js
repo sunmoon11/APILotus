@@ -56,6 +56,12 @@ jQuery(document).ready(function(t) {
             cur_date.setDate(r);
             to_date = format_date(cur_date.getFullYear(), cur_date.getMonth() + 1, cur_date.getDate());
         }
+        else if ("date_custom" == date_type) {
+            from_date = "";
+            to_date = "";
+            t("#from_date").prop("disabled", false);
+            t("#to_date").prop("disabled", false);
+        }
         else {
             let date_selected = date_type.split('_')[1];
             from_date = date_selected.split('-')[0];
@@ -68,29 +74,28 @@ jQuery(document).ready(function(t) {
     }
 
     function get_billing_list() {
-        show_waiting(true);
-        t.ajax({
-            type: "GET",
-            url: "../daemon/ajax_admin/crm_list.php",
-            data: {},
-            success: function(e) {
-                show_waiting(false);
-                if ("error" == e) {
-                    show_alert("Cannot load CRM site information.");
-                }
-                else if ("no_cookie" == e) {
-                    window.location.href = "../../admin/login.php";
-                }
-                else {
-                    var crm_list = jQuery.parseJSON(e);
-
-                    if ("" == t("#from_date").val()) {
-                        show_alert("Please select FROM DATE.")
+        if ("" === t("#from_date").val()) {
+            show_alert("Please select FROM DATE.")
+        }
+        else if ("" === t("#to_date").val()) {
+            show_alert("Please select TO DATE.")
+        }
+        else {
+            show_waiting(true);
+            t.ajax({
+                type: "GET",
+                url: "../daemon/ajax_admin/crm_list.php",
+                data: {},
+                success: function (e) {
+                    show_waiting(false);
+                    if ("error" == e) {
+                        show_alert("Cannot load CRM site information.");
                     }
-                    else if ("" == t("#to_date").val()) {
-                        show_alert("Please select TO DATE.")
+                    else if ("no_cookie" == e) {
+                        window.location.href = "../../admin/login.php";
                     }
                     else {
+                        var crm_list = jQuery.parseJSON(e);
                         show_waiting(true);
                         t.ajax({
                             type: "GET",
@@ -106,6 +111,11 @@ jQuery(document).ready(function(t) {
                                     return void (window.location.href = "../../admin/login.php");
 
                                 billing_list = jQuery.parseJSON(e);
+
+                                if (0 === billing_list.length) {
+                                    show_alert("There is no billing data.");
+                                    return;
+                                }
 
                                 let html = "";
 
@@ -159,13 +169,13 @@ jQuery(document).ready(function(t) {
                             }
                         });
                     }
+                },
+                failure: function() {
+                    show_waiting(false);
+                    show_alert("Cannot load CRM site information.");
                 }
-            },
-            failure: function() {
-                show_waiting(false);
-                show_alert("Cannot load CRM site information.");
-            }
-        });
+            });
+        }
     }
 
     function get_billing_goal_list(crm_id) {

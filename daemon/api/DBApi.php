@@ -9544,7 +9544,7 @@ class DBApi
 
         $ret = array();
         try {
-            if ('date_thisweek' == $date_type)
+            if ('date_thisweek' == $date_type or 'date_custom' == $date_type)
                 $query = 'SELECT
                               pag.*, pa.name as affiliate_name, pa.afid,
                               po.name as offer_name, po.crm_id, po.crm_name, po.sales_goal, po.campaign_ids, po.label_ids, po.offer_type, po.s1_payout as s1_payout_, po.s2_payout as s2_payout_

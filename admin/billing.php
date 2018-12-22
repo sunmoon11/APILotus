@@ -79,6 +79,7 @@ $tab_name = "Billing";
                             </button>
                             <ul class="dropdown-menu date_dropdown_menu" role="menu" style="overflow: auto; max-height: 300px;">
                                 <li><a href="#" id="date_thisweek">Week To Date</a></li>
+                                <li><a href="#" id="date_custom">Custom</a></li>
                                 <li><a href="#" id="date_lastweek">Last Week</a></li>
                                 <?php
                                     $firstDayOfYear = mktime(0, 0, 0, 1, 1, date('Y'));

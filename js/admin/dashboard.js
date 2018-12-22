@@ -271,8 +271,8 @@ jQuery(document).ready(function(t) {
                             var step2 = parseFloat(sales[3][d][4]);
                             var tablet_step1 = parseFloat(sales[3][d][5]);
                             var prepaid = parseFloat(sales[3][d][6]);
-                            var prepaid_step1 = parseFloat(sales[3][i]['prepaid_step1']);
-                            var prepaid_step2 = parseFloat(sales[3][i]['prepaid_step2']);
+                            var prepaid_step1 = parseFloat(sales[3][d]['prepaid_step1']);
+                            var prepaid_step2 = parseFloat(sales[3][d]['prepaid_step2']);
                             var step1_nonpp = parseFloat(sales[3][d][7]);
                             var step2_nonpp = parseFloat(sales[3][d][8]);
                             var order_page = parseFloat(sales[3][d][9]);
