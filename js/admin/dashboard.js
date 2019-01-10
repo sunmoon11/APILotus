@@ -588,16 +588,16 @@ jQuery(document).ready(function(t) {
         let d = 0;
         goal > 0 && (c = (100 * step1 / goal).toFixed(2)),
         step1 > 0 && (d = (100 * step2 / step1).toFixed(2)),
-        count > 0 && (t("#all1").html(step1),
-            t("#all2").html(step2),
-            t("#all3").html(d),
-            t("#all4").html(tablet),
-            t("#all5").html((tablet_percent / count).toFixed(2)),
-            t("#all6").html(prepaids),
-            t("#all7").html((order_percent / count).toFixed(2)),
-            t("#all8").html((decline_percent / count).toFixed(2)),
-            t("#all9").html(c),
-            t("#all10").html(step1 + " / " + goal));
+        count > 0 && (t(".all1").html(step1),
+            t(".all2").html(step2),
+            t(".all3").html(d),
+            t(".all4").html(tablet),
+            t(".all5").html((tablet_percent / count).toFixed(2)),
+            t(".all6").html(prepaids),
+            t(".all7").html((order_percent / count).toFixed(2)),
+            t(".all8").html((decline_percent / count).toFixed(2)),
+            t(".all9").html(c),
+            t(".all10").html(step1 + " / " + goal));
     }
 
     function set_dates() {

@@ -14,6 +14,13 @@
 <script type="text/javascript" src="../bootstrap/datepicker/js/bootstrap-datepicker.min.js"></script>
 
 <script type="text/javascript" src="../js/admin/admin.min.js"></script>
+
+<!-- responsive datatable js -->
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
 <?php if ($tab_name == "Dashboard") echo "<script type=\"text/javascript\" src=\"../js/admin/dashboard.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate") echo "<script type=\"text/javascript\" src=\"../js/admin/affiliate.min.js\"></script>"; ?>
 <?php if ($tab_name == "Retention") echo "<script type=\"text/javascript\" src=\"../js/admin/retention.js\"></script>"; ?>

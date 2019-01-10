@@ -188,11 +188,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row" style="padding: 15px; border: 1px solid #ccc;">
-<!--                        <div id="permission_all" class="permission_all_btn">Select All</div>-->
-<!--                        <div>-->
-<!--                            <input type="text" class="form-control input-sm search_offers" placeholder="Search by Client name">-->
-<!--                        </div>-->
-                        <div style="overflow: auto; max-height: 200px;">
+                        <div class="permission_table">
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr class="permission_category">

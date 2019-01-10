@@ -10,7 +10,7 @@ body {
 	padding:0; 
 	height:100%; 
 	background-color: #f9f9f9;
-	min-width: 1400px;
+	/*min-width: 1400px;*/
 	font-family: 'Varela Round', sans-serif;
 	color: #333;
 }
@@ -56,7 +56,7 @@ p {
 #wrap_body {
 	height:100%;
 	position:relative;
-	min-width: 1400px;
+	/*min-width: 1400px;*/
 }
 
 #content_wrap {
@@ -385,7 +385,7 @@ p {
 
 .crm_login_container {
     padding: 15px;
-    margin-top: 70px;
+    margin-top: 6%;
     margin-right: auto;
     margin-left: auto;
     width: 350px;
@@ -1393,4 +1393,33 @@ input[disabled] {
 	font-weight: bold !important;
 	color: #2E4B74 !important;
 	text-transform: initial !important;
+}
+
+.permission_table {
+	height: 10em;
+}
+.permission_table table {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	width: 100%;
+}
+.permission_table table thead {
+	/* head takes the height it requires,
+    and it's not scaled when table is resized */
+	flex: 0 0 auto;
+	width: calc(100% - 0.9em);
+}
+.permission_table table tbody {
+	/* body takes all the remaining available space */
+	flex: 1 1 auto;
+	display: block;
+	overflow-y: scroll;
+}
+.permission_table table tbody tr {
+	width: 100%;
+}
+.permission_table table thead, .permission_table table tbody tr {
+	display: table;
+	table-layout: fixed;
 }

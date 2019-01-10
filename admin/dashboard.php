@@ -60,14 +60,14 @@ $tab_name = "Dashboard";
  		<div class="col-xs-12">
  			<div class="crm_board">
  				<div class="row crm_board_title">Overall Sales</div>
- 				<table class="table table_overall" style="margin-top:15px;">
+ 				<table class="for_pc table table_overall" style="margin-top:15px;">
 					<thead>
 						<tr>
-							<th>STEP1</th>
-							<th>STEP2</th>
+							<th>STEP 1</th>
+							<th>STEP 2</th>
 							<th>TAKE RATE</th>
 							<th>TABLET</th>
-							<th>TABLET%</th>
+							<th>TABLET %</th>
 							<th>PREPAIDS</th>
 							<th>ORDER%</th>
 							<th>DECLINE%</th>
@@ -77,19 +77,31 @@ $tab_name = "Dashboard";
 					</thead>
 					<tbody class="table_dashboard_overall_body">
 						<tr>
-							<td id="all1">0</td>
-							<td id="all2">0</td>
-							<td id="all3">0</td>
-							<td id="all4">0</td>
-							<td id="all5">0</td>
-							<td id="all6">0</td>
-							<td id="all7">0</td>
-							<td id="all8">0</td>
-							<td id="all9">0</td>
-							<td id="all10">0</td>
+							<td class="all1">0</td>
+							<td class="all2">0</td>
+							<td class="all3">0</td>
+							<td class="all4">0</td>
+							<td class="all5">0</td>
+							<td class="all6">0</td>
+							<td class="all7">0</td>
+							<td class="all8">0</td>
+							<td class="all9">0</td>
+							<td class="all10">0</td>
 						</tr>
 					</tbody>
 				</table>
+                <div class="for_mobile row overall_dv">
+                    <div class="col-xs-6 overall_tlt">STEP 1</div><div class="col-xs-6 all1">0</div>
+                    <div class="col-xs-6 overall_tlt">STEP 2</div><div class="col-xs-6 all2">0</div>
+                    <div class="col-xs-6 overall_tlt">TAKE RATE</div><div class="col-xs-6 all3">0</div>
+                    <div class="col-xs-6 overall_tlt">TABLET</div><div class="col-xs-6 all4">0</div>
+                    <div class="col-xs-6 overall_tlt">TABLET %</div><div class="col-xs-6 all5">0</div>
+                    <div class="col-xs-6 overall_tlt">PREPAIDS</div><div class="col-xs-6 all6">0</div>
+                    <div class="col-xs-6 overall_tlt">ORDER%</div><div class="col-xs-6 all7">0</div>
+                    <div class="col-xs-6 overall_tlt">DECLINE%</div><div class="col-xs-6 all8">0</div>
+                    <div class="col-xs-6 overall_tlt">GOAL%</div><div class="col-xs-6 all9">0</div>
+                    <div class="col-xs-6 overall_tlt">GOAL</div><div class="col-xs-6 all10">0</div>
+                </div>
  			</div>
  			<div class="crm_board">
  				<div class="row crm_board_title">
@@ -127,11 +139,6 @@ $tab_name = "Dashboard";
 						<button type="button" class="btn btn-default btn-sm btn_crm_position"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> CRM Position</button>
 						<button type="button" class="btn btn-default btn-sm btn_quick_edit" data-toggle="modal" data-target="#quick_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Quick Edit</button>
 					</div>
-					<!--
-					<div class="col-xs-6" style="text-align:right">
-						<button type="button" class="btn btn-default btn-sm btn_show_columns" data-toggle="modal" data-target="#show_columns_modal"><span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;Show Columns</button>
-					</div>
-					-->
 				</div>
 				<table class="table table-hover table_dashboard" style="margin-top:10px;">
 					<thead>
@@ -139,11 +146,11 @@ $tab_name = "Dashboard";
 							<th>#</th>
 							<th>CRM</th>
 							<th>VERTICAL</th>
-							<th>STEP1</th>
-							<th>STEP2</th>
+							<th>STEP 1</th>
+							<th>STEP 2</th>
 							<th>TAKE RATE</th>
 							<th>TABLET</th>
-							<th>TABLET%</th>
+							<th>TABLET %</th>
 							<th>S1 PREPAIDS</th>
 							<th>ORDER%</th>
 							<th>DECLINE%</th>

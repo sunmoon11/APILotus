@@ -1,0 +1,36 @@
+/**** for pc ***/
+@media only screen and ( min-device-width: 768px ) {
+    .for_mobile
+    {
+        display: none;
+    }
+}
+/*** for mobile ***/
+@media only screen and ( max-device-width: 768px ) {
+    .for_pc
+    {
+        display: none;
+    }
+
+    .col-xs-12
+    {
+        width: unset !important;
+    }
+}
+
+.overall_dv
+{
+    margin: 0px;
+}
+
+.overall_dv>div.overall_tlt
+{
+    background: #f9f9f9;
+    color: #3f3f3f;
+}
+
+.overall_dv>div
+{
+    border-bottom: 1px solid #dddddd;
+    padding: 5px 0px 5px 10%;
+}
