@@ -803,8 +803,9 @@ class LLCrmHook
         $campaignSTEP1 = $dbApi->getSTEP1Campaign($crmID);
         // get campaign for STEP2
         $campaignSTEP2 = $dbApi->getSTEP2Campaign($crmID);
-        // get campaign for TABLET S2
+        // get campaign for TABLET S1 and S2
         $campaignTABLET = $dbApi->getTabletCampaign($crmID);
+        $campaignTABLETS2 = $dbApi->getTabletS2Campaign($crmID);
         // get campaign for STEP2 Non Prepaids
         $campaignSTEP2NonPP = $dbApi->getSTEP2NonPPCampaign($crmID);
         // get campaign for STEP1 Non Prepaids
@@ -836,8 +837,8 @@ class LLCrmHook
         $breakDown = array();
         foreach ($labelInfo as $item)
         {
-            // id, label, goal, step1, step2, tablet, prepaids, step2 non pp, step1 non pp, order page, order count, initial decline, gross order
-            $breakDown[] = array($item[0], $item[1], $item[3], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            // id, label, goal, step1, step2, tablet, prepaids, step2 non pp, step1 non pp, order page, order count, initial decline, gross order, prepaids_step1, prepaids_step2, tablet_step2
+            $breakDown[] = array($item[0], $item[1], $item[3], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
         $ret = array();
 
@@ -895,6 +896,29 @@ class LLCrmHook
                 }
             }
             foreach ($campaignTABLET as $item)
+            {
+                if ($item[0] == $cId)
+                {
+                    $valueTABLET += $value['initial_customer'];
+                    foreach ($labelInfo as $label)
+                    {
+                        $id = $label[0];
+                        for ($i = 0; $i < count($breakDown); $i ++)
+                        {
+                            $breakItem = $breakDown[$i];
+                            if ($breakItem[0] == $id)
+                            {
+                                if (strstr($item[1], ','.$id.',') !== FALSE)
+                                {
+                                    $breakItem[5] += $value['initial_customer'];
+                                }
+                            }
+                            $breakDown[$i] = $breakItem;
+                        }
+                    }
+                }
+            }
+            foreach ($campaignTABLETS2 as $item)
             {
                 if ($item[0] == $cId)
                 {

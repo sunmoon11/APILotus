@@ -6,20 +6,31 @@
 </div>
 </div>	<!-- wrap_body -->
 
+<!--
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <?php if ($tab_name == "Dashboard") { ?>
     <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
 <?php } ?>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../bootstrap/datepicker/js/bootstrap-datepicker.min.js"></script>
-
-<script type="text/javascript" src="../js/admin/admin.min.js"></script>
-
-<!-- responsive datatable js -->
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+-->
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<?php if ($tab_name == "Dashboard") { ?>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+<?php } ?>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
+<script type="text/javascript" src="../bootstrap/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="../js/admin/admin.min.js"></script>
 
 <?php if ($tab_name == "Dashboard") echo "<script type=\"text/javascript\" src=\"../js/admin/dashboard.js\"></script>"; ?>
 <?php if ($tab_name == "Affiliate") echo "<script type=\"text/javascript\" src=\"../js/admin/affiliate.min.js\"></script>"; ?>

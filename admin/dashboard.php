@@ -110,62 +110,75 @@ $tab_name = "Dashboard";
  				</div>
  				<div class="alert alert-warning dashboard_sales_alert" role="alert" style="display:none"></div>
  				<div class="row crm_board_row">
-					<div class="col-xs-5">
-						<div class="input-daterange input-group" id="datepicker">
-							<span class="input-group-btn">
-								<button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px">
-									Week To Date <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu date_dropdown_menu" role="menu">
-									<li><a class="calendar_item" href="#" id="date_today">Today</a></li>
-									<li><a class="calendar_item" href="#" id="date_yesterday">Yesterday</a></li>
-									<li><a class="calendar_item" href="#" id="date_thisweek">Week To Date</a></li>
-									<li><a class="calendar_item" href="#" id="date_thismonth">Month To Date</a></li>
-									<li><a class="calendar_item" href="#" id="date_thisyear">Year To Date</a></li>
-									<li><a class="calendar_item" href="#" id="date_lastweek">Last Week</a></li>
-									<li><a class="calendar_item" href="#" id="date_custom">Custom</a></li>
-								</ul>
-							</span>
-							<span class="input-group-addon calendar_label">From</span>
-						    <input id="from_date" type="text" class="input-sm form-control" name="start"/>
-						    <span class="input-group-addon calendar_label">To</span>
-						    <input id="to_date" type="text" class="input-sm form-control" name="end"/>
-							<span class="input-group-btn">
-								<button class="btn btn-default btn-sm sales_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
-							</span>    
+					<div class="col-sm-7">
+						<div class="input-daterange input-group a_for_search_top" id="datepicker">
+                            <div class="a_for_search">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle date_toggle_button" data-toggle="dropdown" aria-expanded="false" style="width:160px">
+                                        Week To Date <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu date_dropdown_menu" role="menu">
+                                        <li><a class="calendar_item" href="#" id="date_today">Today</a></li>
+                                        <li><a class="calendar_item" href="#" id="date_yesterday">Yesterday</a></li>
+                                        <li><a class="calendar_item" href="#" id="date_thisweek">Week To Date</a></li>
+                                        <li><a class="calendar_item" href="#" id="date_thismonth">Month To Date</a></li>
+                                        <li><a class="calendar_item" href="#" id="date_thisyear">Year To Date</a></li>
+                                        <li><a class="calendar_item" href="#" id="date_lastweek">Last Week</a></li>
+                                        <li><a class="calendar_item" href="#" id="date_custom">Custom</a></li>
+                                    </ul>
+                                </span>
+                            </div>
+                            <div class="a_for_search">
+                                <span class="input-group-addon calendar_label">From</span>
+                                <input id="from_date" type="text" class="input-sm form-control" name="start"/>
+                            </div>
+                            <div class="a_for_search">
+                                <span class="input-group-addon calendar_label">To &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <input id="to_date" type="text" class="input-sm form-control" name="end"/>
+                            </div>
+                            <div class="a_for_search">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm sales_search_button" type="button" style="width:100px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Search</button>
+                                </span>
+                            </div>
 						</div>
 					</div>
-					<div class="col-xs-7" style="text-align: right; padding-right: 30px">
+					<div class="col-sm-5 a_mobile_crm_div" style="text-align: right; padding-right: 30px">
 						<button type="button" class="btn btn-default btn-sm btn_crm_position"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> CRM Position</button>
 						<button type="button" class="btn btn-default btn-sm btn_quick_edit" data-toggle="modal" data-target="#quick_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Quick Edit</button>
 					</div>
 				</div>
-				<table class="table table-hover table_dashboard" style="margin-top:10px;">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>CRM</th>
-							<th>VERTICAL</th>
-							<th>STEP 1</th>
-							<th>STEP 2</th>
-							<th>TAKE RATE</th>
-							<th>TABLET</th>
-							<th>TABLET %</th>
-							<th>S1 PREPAIDS</th>
-							<th>ORDER%</th>
-							<th>DECLINE%</th>
-                            <th>S1 PP%</th>
-<!--                            <th>STEP2 PP%</th>-->
-	            	        <th>GOAL%</th>
-	                	    <th>GOAL</th>
-                            <th>UPDATED</th>
-	                	    <th>SETTING</th>
-	                    	<th><button type="button" class="btn btn-link btn-sm btn_refresh_all" id=""><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></th>
-						</tr>
-					</thead>
-					<tbody class="table_dashboard_sales_body">
-					</tbody>
-				</table>
+<!--                <div class="box-body table-responsive">--> <!--  a_dt table_dashboard -->
+                <div class="row a_no_lr_margin">
+                    <div class="table-responsive">
+                        <table id="a_crm_list_tb" class="table nowrap a_dt table_dashboard" style="margin-top:10px; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>CRM</th>
+                                        <th>VERTICAL</th>
+                                        <th>STEP 1</th>
+                                        <th class="g_none_dis">STEP 2</th>
+                                        <th>TAKE RATE</th>
+                                        <th>TABLET</th>
+                                        <th>TABLET %</th>
+                                        <th>S1 PREPAIDS</th>
+                                        <th class="g_none_dis">ORDER%</th>
+                                        <th class="g_none_dis">DECLINE%</th>
+                                        <th>S1 PP%</th>
+                                        <th>GOAL%</th>
+                                        <th>GOAL</th>
+        <!--                                <th>UPDATED</th>-->
+                                        <th>SETTING</th>
+<!--                                        <th><button type="button" class="btn btn-link btn-sm btn_refresh_all" id=""><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+<!--                </div>-->
  			</div>
  		</div>
  		<span id="crm_positions" style="display: none;"><?php echo $crm_positions; ?></span>

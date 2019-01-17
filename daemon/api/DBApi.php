@@ -1686,6 +1686,34 @@ class DBApi
             return null;
         }
     }
+    public function getTabletS2Campaign($crmId)
+    {
+        $allLabel = $this->getAllLabels();
+        $tabletLabel = $this->getLabelIdByName('Tablet', $allLabel);
+        $step1Label = $this->getLabelIdByName('Step1', $allLabel);
+        $step2Label = $this->getLabelIdByName('Step2', $allLabel);
+
+        if (!$this->checkConnection())
+            return null;
+
+        try {
+            $query = 'SELECT * FROM ' . $this->subdomain . '_label_campaign WHERE label_ids LIKE ",' . $tabletLabel . ',' . $step2Label . ',%" AND crm_id=' . $crmId;
+
+            $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
+            $ret = array();
+
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $ret[] = array($row['campaign_id'], $row['label_ids']);
+                }
+            }
+
+            return $ret;
+
+        } catch (Exception $e) {
+            return null;
+        }
+    }
     /*
 	*@description
 	*	Add Crm token
