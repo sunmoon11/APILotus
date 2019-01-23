@@ -9012,13 +9012,13 @@ class DBApi
             return false;
 
         try {
-            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, from_date, to_date, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order, prepaid_step1, prepaid_step2) VALUES (null,"'
+            $query = 'INSERT INTO ' . $this->subdomain . '_crm_result (id, from_date, to_date, timestamp, crm_id, label_id, label_name, goal, step1, step2, tablet, prepaid, step1_nonpp, step2_nonpp, order_page, order_count, decline, gross_order, prepaid_step1, prepaid_step2, tablet_step2) VALUES (null,"'
                 . $fromDate . '","' . $toDate . '","' . $time . '",' . $crmID . ','
                 . $crm_result[0] . ',"' . $crm_result[1] . '",' . $crm_result[2] . ','
                 . $crm_result[3] . ',' . $crm_result[4] . ',' . $crm_result[5] . ','
                 . $crm_result[6] . ',' . $crm_result[7] . ',' . $crm_result[8] . ','
                 . $crm_result[9] . ',' . $crm_result[10] . ',' . $crm_result[11] . ','
-                . $crm_result[12] . ',' . $crm_result[13] . ',' . $crm_result[14] . ')';
+                . $crm_result[12] . ',' . $crm_result[13] . ',' . $crm_result[14] . ',' . $crm_result[15] . ')';
 
             $result = mysqli_query($this->conn, $query) or die(mysqli_error($this->conn));
             if ($result === TRUE)
@@ -9080,7 +9080,7 @@ class DBApi
             $crm_count = mysqli_num_rows($result);
             if ($crm_count > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order'], 'prepaid_step1'=>(int)$row['prepaid_step1'], 'prepaid_step2'=>(int)$row['prepaid_step2'], 'timestamp'=>$row['timestamp']);
+                    $arrayCrm[] = array($row['label_id'], $row['label_name'], $row['goal'], (int)$row['step1'], (int)$row['step2'], (int)$row['tablet'], (int)$row['prepaid'], (int)$row['step1_nonpp'], (int)$row['step2_nonpp'], (float)$row['order_page'], (int)$row['order_count'], (int)$row['decline'], (int)$row['gross_order'], 'prepaid_step1'=>(int)$row['prepaid_step1'], 'prepaid_step2'=>(int)$row['prepaid_step2'], 'tablet_step2'=>(int)$row['tablet_step2'], 'timestamp'=>$row['timestamp']);
                 }
             }
 
@@ -9109,13 +9109,14 @@ class DBApi
                 while ($row = mysqli_fetch_assoc($result)) {
 
                     $salesTablet = $row['tablet'];
+                    $salesTabletS2 = $row['tablet_step2'];
                     $salesStep1NNP = $row['step1_nonpp'];
                     $salesStep2NNP = $row['step2_nonpp'];
 
                     if(($salesStep1NNP) == 0)
                         $takeRate = 0;
                     else
-                        $takeRate = (($salesTablet + $salesStep2NNP) / $salesStep1NNP) * 100;
+                        $takeRate = ($salesTabletS2 + $salesStep2NNP) / ($salesTablet + $salesStep1NNP) * 100;
 
                     if(($salesStep2NNP + $salesTablet) == 0)
                         $tabletTakeRate = 0;
@@ -9151,13 +9152,14 @@ class DBApi
                 while ($row = mysqli_fetch_assoc($result)) {
 
                     $salesTablet = $row['tablet'];
+                    $salesTabletS2 = $row['tablet_step2'];
                     $salesStep1NNP = $row['step1_nonpp'];
                     $salesStep2NNP = $row['step2_nonpp'];
 
                     if(($salesStep1NNP) == 0)
                         $takeRate = 0;
                     else
-                        $takeRate = (($salesTablet + $salesStep2NNP) / $salesStep1NNP) * 100;
+                        $takeRate = ($salesTabletS2 + $salesStep2NNP) / ($salesTablet + $salesStep1NNP) * 100;
 
                     if(($salesStep2NNP + $salesTablet) == 0)
                         $tabletTakeRate = 0;

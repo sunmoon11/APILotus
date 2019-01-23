@@ -62,13 +62,14 @@ function getProspectReportAndSendAlerts($name){
         $salesData = $salesData[0];
         $salesStep1 = $salesData[3];
         $salesTablet = $salesData[5];
+        $salesTabletS2 = $salesData['tablet_step2'];
         $salesStep1NNP = $salesData[7];
         $salesStep2NNP = $salesData[8];
 
         if(($salesStep1NNP) == 0)
             $takeRate = 0;
         else
-            $takeRate = (($salesTablet + $salesStep2NNP) / $salesStep1NNP) * 100;
+            $takeRate = ($salesTabletS2 + $salesStep2NNP) / ($salesTablet + $salesStep1NNP) * 100;
 
         if(($salesStep2NNP + $salesTablet) == 0)
             $tabletTakeRate = 0;

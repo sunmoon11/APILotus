@@ -24,6 +24,7 @@
 
     <link href="../bootstrap/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="../css/font/colfax/colfax_font.css" rel="stylesheet" type="text/css" />
+    <link href="../css/global.css" rel="stylesheet" type="text/css" />
     <link href="../css/custom_responsive.css" rel="stylesheet" type="text/css" />
     <link href="../css/limelightcrm.css" rel="stylesheet" type="text/css" />
 

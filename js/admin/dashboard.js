@@ -220,6 +220,7 @@ jQuery(document).ready(function(t) {
 
                                         var progress_tag = '';
                                         var goal_tag = '';
+
                                         if ("0" === label_type) {
                                             progress_tag = '<span id="crm9_' + crm_id + "_" + label_type + '"><div class="bar-main-container"><div id="bar_' + crm_id + '" class="bar-percentage">' + Math.round(100 * step1 / goal) + '%</div><div class="bar-container"><div class="bar" style="width: ' + Math.round(100 * step1 / crm_goal) + '%"></div></div></div></span>';
                                             goal_tag += '<span id="crm10_' + crm_id + "_" + label_type + '">' + step1 + " / " + goal + '</span>';
@@ -232,6 +233,7 @@ jQuery(document).ready(function(t) {
                                         var no_tag = '';
                                         var crm_tag = '';
                                         var vertical_tag = '';
+                                        var setting_btn = '';
 
                                         if ("0" === label_type) {
                                             // html += '<tr id="row_' + crm_id + '" class="crm_row" style="border-top: 1px solid #00b9ab !important"><td>' + (r + 1) + "</td>";
@@ -246,6 +248,7 @@ jQuery(document).ready(function(t) {
                                                 ' title="' + timestamp + '">' + crm_name + '</span>' +
                                                 '<span class="a_less_than_390 a_less_than_390_tb">' + goal_tag + '</span>';
                                             vertical_tag = '<span id="crm0_' + crm_id + '_0">-</span>';
+                                            setting_btn = '<button type="button" id="setting_' + crm_id + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button>';
                                         }
                                         else {
                                             // html += '<tr class="subrow_' + sales[1] + '">';
@@ -256,6 +259,7 @@ jQuery(document).ready(function(t) {
                                             crm_tag = '<span class="a_sub_spn a_sub_spn_vertical a_less_than_390">' + label_name + '&nbsp;</span>' +
                                                 '<span class="a_less_than_390 a_less_than_390_tb">' + goal_tag + '</span>';
                                             vertical_tag = '<span id="crm0_' + sales[1] + "_" + label_type + '">' + label_name + '</span>';
+                                            setting_btn = '';
                                         }
                                         // html += '<td id="crm1_' + crm_id + "_" + label_type + '">' + step1 + '</td>';
                                         // html += '<td id="crm2_' + crm_id + "_" + label_type + '">' + step2 + '</td>';
@@ -286,7 +290,7 @@ jQuery(document).ready(function(t) {
                                             '<span id="crm61_' + crm_id + "_" + label_type + '">' + s1pp + '</span>',
                                             progress_tag,
                                             goal_tag,
-                                            '<button type="button" id="setting_' + crm_id + '" class="btn btn-link btn-sm btn_setting" data-toggle="modal" data-target="#setting_edit_modal"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></button>',
+                                            setting_btn
                                             // '<button type="button" id="refresh_' + crm_id + '" class="btn btn-link btn-sm btn_refresh"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>'
                                         );
 
@@ -743,61 +747,61 @@ jQuery(document).ready(function(t) {
         date_type = t(this).find("a").attr("id");
         t(".date_toggle_button").html(a + ' <span class="caret"></span>');
         set_dates();
-    }),
-        t(".sales_search_button").click(function() {
-            show_result();
-        }),
-        t(".btn_crm_position").click(function() {
-            var e = "";
-            var a = "";
-            var r = 0;
-            t(".crm_name_row").each(function(d) {
-                var i = t(this).prop("id");
-                var n = t(this).html();
-                a += '<li style="margin-bottom: 10px"><span class="payment_badge payment_badge_grey">' + ++r + "</span></li>",
-                    "ll" == i.substring(0, 2) ? e += '<li id="' + i + '" class="position_row" style="cursor: move; margin-bottom: 10px"><span class="payment_badge payment_badge_blue">' + n + "</span></li>" : e += '<li id="' + i + '" class="position_row" style="cursor: move; margin-bottom: 10px"><span class="payment_badge payment_badge_red">' + n + "</span></li>"
-            });
-            t("#crm_number_ul").html(a);
-            t("#crm_number_ul").disableSelection();
-            t("#crm_position_ul").html(e);
-            t("#crm_position_ul").sortable();
-            t("#crm_position_ul").disableSelection();
-            t("#crm_position_modal").modal("toggle");
-        }),
-        t(".modal_btn_crm_position").click(function() {
-            var e, a = "";
-            t(".position_row").each(function(e) {
-                var r = t(this).prop("id");
-                a += "" == a ? "" : ",",
-                    a += r
-            }),
-                e = a,
-                show_waiting("sales", "", !0),
-                t.ajax({
-                    type: "GET",
-                    url: "../daemon/ajax_admin/crm_position_set.php",
-                    data: {
-                        crm_positions: e
-                    },
-                    success: function(a) {
-                        if (show_waiting("sales", "", !1),
-                        "success" == a)
-                            crm_positions = e,
-                                t("#crm_positions").html(crm_positions),
-                                show_result();
-                        else {
-                            if ("no_cookie" == a)
-                                return void (window.location.href = "../../admin/login.php");
-                            show_alert("sales", "Cannot save CRM positions.")
-                        }
-                    },
-                    failure: function(t) {
-                        show_waiting("sales", "", !1),
-                            show_alert("sales", "Cannot save CRM positions.")
-                    }
-                }),
-                t("#crm_position_modal").modal("toggle")
+    });
+    t(".sales_search_button").click(function() {
+        show_result();
+    });
+    t(".btn_crm_position").click(function() {
+        var e = "";
+        var a = "";
+        var r = 0;
+        t(".crm_name_row").each(function(d) {
+            var i = t(this).prop("id");
+            var n = t(this).html();
+            a += '<li style="margin-bottom: 10px"><span class="payment_badge payment_badge_grey">' + ++r + "</span></li>",
+                "ll" == i.substring(0, 2) ? e += '<li id="' + i + '" class="position_row" style="cursor: move; margin-bottom: 10px"><span class="payment_badge payment_badge_blue">' + n + "</span></li>" : e += '<li id="' + i + '" class="position_row" style="cursor: move; margin-bottom: 10px"><span class="payment_badge payment_badge_red">' + n + "</span></li>"
         });
+        t("#crm_number_ul").html(a);
+        t("#crm_number_ul").disableSelection();
+        t("#crm_position_ul").html(e);
+        t("#crm_position_ul").sortable();
+        t("#crm_position_ul").disableSelection();
+        t("#crm_position_modal").modal("toggle");
+    });
+    t(".modal_btn_crm_position").click(function() {
+        var e, a = "";
+        t(".position_row").each(function(e) {
+            var r = t(this).prop("id");
+            a += "" == a ? "" : ",",
+                a += r
+        }),
+            e = a,
+            show_waiting("sales", "", !0),
+            t.ajax({
+                type: "GET",
+                url: "../daemon/ajax_admin/crm_position_set.php",
+                data: {
+                    crm_positions: e
+                },
+                success: function(a) {
+                    if (show_waiting("sales", "", !1),
+                    "success" == a)
+                        crm_positions = e,
+                            t("#crm_positions").html(crm_positions),
+                            show_result();
+                    else {
+                        if ("no_cookie" == a)
+                            return void (window.location.href = "../../admin/login.php");
+                        show_alert("sales", "Cannot save CRM positions.")
+                    }
+                },
+                failure: function(t) {
+                    show_waiting("sales", "", !1),
+                        show_alert("sales", "Cannot save CRM positions.")
+                }
+            }),
+            t("#crm_position_modal").modal("toggle")
+    });
 
     t(".btn_quick_edit").click(function() {
         var html = "";
@@ -831,126 +835,126 @@ jQuery(document).ready(function(t) {
             if (crm_list[a][0] == i)
                 return void get_dashboard_sales(i, crm_list[a][7])
     }),
-        t(".table_dashboard_sales_body").on("click", ".btn_setting", function(a) {
-            var r;
-            i = t(this).prop("id").substring(8),
-                r = i,
+    t(".table_dashboard").on("click", ".btn_setting", function(a) {
+        var r;
+        i = t(this).prop("id").substring(8),
+            r = i,
+            t.ajax({
+                type: "GET",
+                url: "../daemon/ajax_admin/setting_alert_list_by_cid.php",
+                data: {
+                    crm_id: r
+                },
+                success: function(a) {
+                    var r = jQuery.parseJSON(a);
+                    if ("error" != r[0])
+                        if ("no_cookie" != r[0]) {
+                            var d = (e = r[2]).length
+                                , i = "";
+                            i += '<div class="row" style="margin-bottom:5px;">',
+                                i += '<div class="col-xs-6 modal_input_label"><label>Alert Level Management</label></div>',
+                                i += "</div>";
+                            for (var n = 0; n < d; n++)
+                                "1" == e[n][8] && (i += '<div class="row" style="margin-bottom:5px;">',
+                                    i += '<div class="col-xs-6 modal_input_label">' + e[n][3] + "</div>",
+                                    i += '<div class="col-xs-6"><input type="text" class="form-control input-sm edit_level_' + e[n][2] + '" value="' + e[n][4] + '"></div>',
+                                    i += "</div>");
+                            t(".modal_setting_alert_body").html(i)
+                        } else
+                            window.location.href = "../../admin/login.php";
+                    else
+                        show_alert("setting", "Cannot load alert level information.")
+                },
+                failure: function(t) {
+                    show_alert("setting", "Cannot load alert level information.")
+                }
+            });
+        for (var n = 0; n < crm_list.length; n++)
+            if (crm_list[n][0] == i)
+                return t(".edit_crm_name").val(crm_list[n][1]),
+                    t(".edit_crm_url").val(crm_list[n][2]),
+                    t(".edit_crm_username").val(crm_list[n][3]),
+                    t(".edit_api_username").val(crm_list[n][5]),
+                    t(".edit_sales_goal").val(crm_list[n][7]),
+                    void ("1" == crm_list[n][8] ? t(".edit_crm_paused").prop("checked", !0) : t(".edit_crm_paused").prop("checked", !1))
+    }),
+    t(".modal_btn_setting_edit").click(function() {
+        if ("" == t(".edit_crm_name").val())
+            return show_alert("setting", "Please input CRM Name."),
+                void t(".edit_crm_name").focus();
+        if ("" == t(".edit_crm_url").val())
+            return show_alert("setting", "Please input CRM Site URL."),
+                void t(".edit_crm_url").focus();
+        if ("" == t(".edit_crm_username").val())
+            return show_alert("setting", "Please input CRM User Name."),
+                void t(".edit_crm_username").focus();
+        if ("" == t(".edit_api_username").val())
+            return show_alert("setting", "Please input API User Name."),
+                void t(".edit_api_username").focus();
+        if ("" == t(".edit_sales_goal").val())
+            return show_alert("setting", "Please input Sales Goal."),
+                void t(".edit_sales_goal").focus();
+        for (var a = 0; a < e.length; a++)
+            if ("1" == e[a][8] && "" == t(".edit_level_" + e[a][2]).val())
+                return show_alert("setting", "Please input Alert level."),
+                    void t(".edit_level_" + e[a][2]).focus();
+        t("#setting_edit_modal").modal("toggle"),
+            function() {
+                var e = 0;
+                t(".edit_crm_paused").prop("checked") && (e = 1);
                 t.ajax({
                     type: "GET",
-                    url: "../daemon/ajax_admin/setting_alert_list_by_cid.php",
+                    url: "../daemon/ajax_admin/setting_crm_edit.php",
                     data: {
-                        crm_id: r
+                        crm_id: i,
+                        crm_name: t(".edit_crm_name").val(),
+                        crm_url: t(".edit_crm_url").val(),
+                        crm_username: t(".edit_crm_username").val(),
+                        api_username: t(".edit_api_username").val(),
+                        sales_goal: t(".edit_sales_goal").val(),
+                        crm_paused: e
                     },
-                    success: function(a) {
-                        var r = jQuery.parseJSON(a);
-                        if ("error" != r[0])
-                            if ("no_cookie" != r[0]) {
-                                var d = (e = r[2]).length
-                                    , i = "";
-                                i += '<div class="row" style="margin-bottom:5px;">',
-                                    i += '<div class="col-xs-6 modal_input_label"><label>Alert Level Management</label></div>',
-                                    i += "</div>";
-                                for (var n = 0; n < d; n++)
-                                    "1" == e[n][8] && (i += '<div class="row" style="margin-bottom:5px;">',
-                                        i += '<div class="col-xs-6 modal_input_label">' + e[n][3] + "</div>",
-                                        i += '<div class="col-xs-6"><input type="text" class="form-control input-sm edit_level_' + e[n][2] + '" value="' + e[n][4] + '"></div>',
-                                        i += "</div>");
-                                t(".modal_setting_alert_body").html(i)
-                            } else
-                                window.location.href = "../../admin/login.php";
-                        else
-                            show_alert("setting", "Cannot load alert level information.")
+                    success: function(t) {
+                        if ("success" == t)
+                            show_result();
+                        else {
+                            if ("no_cookie" == t)
+                                return void (window.location.href = "../../admin/login.php");
+                            show_alert("sales", "CRM information cannot be changed.")
+                        }
                     },
                     failure: function(t) {
-                        show_alert("setting", "Cannot load alert level information.")
+                        show_waiting(!1),
+                            show_alert("sales", "CRM information cannot be changed.")
                     }
-                });
-            for (var n = 0; n < crm_list.length; n++)
-                if (crm_list[n][0] == i)
-                    return t(".edit_crm_name").val(crm_list[n][1]),
-                        t(".edit_crm_url").val(crm_list[n][2]),
-                        t(".edit_crm_username").val(crm_list[n][3]),
-                        t(".edit_api_username").val(crm_list[n][5]),
-                        t(".edit_sales_goal").val(crm_list[n][7]),
-                        void ("1" == crm_list[n][8] ? t(".edit_crm_paused").prop("checked", !0) : t(".edit_crm_paused").prop("checked", !1))
-        }),
-        t(".modal_btn_setting_edit").click(function() {
-            if ("" == t(".edit_crm_name").val())
-                return show_alert("setting", "Please input CRM Name."),
-                    void t(".edit_crm_name").focus();
-            if ("" == t(".edit_crm_url").val())
-                return show_alert("setting", "Please input CRM Site URL."),
-                    void t(".edit_crm_url").focus();
-            if ("" == t(".edit_crm_username").val())
-                return show_alert("setting", "Please input CRM User Name."),
-                    void t(".edit_crm_username").focus();
-            if ("" == t(".edit_api_username").val())
-                return show_alert("setting", "Please input API User Name."),
-                    void t(".edit_api_username").focus();
-            if ("" == t(".edit_sales_goal").val())
-                return show_alert("setting", "Please input Sales Goal."),
-                    void t(".edit_sales_goal").focus();
-            for (var a = 0; a < e.length; a++)
-                if ("1" == e[a][8] && "" == t(".edit_level_" + e[a][2]).val())
-                    return show_alert("setting", "Please input Alert level."),
-                        void t(".edit_level_" + e[a][2]).focus();
-            t("#setting_edit_modal").modal("toggle"),
-                function() {
-                    var e = 0;
-                    t(".edit_crm_paused").prop("checked") && (e = 1);
-                    t.ajax({
-                        type: "GET",
-                        url: "../daemon/ajax_admin/setting_crm_edit.php",
-                        data: {
-                            crm_id: i,
-                            crm_name: t(".edit_crm_name").val(),
-                            crm_url: t(".edit_crm_url").val(),
-                            crm_username: t(".edit_crm_username").val(),
-                            api_username: t(".edit_api_username").val(),
-                            sales_goal: t(".edit_sales_goal").val(),
-                            crm_paused: e
-                        },
-                        success: function(t) {
-                            if ("success" == t)
-                                show_result();
-                            else {
-                                if ("no_cookie" == t)
-                                    return void (window.location.href = "../../admin/login.php");
-                                show_alert("sales", "CRM information cannot be changed.")
-                            }
-                        },
-                        failure: function(t) {
-                            show_waiting(!1),
-                                show_alert("sales", "CRM information cannot be changed.")
-                        }
-                    })
-                }();
-            for (a = 0; a < e.length; a++)
-                "1" == e[a][8] && (r = e[a][2],
-                    d = i,
-                    n = t(".edit_level_" + e[a][2]).val(),
-                    s = "0",
-                    t.ajax({
-                        type: "GET",
-                        url: "../daemon/ajax_admin/setting_alert_edit.php",
-                        data: {
-                            type: r,
-                            crm_id: d,
-                            level1: n,
-                            level2: s
-                        },
-                        success: function(t) {
-                            if ("error" == t)
-                                show_alert("sales", "Alert level cannot be changed.");
-                            else if ("no_cookie" == t)
-                                return void (window.location.href = "../../admin/login.php")
-                        },
-                        failure: function(t) {
-                            show_alert("sales", "Alert level cannot be changed.")
-                        }
-                    }));
-            var r, d, n, s
-        }),
+                })
+            }();
+        for (a = 0; a < e.length; a++)
+            "1" == e[a][8] && (r = e[a][2],
+                d = i,
+                n = t(".edit_level_" + e[a][2]).val(),
+                s = "0",
+                t.ajax({
+                    type: "GET",
+                    url: "../daemon/ajax_admin/setting_alert_edit.php",
+                    data: {
+                        type: r,
+                        crm_id: d,
+                        level1: n,
+                        level2: s
+                    },
+                    success: function(t) {
+                        if ("error" == t)
+                            show_alert("sales", "Alert level cannot be changed.");
+                        else if ("no_cookie" == t)
+                            return void (window.location.href = "../../admin/login.php")
+                    },
+                    failure: function(t) {
+                        show_alert("sales", "Alert level cannot be changed.")
+                    }
+                }));
+        var r, d, n, s
+    }),
         t(".dashboard_alert_body").on("click", ".btn_alert", function(e) {
             var a = t(this).prop("id").substring(6);
             -1 != t(this).html().indexOf("glyphicon-triangle-bottom") ? (t(this).html('<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>'),

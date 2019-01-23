@@ -61,6 +61,7 @@ jQuery(document).ready(function($) {
                     else {
                         var campaign_list = jQuery.parseJSON(data);
                         var campaign_table_html = "";
+
                         var labels = [
                             ['step1', 'Step1'],
                             ['step2', 'Step2'],
@@ -72,27 +73,73 @@ jQuery(document).ready(function($) {
                         if (campaign_list.ids.length > 0) {
                             for (var i = 0; i < labels.length; i++) {
                                 campaign_table_html += '<div class="row crm_board_title"><div class="col-xs-12" style="padding-left: 0"><button type="button" class="btn btn-link btn-sm btn_offer_expand" id="id_' + labels[i][0] + '"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>' + labels[i][1] + '</div></div>';
-                                campaign_table_html += '<table class="table table-hover offer_table" style="margin-top:10px; max-height: 300px; overflow-y: scroll; display: none;" id="table_' + labels[i][0] + '">';
-                                campaign_table_html += '<thead><tr>';
-                                campaign_table_html += '<th><input type="checkbox" class="campaign_select_all" id="select_all_' + labels[i][0] + '"></th>';
-                                campaign_table_html += '<th>Campaign ID</th>';
-                                campaign_table_html += '<th>Campaign Name</th>';
-                                campaign_table_html += '<th>Campaign Labels</th>';
-                                campaign_table_html += '</tr></thead>';
-                                campaign_table_html += '<tbody class="table_campaign_body">';
+                                // 2019-01-17 by hmc
+                                campaign_table_html += '<div class="row c_comp_sel_top_dv"  id="sel_dv_' + labels[i][0] + '">' +
+                                                            '<div class="col-xs-12 c_comp_sel_tlt">Selected campaigns</div>' +
+                                                            '<div class="col-xs-12 c_comp_list_dv" id="c_comp_list_dv_' + i + '">' +
+                                                                '<div class="row c_selected_comps_hdv">' +
+                                                                    '<div class="col-xs-1"><input type="checkbox" class="c_de_select_all_chk" checked cti="' + i + '" id="d_sel_check_' + i + '" /></div>' +
+                                                                    '<div class="col-xs-8">CAMPAIGN NAME</div>' +
+                                                                    '<div class="col-xs-3">LABELS</div>' +
+                                                                '</div>' +
+                                                                '<div class="c_comp_list_sub_dv">' +
+                                                                '</div>' +
+                                                            '</div>' +
+                                                        '</div>';
+                                /*
+                                campaign_table_html += '<div class="c_comp_sel_tlt c_comp_avi_tlt" id="ava_tlt_' + labels[i][0] + '" + >Available campaigns</div>' +
+                                                        '<table class="table table-hover offer_table c_offer_table" style="margin-top:10px; max-height: 300px; overflow-y: scroll; display: none;" id="table_' + labels[i][0] + '">' +
+                                                            '<thead>' +
+                                                                '<tr>' +
+                                                                    '<th>' +
+                                                                        '<input type="checkbox" class="campaign_select_all" cti="' + i + '" id="select_all_' + labels[i][0] + '">' +
+                                                                    '</th>' +
+                                                                    '<th style="width: 70%;">Campaign Name</th>' +
+                                                                    '<th>Labels</th>' +
+                                                                '</tr></thead>' +
+                                                            '<tbody class="table_campaign_body" id="comp_tbody_' + i + '">';
                                 for (var j = 0; j < campaign_list.ids.length; j++) {
-                                    campaign_table_html += '<tr><td><input type="checkbox" id="campaign_' + labels[i][0] + '_' + campaign_list.ids[j] + '" class="campaign_item"></td>';
-                                    campaign_table_html += "<td>" + campaign_list.ids[j] + "</td>";
-                                    campaign_table_html += "<td>" + campaign_list.names[j] + "</td>";
-                                    campaign_table_html += "<td>" + campaign_list.labels[j] + "</td></tr>";
+                                    campaign_table_html += '<tr>' +
+                                                                '<td>' +
+                                                                    '<input type="checkbox" id="campaign_' + labels[i][0] + '_' + campaign_list.ids[j] + '" cti="' + i + '" class="campaign_item campaign_checkbox_item o_chck_' + i + '_' + j + '" oj="' + j + '">' +
+                                                                '</td>' +
+                                                                '<td>(' + campaign_list.ids[j] + ') ' + campaign_list.names[j] + '</td>' +
+                                                                '<td>' + campaign_list.labels[j] + '</td>' +
+                                                            '</tr>';
                                 }
-                                campaign_table_html += "</tbody></table>";
+                                */
+                                campaign_table_html += '<div class="c_comp_sel_tlt c_comp_avi_tlt" id="ava_tlt_' + labels[i][0] + '" + >Available campaigns</div>' +
+                                                        '<div class="row c_avai_top_dv" id="table_' + labels[i][0] + '">' +
+                                                            '<div class="col-xs-12">' +
+                                                                '<div class="row c_avai_th_dv">' +
+                                                                    '<div class="col-xs-1">' +
+                                                                        '<input type="checkbox" class="campaign_select_all" cti="' + i + '" id="select_all_' + labels[i][0] + '">' +
+                                                                    '</div>' +
+                                                                    '<div class="col-xs-8">CAMPAIGN NAME</div>' +
+                                                                    '<div class="col-xs-3">LABELS</div>' +
+                                                                '</div>' +
+                                                            '</div>' +
+                                                            '<div class="col-xs-12 c_available_items_list"  id="comp_avai_body_' + i + '">';
+                                for (var j = 0; j < campaign_list.ids.length; j++) {
+                                    campaign_table_html += '<div class="row">' +
+                                                                '<div class="col-xs-1">' +
+                                                                    '<input type="checkbox" id="campaign_' + labels[i][0] + '_' + campaign_list.ids[j] + '" cti="' + i + '" class="campaign_item campaign_checkbox_item o_chck_' + i + '_' + j + '" oj="' + j + '">' +
+                                                                '</div>' +
+                                                                '<div class="col-xs-8">(' + campaign_list.ids[j] + ') ' + campaign_list.names[j] + '</div>' +
+                                                                '<div class="col-xs-3">'  + campaign_list.labels[j] +  '</div>' +
+                                                            '</div>';
+                                }
+                                campaign_table_html += '</div>' +
+                                                    '</div>';
                             }
                         } else {
                             show_alert("campaign", "There is no any campaign data.");
                         }
                         $("#div_select_campaign").html(campaign_table_html);
                         $(".campaign_select_all").prop("checked", false);
+
+                        // 2019-01-17 by hmc
+                        dynamic_event_load_compaign_list();
 
                         if (true === edit) {
                             for (i = 0; i < offer_list.length; i++) {
@@ -103,6 +150,7 @@ jQuery(document).ready(function($) {
                                         for (j = 0; j < campaign_ids.length; j++) {
                                             var campaign_id = campaign_ids[j];
                                             $("#campaign_" + campaign_id).prop("checked", true);
+                                            set_selected_campaign( jQuery("#campaign_" + campaign_id).attr("cti") );
                                         }
                                     }
                                 }
@@ -345,13 +393,19 @@ jQuery(document).ready(function($) {
     $(document).on("click", ".campaign_select_all", function () {
         var check = $(this);
         var id = $(this).prop("id").substring(11);
+        var cti = jQuery(this).attr("cti");
         $(".campaign_item").each(function() {
             if (check.prop("checked")) {
                 $("[id^=campaign_" + id + "_]").prop("checked", true);
+                jQuery("#d_sel_check_" + cti).prop("checked", true);
             } else {
                 $("[id^=campaign_" + id + "_]").prop("checked", false);
+                jQuery("#d_sel_check_" + cti).prop("checked", false);
             }
         });
+
+        set_selected_campaign( cti );
+
     });
 
     $(".btn_offer_add").click(function() {
@@ -385,17 +439,24 @@ jQuery(document).ready(function($) {
     });
     $(document).on("click", ".btn_offer_expand", function () {
         var id = $(this).prop("id").substring(3);
-        if ("none" === $("#table_" + id).css("display")) {
+        if ("none" === jQuery("#table_" + id).css("display")) {
             $("#table_" + id).css("display", "block");
+            jQuery("#sel_dv_" + id).css("display", "block");
+            jQuery("#ava_tlt_" + id).css("display", "block");
             $(this).html('<span class="glyphicon glyphicon-minus-sign" aria-hidden="true" style="color: #ffa5a5"></span>');
         }
         else {
             $("#table_" + id).css("display", "none");
+            jQuery("#sel_dv_" + id).css("display", "none");
+            jQuery("#ava_tlt_" + id).css("display", "none");
             $(this).html('<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>');
         }
     });
 
     $(".table_offer_body").on("click", ".setting_offer_edit", function(a) {
+
+        jQuery(".c_comp_sel_top_dv, .c_comp_avi_tlt, .c_avai_top_dv").css("display", "none");
+
         offer_id = $(this).prop("id").substring(6);
         $("#label_add_offer").html('Edit Offer&nbsp;<span class="setting_campaign_waiting" style="text-align:right"></span>');
         $(".modal_btn_offer_add").html('Edit Offer');
@@ -438,3 +499,64 @@ jQuery(document).ready(function($) {
         delete_offer();
     });
 });
+
+/************************************** 2019-01-17 by hmc for compagin check list update ******************************************/
+// daynmic event when load compain list
+function dynamic_event_load_compaign_list()
+{
+    // check or uncheck campaign
+    jQuery(".campaign_checkbox_item").unbind("click").click(function(){
+        var cti = jQuery(this).attr("cti");
+        jQuery(".c_de_select_all_chk").prop("checked", "checked");
+        set_selected_campaign( cti );
+    });
+
+}
+
+// set selected campaign
+function set_selected_campaign( cti )
+{
+    var html = '';
+    jQuery("#c_comp_list_dv_" + cti).children(".c_comp_list_sub_dv").html(html);
+    jQuery("#comp_avai_body_" + cti).children(".row").removeClass("g_none_dis");
+
+    jQuery(".campaign_checkbox_item", jQuery("#comp_avai_body_" + cti)).each(function(e){
+        if ( jQuery(this).is(":checked") ) {
+            var name = jQuery(this).parent("div").next().html();
+            var label = jQuery(this).parent("div").next().next().html();
+            html += '<div class="row c_selected_comps_dv">' +
+                        '<div class="col-xs-1" style="padding-left: 5px !important;">' +
+                            '<input type="checkbox" class="c_de_select_chk" checked cti="' + cti + '" oj="' + jQuery(this).attr("oj") + '" />' +
+                        '</div>' +
+                        '<div class="col-xs-8">' + name + '</div>' +
+                        '<div class="col-xs-3">' + label + '</div>' +
+                    '</div>';
+        }
+    });
+
+    jQuery("#c_comp_list_dv_" + cti).children(".c_comp_list_sub_dv").html(html);
+    jQuery(".campaign_checkbox_item:checked").parent("div").parent(".row").addClass("g_none_dis");
+    dynamic_events_of_selected_items();
+}
+
+// dynamic events of selected items
+function dynamic_events_of_selected_items()
+{
+    jQuery(".c_de_select_chk").unbind("click").click(function(){
+        var cti = jQuery(this).attr("cti");
+        var oj = jQuery(this).attr("oj");
+        jQuery(".o_chck_" + cti + "_" + oj).prop("checked", false);
+        set_selected_campaign( cti );
+
+    });
+
+    jQuery(".c_de_select_all_chk").unbind("click").click(function(){
+        if(!jQuery(this).is(":checked"))
+        {
+            var cti = jQuery(this).attr("cti");
+            jQuery(".campaign_checkbox_item", jQuery("#comp_avai_body_" + cti)).prop("checked", false);
+            jQuery("input[cti='" + cti + "']").prop("checked", false);
+            set_selected_campaign( cti );
+        }
+    });
+}

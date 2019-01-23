@@ -825,6 +825,7 @@ class LLCrmHook
         $valueSTEP1 = 0;
         $valueSTEP2 = 0;
         $valueTABLET = 0;
+        $valueTABLETS2 = 0;
         $valueSTEP2NonPP = 0;
         $valueSTEP1NonPP = 0;
         $valueOrderPage = 0;
@@ -922,7 +923,7 @@ class LLCrmHook
             {
                 if ($item[0] == $cId)
                 {
-                    $valueTABLET += $value['initial_customer'];
+                    $valueTABLETS2 += $value['initial_customer'];
                     foreach ($labelInfo as $label)
                     {
                         $id = $label[0];
@@ -933,7 +934,7 @@ class LLCrmHook
                             {
                                 if (strstr($item[1], ','.$id.',') !== FALSE)
                                 {
-                                    $breakItem[5] += $value['initial_customer'];
+                                    $breakItem[15] += $value['initial_customer'];
                                 }
                             }
                             $breakDown[$i] = $breakItem;
@@ -1089,7 +1090,7 @@ class LLCrmHook
                 }
             }
         }
-        $ret[] = array(0, '', '', $valueSTEP1, $valueSTEP2, $valueTABLET, $valuePrepaid, $valueSTEP1NonPP, $valueSTEP2NonPP, $valueOrderPage, $orderCount, $valueDecline, $valueGrossOrder, $valuePrepaidStep1, $valuePrepaidStep2);
+        $ret[] = array(0, '', '', $valueSTEP1, $valueSTEP2, $valueTABLET, $valuePrepaid, $valueSTEP1NonPP, $valueSTEP2NonPP, $valueOrderPage, $orderCount, $valueDecline, $valueGrossOrder, $valuePrepaidStep1, $valuePrepaidStep2, $valueTABLET);
         foreach ($breakDown as $item)
         {
             $ret[] = $item;

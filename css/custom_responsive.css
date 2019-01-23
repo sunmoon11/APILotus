@@ -194,3 +194,112 @@ table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before, tabl
 {
     display: none !important;
 }
+
+.c_comp_sel_tlt
+{
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: rgba(100, 100, 100, 1);
+    padding-left: 0px;
+    font-size: 13.5px;
+}
+
+.c_comp_list_dv
+{
+    padding: 0px 0px 0px 0px;
+    border: 1px solid silver;
+    overflow-x: hidden;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(200, 200, 200, 0.3);
+}
+
+.c_comp_list_sub_dv
+{
+    height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.c_selected_comps_hdv
+{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.c_selected_comps_hdv>div
+{
+    padding: 5px;
+    background: rgba(200, 200, 200, 0.2);
+    font-size: 13.5px;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+}
+
+.c_selected_comps_hdv>div>input[type='checkbox']
+{
+    margin-top: 0px !important;
+}
+
+.c_comp_sel_top_dv
+{
+    display: none;
+    margin: 5px 0px;
+}
+
+.c_selected_comps_dv>div
+{
+    padding-left: 2px !important;
+    padding-right: 1px !important;
+}
+
+.c_selected_comps_dv
+{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.c_offer_table th,
+.c_offer_table td
+{
+    text-align: left !important;
+    padding-left: 5px;
+}
+
+.c_comp_avi_tlt
+{
+    display: none;
+    padding-top: 5px;
+}
+
+.c_avai_top_dv
+{
+    display: none;
+    border: 1px solid silver;
+    margin: 0px;
+    border-radius: 3px;
+}
+
+.c_available_items_list
+{
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.c_available_items_list .row>div
+{
+    padding-left: 5px !important;
+}
+
+.c_avai_th_dv>div
+{
+    padding: 5px;
+    background: rgba(200, 200, 200, 0.2);
+    font-size: 13.5px;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+}
+
+.campaign_select_all
+{
+    margin-top: 0px !important;
+}
